@@ -22,7 +22,7 @@ Phiên bản di động này được thiết kế đặc biệt cho bệnh nhâ
    Cài đặt Android Studio và tạo thiết bị ảo (ghi nhớ tên thiết bị).
 
 2. Add Android SDK emulator path to system PATH:  
-   Thêm đường dẫn đến thư mục emulator của Android SDK vào biến môi trường PATH:
+   Thêm đường dẫn đến thư mục emulator của Android SDK vào biến môi trường "Path":
    ```
    [Your Android SDK path]/emulator
    ```
@@ -41,7 +41,7 @@ Phiên bản di động này được thiết kế đặc biệt cho bệnh nhâ
    ionic cap run android
    ```
    A list of available devices will be shown. Note down your device ID for faster deployment next time:  
-   Danh sách các thiết bị khả dụng sẽ hiển thị. Ghi nhớ device ID để chạy nhanh hơn cho lần sau:
+   Danh sách các thiết bị khả dụng sẽ hiển thị. Ghi nhớ device ID để lần sau chạy tiện hơn:
    ```bash
    ionic cap run android --target=[device-id]
    ```
