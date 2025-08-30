@@ -7,12 +7,10 @@ Hệ thống quản lý phòng khám hiếm muộn và ngân hàng trữ đông 
 This mobile version is designed specifically for patient use.  
 Phiên bản di động này được thiết kế đặc biệt cho bệnh nhân sử dụng.
 
-
-### Other Project Components / Các thành phần khác của dự án
+**Other Project Components / Các thành phần khác của dự án:**
 
 - **Web App:**
 - **Backend:**
-
 
 ## Development Setup / Cài đặt môi trường phát triển
 
@@ -23,7 +21,8 @@ Phiên bản di động này được thiết kế đặc biệt cho bệnh nhâ
 
 2. Add Android SDK emulator path to system PATH:  
    Thêm đường dẫn đến thư mục emulator của Android SDK vào biến môi trường "Path":
-   ```
+
+   ```text
    [Your Android SDK path]/emulator
    ```
 
@@ -31,23 +30,28 @@ Phiên bản di động này được thiết kế đặc biệt cho bệnh nhâ
 
 1. Start the Android emulator without Android Studio:  
    Khởi động thiết bị ảo Android mà không cần mở Android Studio:
+
    ```bash
    emulator -avd [your-device-name]
    ```
 
 2. Run the app on the virtual device:  
    Chạy ứng dụng trên thiết bị ảo:
+
    ```bash
    ionic cap run android
    ```
+
    A list of available devices will be shown. Note down your device ID for faster deployment next time:  
    Danh sách các thiết bị khả dụng sẽ hiển thị. Ghi nhớ device ID để lần sau chạy tiện hơn:
+
    ```bash
    ionic cap run android --target=[device-id]
    ```
 
 3. For development with hot reload:  
    Để phát triển với hot reload:
+
    ```bash
    ionic cap run android --target=[device-id] --livereload --external
    ```
@@ -56,6 +60,7 @@ Phiên bản di động này được thiết kế đặc biệt cho bệnh nhâ
 
 For convenience, you can add these commands to your `package.json` (replace [device-id] with your actual device ID):  
 Để thuận tiện, bạn có thể thêm các lệnh sau vào `package.json` (thay [device-id] bằng ID thiết bị của bạn):
+
 ```json
 {
   "scripts": {
@@ -63,3 +68,4 @@ For convenience, you can add these commands to your `package.json` (replace [dev
     "android:dev": "ionic cap run android --target=[device-id] --livereload --external"
   }
 }
+```
