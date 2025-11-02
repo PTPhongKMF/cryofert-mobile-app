@@ -1,4 +1,5 @@
 {
+  "oxc.enable": true,
   "editor.formatOnSave": true,
 
   // "[javascript]": {
