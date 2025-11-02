@@ -49,8 +49,7 @@ Phiên bản di động này được thiết kế đặc biệt cho bệnh nhâ
    ionic cap run android --target=[device-id]
    ```
 
-3. For development with hot reload:  
-   Để phát triển với hot reload:
+### For development with hot reload / Để phát triển với hot reload
 
    ```bash
    ionic cap run android --target=[device-id] --livereload --external

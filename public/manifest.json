@@ -1,6 +1,6 @@
 {
-  "short_name": "CryoFert App",
-  "name": "CryoFert App",
+  "short_name": "CryoFert",
+  "name": "Fertility Service and Cryobank Management System",
   "icons": [
     {
       "src": "assets/icon/favicon.png",

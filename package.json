@@ -2,12 +2,12 @@
   "name": "cryofert",
   "private": true,
   "version": "0.0.1",
+  "description": "A comprehensive fertility clinic and cryobank management system designed to streamline patient care, sample tracking, and clinical workflows.",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "lint": "eslint"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@capacitor/app": "7.0.2",
@@ -19,7 +19,6 @@
     "@ionic/react": "^8.5.0",
     "@ionic/react-router": "^8.5.0",
     "@tailwindcss/vite": "^4.1.12",
-    "@tanstack/react-store": "^0.7.4",
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
     "ionicons": "^7.4.0",
@@ -47,10 +46,10 @@
     "terser": "^5.4.0",
     "typescript": "^5.1.6",
     "typescript-eslint": "^8.24.0",
-    "vite": "~5.2.0"
+    "vite": "~5.2.0",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "overrides": {
     "rollup": "4.44.0"
-  },
-  "description": "An Ionic project"
+  }
 }

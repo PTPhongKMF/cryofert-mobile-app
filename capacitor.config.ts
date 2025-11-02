@@ -1,9 +1,9 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'cryofert',
-  webDir: 'dist'
+  appId: "sky.ptphongkmf.cryofert",
+  appName: "CryoFert",
+  webDir: "dist",
 };
 
 export default config;
