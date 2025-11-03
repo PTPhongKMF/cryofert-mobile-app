@@ -1,14 +1,13 @@
 {
   "name": "cryofert",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A comprehensive fertility clinic and cryobank management system designed to streamline patient care, sample tracking, and clinical workflows.",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-
     "emu": "emulator -avd ionic",
     "emu:a": "ionic cap run android --target=ionic",
     "emu:dev:a": "ionic cap run android --target=ionic --livereload --external"
