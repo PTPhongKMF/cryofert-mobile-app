@@ -15,6 +15,9 @@ jobs:
     name: Versioning & Release
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
       - name: Generate GH App token
         id: generate-token
         uses: ./.github/workflows/generate-gh-app-token
