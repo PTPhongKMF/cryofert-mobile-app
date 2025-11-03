@@ -1,0 +1,39 @@
+# A composite GitHub Action for generating an installation token from a GitHub App.
+# This token authenticates as the GitHub App installation, so actions run with it
+# appear as the App (not the default GitHub Actions bot).
+#
+# Useful when you want workflow jobs to act as the App (the "initiator/author"),
+# and to allow triggering downstream workflows that GITHUB_TOKEN cannot trigger.
+#
+# Note: installation tokens are short-lived (expire after ~60 minutes),
+# so they should be generated on demand inside workflows.
+# 
+# Intended to be called by other workflows.
+
+name: Generate GitHub App Token
+description: "Generate an installation token for a GitHub App"
+
+inputs:
+  app-id:
+    description: "The ID of the GitHub App."
+    required: true
+    type: string
+  private-key:
+    description: "The private key of the GitHub App."
+    required: true
+    type: string
+
+outputs:
+  token:
+    description: "GitHub App installation token"
+    value: ${{ steps.generate-token.outputs.token }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Generate Token
+      id: generate-token
+      uses: actions/create-github-app-token@v2
+      with:
+        app-id: ${{ inputs.app-id }}
+        private-key: ${{ inputs.private-key }}
