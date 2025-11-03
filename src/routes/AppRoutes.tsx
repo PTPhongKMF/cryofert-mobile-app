@@ -9,7 +9,7 @@ export default function AppRoutes() {
   return (
     <IonRouterOutlet>
       <Route exact path={ROUTES.ROOT} component={SplashScreen} />
-      <Route path={ROUTES.TABS} component={TabRoutes} />
+      <Route path={ROUTES.MAIN_TABS} component={TabRoutes} />
     </IonRouterOutlet>
   );
 }

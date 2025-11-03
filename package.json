@@ -7,7 +7,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+
+    "emu": "emulator -avd ionic",
+    "emu:a": "ionic cap run android --target=ionic",
+    "emu:dev:a": "ionic cap run android --target=ionic --livereload --external"
   },
   "dependencies": {
     "@capacitor/app": "7.0.2",
