@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CryoFert</string>
+    <string name="title_activity_main">CryoFert</string>
+    <string name="package_name">sky.ptphongkmf.cryofert</string>
+    <string name="custom_url_scheme">sky.ptphongkmf.cryofert</string>
+</resources>
