@@ -1,12 +1,14 @@
 const BASE = {
   ROOT: "/",
-  MAIN_TABS: "/main-tabs",
+  TABS: "/tabs",
 } as const;
 
 /////////////////////////////////////////////////////////
 
 export const ROUTES = {
   ...BASE,
-  TABS_HOME: `${BASE.MAIN_TABS}/home`,
-  TABS_LOGIN: `${BASE.MAIN_TABS}/login`,
+  HOME: `${BASE.TABS}/home`,
+  AUTH: `${BASE.TABS}/auth`,
+  AUTH_LOGIN: `${BASE.TABS}/auth/:tab(login)`,
+  AUTH_REGISTER: `${BASE.TABS}/auth/:tab(register)`,
 } as const;
