@@ -10,7 +10,7 @@ export default function SplashScreen() {
     (async function init() {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      router.push(ROUTES.HOME);
+      router.push(ROUTES.L_HOME);
     })();
   }, []);
 

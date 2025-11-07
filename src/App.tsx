@@ -28,6 +28,8 @@ import "@ionic/react/css/display.css";
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
 import "@ionic/react/css/palettes/dark.system.css";
+import AlertDialog from "@src/components/dialogs/AlertDialog";
+import AppLoading from "@src/components/AppLoading";
 
 /* Theme variables */
 // import './theme/variables.css';
@@ -39,6 +41,9 @@ export default function App() {
     <IonApp>
       <IonReactRouter>
         <AppRoutes />
+
+        <AlertDialog />
+        <AppLoading />
       </IonReactRouter>
     </IonApp>
   );
