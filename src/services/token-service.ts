@@ -16,3 +16,11 @@ export async function getSecuredToken(key: TokenKey) {
 export async function setSecuredToken(key: TokenKey, value: string) {
   await SecureStorage.set(key, value);
 }
+
+export async function clearSecuredToken(key: TokenKey) {
+  // implement
+}
+
+export async function clearAllSecuredTokens() {
+  // implement
+}

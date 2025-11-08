@@ -1,4 +1,14 @@
-import { IonContent } from "@ionic/react";
+import {
+  IonContent,
+  IonFab,
+  IonFabButton,
+  IonFabList,
+  IonFooter,
+  IonIcon,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
 import SafeAreaView from "@src/components/SafeAreaView";
 import React from "react";
 import {
@@ -22,6 +32,7 @@ import {
   Activity,
   Target,
 } from "lucide-react";
+import { add, document } from "ionicons/icons";
 
 export default function Home() {
   return (

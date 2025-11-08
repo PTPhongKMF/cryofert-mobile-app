@@ -5,10 +5,14 @@ interface GenericDialogData {
   content?: string;
 }
 
+interface AlertDialogData extends GenericDialogData {
+  closeFn?: () => void;
+}
+
 interface AlertDialogStore {
-  data: GenericDialogData | null;
+  data: AlertDialogData | null;
   isOpen: boolean;
-  openAlertDialog: (data: GenericDialogData) => void;
+  openAlertDialog: (data: AlertDialogData) => void;
   closeAlertDialog: () => void;
 }
 

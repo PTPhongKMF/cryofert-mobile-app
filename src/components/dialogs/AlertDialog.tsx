@@ -12,10 +12,15 @@ export default function AlertDialog() {
     }))
   );
 
+  function handleClose() {
+    if (data?.closeFn) data.closeFn();
+    closeAlertDialog();
+  }
+
   return (
     <IonModal
       isOpen={isOpen}
-      onDidDismiss={closeAlertDialog}
+      onDidDismiss={handleClose}
       backdropDismiss={false}
       className="ion-w-fit ion-h-fit ion-b-r-[10px] ion-box-shadow"
     >
@@ -32,7 +37,7 @@ export default function AlertDialog() {
         <IonButton
           size="small"
           className="self-end w-full text-base"
-          onClick={closeAlertDialog}
+          onClick={handleClose}
         >
           Ok
         </IonButton>

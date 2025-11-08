@@ -25,19 +25,26 @@ const capPrefStorage: StateStorage = {
 
 interface UserStore {
   localUser: LocalUser | null;
+  hasHydrated: boolean;
   setLocalUser: (newUser: LocalUser | null) => void;
+  setHasHydrated: (hasHydrated: boolean) => void;
 }
 
 export const useLocalUserStore = create<UserStore>()(
   persist(
     (set) => ({
       localUser: null,
+      hasHydrated: false,
       setLocalUser: (newUser) => set({ localUser: newUser }),
+      setHasHydrated: (hasHydrated) => set({ hasHydrated }),
     }),
     {
       name: "local-user",
       partialize: (state) => ({ localUser: state.localUser }),
       storage: createJSONStorage(() => capPrefStorage),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );
