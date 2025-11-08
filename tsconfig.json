@@ -11,6 +11,8 @@
 
     "baseUrl": ".",
     "paths": {
+      "@assets/*": ["src/assets/*"],
+      "@utils/*": ["src/utils/*"],
       "@src/*": ["src/*"]
     },
 

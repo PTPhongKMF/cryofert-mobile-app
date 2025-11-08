@@ -1,0 +1,109 @@
+import {
+  IonContent,
+  IonFab,
+  IonFabButton,
+  IonFabList,
+  IonFooter,
+  IonIcon,
+  IonLabel,
+  IonRouterOutlet,
+  IonTabBar,
+  IonTabButton,
+  IonTabs,
+  IonTitle,
+  IonToolbar,
+  useIonRouter,
+} from "@ionic/react";
+import { Route } from "react-router-dom";
+import Home from "@src/pages/Home";
+import { ROUTES } from "@src/routes/routes";
+import History from "@src/pages/History";
+import Profile from "@src/pages/Profile";
+import {
+  add,
+  bagAdd,
+  bagAddOutline,
+  document,
+  fileTrayFull,
+  home,
+  personCircle,
+} from "ionicons/icons";
+import { useEffect } from "react";
+import { useLocalUserStore } from "@src/stores/user";
+import { clearAllSecuredTokens } from "@src/services/token-service";
+import { useAlertDialogStore } from "@src/stores/dialog";
+import { ClipboardPlus, Stethoscope } from "lucide-react";
+
+export default function AppTabRoutes() {
+  const router = useIonRouter();
+  const localUser = useLocalUserStore((s) => s.localUser);
+  const hasHydrated = useLocalUserStore((s) => s.hasHydrated);
+  const openAlertDialog = useAlertDialogStore((s) => s.openAlertDialog);
+
+  useEffect(() => {
+    if (!hasHydrated) {
+      return;
+    }
+
+    (async () => {
+      if (router.routeInfo.pathname.startsWith(ROUTES.TABS)) {
+        if (!localUser) {
+          await clearAllSecuredTokens();
+          openAlertDialog({
+            title: "Auhtentication Error",
+            content: "We can't verify your account, please log in again",
+            closeFn: () => {
+              router.push(ROUTES.AUTH_LOGIN, "back");
+            },
+          });
+        }
+      }
+    })();
+  }, [
+    router,
+    router.routeInfo.pathname,
+    localUser,
+    hasHydrated,
+    openAlertDialog,
+  ]);
+
+  return (
+    <IonTabs>
+      <IonRouterOutlet>
+        <Route exact path={ROUTES.T_HOME} component={Home} />
+        <Route exact path={ROUTES.T_HISTORY} component={History} />
+        <Route exact path={ROUTES.T_PROFILE} component={Profile} />
+      </IonRouterOutlet>
+
+      <IonTabBar slot="bottom" className="ion-bg-violet-100">
+        <IonTabButton tab="home" href={ROUTES.T_HOME}>
+          <IonIcon icon={home} className="size-6" />
+          <IonLabel className="text-xs">Home</IonLabel>
+        </IonTabButton>
+
+        <IonTabButton tab="history" href={ROUTES.T_HISTORY}>
+          <IonIcon icon={fileTrayFull} className="size-6" />
+          <IonLabel className="text-xs">History</IonLabel>
+        </IonTabButton>
+
+        <IonTabButton tab="profile" href={ROUTES.T_PROFILE}>
+          <IonIcon icon={personCircle} className="size-6" />
+          <IonLabel className="text-xs">Profile</IonLabel>
+        </IonTabButton>
+      </IonTabBar>
+
+      <IonFab vertical="bottom" horizontal="end">
+        <IonFabButton color="warning">
+          <Stethoscope className="size-8" />
+        </IonFabButton>
+
+        <IonFabList side="start" className="flex gap-2 me-20">
+          <IonFabButton className="ion-b-r-[6px] w-[70vw] h-14 text-lg font-semibold ion-bg-amber-300">
+            <ClipboardPlus className="me-4" />
+            Book a Treatment
+          </IonFabButton>
+        </IonFabList>
+      </IonFab>
+    </IonTabs>
+  );
+}

@@ -3,5 +3,16 @@
 
   "ignorePatterns": ["dist"],
 
-  "plugins": ["eslint", "typescript", "unicorn", "oxc", "react"]
+  "plugins": ["eslint", "typescript", "unicorn", "oxc", "react"],
+
+  "rules": {
+    "typescript/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "type-imports",
+        "fixStyle": "separate-type-imports",
+        "disallowTypeAnnotations": true
+      }
+    ]
+  }
 }

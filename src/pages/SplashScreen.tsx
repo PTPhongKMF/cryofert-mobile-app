@@ -1,18 +1,29 @@
 import { IonContent, IonPage, IonSpinner, useIonRouter } from "@ionic/react";
 import SafeAreaView from "@src/components/SafeAreaView";
 import { ROUTES } from "@src/routes/routes";
+import { useLocalUserStore } from "@src/stores/user";
 import { useEffect } from "react";
 
 export default function SplashScreen() {
   const router = useIonRouter();
+  const localUser = useLocalUserStore((s) => s.localUser);
+  const hasHydrated = useLocalUserStore((s) => s.hasHydrated);
 
   useEffect(() => {
-    (async function init() {
+    if (!hasHydrated) {
+      return;
+    }
+
+    (async () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      router.push(ROUTES.TABS_HOME);
+      if (localUser) {
+        router.push(ROUTES.T_HOME, "none");
+      } else {
+        router.push(ROUTES.L_HOME, "none");
+      }
     })();
-  }, []);
+  }, [hasHydrated]);
 
   return (
     <IonPage>
