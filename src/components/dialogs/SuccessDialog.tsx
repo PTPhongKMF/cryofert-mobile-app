@@ -13,8 +13,8 @@ export default function SuccessDialog() {
   );
 
   function handleClose() {
-    closeSuccessDialog();
     if (data?.closeFn) data.closeFn();
+    closeSuccessDialog();
   }
 
   return (

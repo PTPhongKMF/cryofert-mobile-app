@@ -10,25 +10,6 @@ interface LocalUser {
   roleName: string;
 }
 
-interface UserStore {
-  user: LocalUser | null;
-  setUser: (newUser: LocalUser | null) => void;
-}
-
-export const useLocalUserStore = create<UserStore>()(
-  persist(
-    (set) => ({
-      user: null,
-      setUser: (newUser) => set({ user: newUser }),
-    }),
-    {
-      name: "local-user",
-      partialize: (state) => ({ user: state.user }),
-      storage: createJSONStorage(() => capPrefStorage),
-    }
-  )
-);
-
 const capPrefStorage: StateStorage = {
   getItem: async (key: string) => {
     const { value } = await Preferences.get({ key });
@@ -41,3 +22,22 @@ const capPrefStorage: StateStorage = {
     await Preferences.remove({ key });
   },
 };
+
+interface UserStore {
+  localUser: LocalUser | null;
+  setLocalUser: (newUser: LocalUser | null) => void;
+}
+
+export const useLocalUserStore = create<UserStore>()(
+  persist(
+    (set) => ({
+      localUser: null,
+      setLocalUser: (newUser) => set({ localUser: newUser }),
+    }),
+    {
+      name: "local-user",
+      partialize: (state) => ({ localUser: state.localUser }),
+      storage: createJSONStorage(() => capPrefStorage),
+    }
+  )
+);

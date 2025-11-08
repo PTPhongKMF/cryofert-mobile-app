@@ -1,27 +1,16 @@
 import {
   IonButton,
-  IonContent,
   IonIcon,
   IonInput,
-  IonInputPasswordToggle,
-  IonItem,
-  IonModal,
   IonPage,
   useIonRouter,
 } from "@ionic/react";
 import { slideDirectionRouter } from "@src/animations/slide-directional";
 import { Button } from "@src/components/libs/shadcn/Button";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-} from "@src/components/libs/shadcn/InputGroup";
 import { ROUTES } from "@src/routes/routes";
 import { LoginRequestSchema, type LoginRequest } from "@src/schemas/auth";
 import {
   arrowForwardCircleOutline,
-  closeCircle,
   eyeOffOutline,
   eyeOutline,
   lockClosedOutline,
@@ -31,15 +20,26 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { cn } from "@src/utils/cn";
-import { useAlertDialogStore } from "@src/stores/dialog";
+import { useAlertDialogStore, useOtpDialogStore } from "@src/stores/dialog";
 import { useLoginMutation } from "@src/services/api-services/auth-service";
 import { useAppLoadingStore } from "@src/stores/app-loading";
+import { setSecuredToken } from "@src/services/token-service";
+import { useLocalUserStore } from "@src/stores/user";
+import { useShallow } from "zustand/react/shallow";
 
+const LOADER_KEY = "LoginForm";
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
+  const { startLoading, stopLoading } = useAppLoadingStore(
+    useShallow((s) => ({
+      startLoading: s.startLoading,
+      stopLoading: s.stopLoading,
+    }))
+  );
+  const setLocalUser = useLocalUserStore((s) => s.setLocalUser);
   const openAlertDialog = useAlertDialogStore((s) => s.openAlertDialog);
-  const setAppLoadingState = useAppLoadingStore((s) => s.setAppLoadingState);
+  const openOtpDialog = useOtpDialogStore((s) => s.openOtpDialog);
 
   const router = useIonRouter();
 
@@ -55,11 +55,11 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (loginMutation.isPending) {
-      setAppLoadingState(true);
+      startLoading(LOADER_KEY);
     } else {
-      setAppLoadingState(false);
+      stopLoading(LOADER_KEY);
     }
-  }, [loginMutation.isPending, setAppLoadingState]);
+  }, [loginMutation.isPending, startLoading, stopLoading]);
 
   function handleLogin(data: LoginRequest) {
     console.log(data);
@@ -67,8 +67,20 @@ export default function LoginForm() {
       onError: (error) => {
         openAlertDialog({ title: error.name, content: error.message });
       },
-      onSuccess: () => {
-        router.push(ROUTES.T_HOME, "none");
+      onSuccess: (data) => {
+        if (data.systemCode === "NEED_OTP") {
+          openOtpDialog(data.data.user.email);
+        } else {
+          setLocalUser({
+            id: data.data.user.id,
+            roleId: data.data.user.roleId,
+            roleName: data.data.user.roleName,
+            userName: data.data.user.userName,
+          });
+          setSecuredToken("access-token", data.data.token ?? "");
+          setSecuredToken("refresh-token", data.data.refreshToken ?? "");
+          router.push(ROUTES.T_HOME, "none");
+        }
       },
     });
   }
@@ -104,7 +116,7 @@ export default function LoginForm() {
                 <IonIcon
                   icon={mailOutline}
                   slot="start"
-                  className="text-black"
+                  className="text-black me-4"
                 />
               </IonInput>
             )}
@@ -145,17 +157,19 @@ export default function LoginForm() {
             )}
           />
 
-          <Button
+          <IonButton
             type="submit"
-            variant="outline"
-            className="text-base font-semibold bg-transparent border-1! border-blue-500! text-blue-500 rounded-lg!
-            active:bg-blue-100 transition-colors duration-100"
+            size="small"
+            className="text-base font-semibold ion-py-[0.75rem] ion-bg-blue-600"
           >
             Log In
-          </Button>
+          </IonButton>
         </form>
 
-        <Button
+        <IonButton
+          size="small"
+          fill="clear"
+          color="warning"
           onClick={() =>
             router.push(
               ROUTES.AUTH_REGISTER,
@@ -165,12 +179,15 @@ export default function LoginForm() {
               slideDirectionRouter
             )
           }
-          className="text-base font-semibold bg-amber-400 border-1! border-amber-200! text-white rounded-lg!
-          active:bg-amber-600 transition-colors duration-100"
+          className="text-base font-semibold ion-py-[0.1rem] self-center ion-b-w-[1px] text-amber-900!"
         >
           Create an account
-          <IonIcon icon={arrowForwardCircleOutline} className="size-6" />
-        </Button>
+          <IonIcon
+            slot="end"
+            icon={arrowForwardCircleOutline}
+            className="size-6 ms-4"
+          ></IonIcon>
+        </IonButton>
       </div>
     </IonPage>
   );

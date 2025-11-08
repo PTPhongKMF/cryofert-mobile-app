@@ -3,7 +3,7 @@ import { Route } from "react-router";
 import SplashScreen from "@src/pages/SplashScreen";
 import LandingTabRoutes from "@src/routes/LandingTabRoutes";
 import { ROUTES } from "@src/routes/routes";
-import TabRoutes from "@src/routes/AppTabRoutes";
+import AppTabRoutes from "@src/routes/AppTabRoutes";
 import { IonRouterOutlet } from "@ionic/react";
 
 export default function AppRoutes() {
@@ -11,7 +11,7 @@ export default function AppRoutes() {
     <IonRouterOutlet>
       <Route exact path={ROUTES.ROOT} component={SplashScreen} />
       <Route path={ROUTES.LANDING} component={LandingTabRoutes} />
-      <Route path={ROUTES.TABS} component={TabRoutes} />
+      <Route path={ROUTES.TABS} component={AppTabRoutes} />
     </IonRouterOutlet>
   );
 }

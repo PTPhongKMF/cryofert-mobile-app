@@ -7,43 +7,39 @@ import {
   useIonRouter,
 } from "@ionic/react";
 import { slideDirectionRouter } from "@src/animations/slide-directional";
-import { Button } from "@src/components/libs/shadcn/Button";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-} from "@src/components/libs/shadcn/InputGroup";
 import { ROUTES } from "@src/routes/routes";
 import { RegisterRequestSchema, type RegisterRequest } from "@src/schemas/auth";
 import {
   arrowBackCircleOutline,
-  arrowForwardCircleOutline,
-  closeCircle,
   eyeOffOutline,
   eyeOutline,
   lockClosedOutline,
   mailOutline,
 } from "ionicons/icons";
-import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { cn } from "@src/utils/cn";
 import { useRegisterMutation } from "@src/services/api-services/auth-service";
-import { useAlertDialogStore } from "@src/stores/dialog";
-import OtpDialog from "@src/components/dialogs/OtpDialog";
+import { useAlertDialogStore, useOtpDialogStore } from "@src/stores/dialog";
 import { useAppLoadingStore } from "@src/stores/app-loading";
+import { useShallow } from "zustand/react/shallow";
 
-export default function RegisterForm() {
+  const LOADER_KEY = "RegisterForm";
+
+  export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRpPassword, setShowRpPassword] = useState(false);
-  const [showOtpDialog, setShowOtpDialog] = useState(false);
-  const [otpEmail, setOtpEmail] = useState("");
 
   const router = useIonRouter();
 
+  const { startLoading, stopLoading } = useAppLoadingStore(
+    useShallow((s) => ({
+      startLoading: s.startLoading,
+      stopLoading: s.stopLoading,
+    }))
+  );
+  const openOtpDialog = useOtpDialogStore((s) => s.openOtpDialog);
   const openAlertDialog = useAlertDialogStore((s) => s.openAlertDialog);
-  const setAppLoadingState = useAppLoadingStore((s) => s.setAppLoadingState);
 
   const registerMutation = useRegisterMutation();
 
@@ -58,11 +54,11 @@ export default function RegisterForm() {
 
   useEffect(() => {
     if (registerMutation.isPending) {
-      setAppLoadingState(true);
+      startLoading(LOADER_KEY);
     } else {
-      setAppLoadingState(false);
+      stopLoading(LOADER_KEY);
     }
-  }, [registerMutation.isPending, setAppLoadingState]);
+  }, [registerMutation.isPending, startLoading, stopLoading]);
 
   function handleRegister(formData: RegisterRequest) {
     console.log(formData);
@@ -72,8 +68,7 @@ export default function RegisterForm() {
         openAlertDialog({ title: error.name, content: error.message });
       },
       onSuccess: () => {
-        setOtpEmail(formData.email);
-        setShowOtpDialog(true);
+        openOtpDialog(formData.email);
       },
     });
   }
@@ -108,7 +103,7 @@ export default function RegisterForm() {
                 <IonIcon
                   icon={mailOutline}
                   slot="start"
-                  className="text-black"
+                  className="text-black me-4"
                 />
               </IonInput>
             )}
@@ -184,17 +179,19 @@ export default function RegisterForm() {
             )}
           />
 
-          <Button
+          <IonButton
             type="submit"
-            variant="outline"
-            className="text-base font-semibold bg-transparent border-1! border-blue-500! text-blue-500 rounded-lg!
-            active:bg-blue-100 transition-colors duration-100"
+            size="small"
+            className="text-base font-semibold ion-py-[0.75rem] ion-bg-blue-600"
           >
             Register
-          </Button>
+          </IonButton>
         </form>
 
-        <Button
+        <IonButton
+          size="small"
+          fill="clear"
+          color="warning"
           onClick={() =>
             router.push(
               ROUTES.AUTH_LOGIN,
@@ -204,19 +201,16 @@ export default function RegisterForm() {
               slideDirectionRouter
             )
           }
-          className="text-base font-semibold bg-amber-400 border-1! border-amber-200! text-white rounded-lg!
-          active:bg-amber-600 transition-colors duration-100"
+          className="text-base font-semibold ion-py-[0.1rem] self-center ion-b-w-[1px] text-amber-900!"
         >
-          <IonIcon icon={arrowBackCircleOutline} className="size-6" />
+          <IonIcon
+            slot="start"
+            icon={arrowBackCircleOutline}
+            className="size-6 me-4"
+          ></IonIcon>
           Back to Log In
-        </Button>
+        </IonButton>
       </div>
-
-      <OtpDialog
-        email={otpEmail}
-        isOpen={showOtpDialog}
-        setIsOpen={setShowOtpDialog}
-      />
     </IonPage>
   );
 }

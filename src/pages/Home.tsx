@@ -94,23 +94,17 @@ export default function Home() {
               <MobileCard className="text-center p-4 bg-white/80 backdrop-blur border-blue-100">
                 <Shield className="h-8 w-8 text-blue-600 mx-auto mb-2" />
                 <div className="text-lg font-bold">HIPAA</div>
-                <div className="text-xs text-slate-600">
-                  Data Security
-                </div>
+                <div className="text-xs text-slate-600">Data Security</div>
               </MobileCard>
               <MobileCard className="text-center p-4 bg-white/80 backdrop-blur border-blue-100">
                 <Users className="h-8 w-8 text-blue-600 mx-auto mb-2" />
                 <div className="text-lg font-bold">50+ Staff</div>
-                <div className="text-xs text-slate-600">
-                  Dedicated Team
-                </div>
+                <div className="text-xs text-slate-600">Dedicated Team</div>
               </MobileCard>
               <MobileCard className="text-center p-4 bg-white/80 backdrop-blur border-blue-100">
                 <TrendingUp className="h-8 w-8 text-blue-600 mx-auto mb-2" />
                 <div className="text-lg font-bold">Top 10%</div>
-                <div className="text-xs text-slate-600">
-                  Success Rates
-                </div>
+                <div className="text-xs text-slate-600">Success Rates</div>
               </MobileCard>
             </div>
             <div className="space-y-3">

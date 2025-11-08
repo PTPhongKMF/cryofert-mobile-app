@@ -26,7 +26,7 @@ interface SuccessDialogData extends GenericDialogData {
 interface SuccessDialogStore {
   data: SuccessDialogData | null;
   isOpen: boolean;
-  openSuccessDialog: (data: GenericDialogData) => void;
+  openSuccessDialog: (data: SuccessDialogData) => void;
   closeSuccessDialog: () => void;
 }
 
@@ -35,4 +35,18 @@ export const useSuccessDialogStore = create<SuccessDialogStore>((set) => ({
   isOpen: false,
   openSuccessDialog: (data) => set({ data, isOpen: true }),
   closeSuccessDialog: () => set({ isOpen: false, data: null }),
+}));
+
+interface OtpDialogStore {
+  email: string;
+  isOpen: boolean;
+  openOtpDialog: (e: string) => void;
+  closeOtpDialog: () => void;
+}
+
+export const useOtpDialogStore = create<OtpDialogStore>((set) => ({
+  email: "",
+  isOpen: false,
+  openOtpDialog: (e) => set({ email: e, isOpen: true }),
+  closeOtpDialog: () => set({ email: "", isOpen: false }),
 }));

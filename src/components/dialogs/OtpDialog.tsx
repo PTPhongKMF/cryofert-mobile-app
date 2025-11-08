@@ -1,74 +1,109 @@
-import { IonButton, IonInputOtp, IonModal, IonSpinner } from "@ionic/react";
+import {
+  IonButton,
+  IonInputOtp,
+  IonModal,
+  IonSpinner,
+  useIonRouter,
+} from "@ionic/react";
+import { ROUTES } from "@src/routes/routes";
 import {
   useConfirmOtpMutation,
   useResendOtpMutation,
 } from "@src/services/api-services/auth-service";
 import { useAppLoadingStore } from "@src/stores/app-loading";
-import { useAlertDialogStore } from "@src/stores/dialog";
+import {
+  useAlertDialogStore,
+  useOtpDialogStore,
+  useSuccessDialogStore,
+} from "@src/stores/dialog";
 import { cn } from "@utils/cn";
 import { ShieldQuestionMark } from "lucide-react";
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState } from "react";
 import * as v from "valibot";
-
-interface OtpDialogProps {
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-  email: string;
-}
+import { useShallow } from "zustand/react/shallow";
 
 export interface ConfirmOtpRequest {
   email: string;
   verificationCode: string;
 }
 
-export default function OtpDialog(props: OtpDialogProps) {
+const LOADER_KEY = "OtpDialog";
+
+export default function OtpDialog() {
   const [disabled, setDisabled] = useState(false);
   const [otpError, setOtpError] = useState(false);
-  const [otp, setOtp] = useState<number | string>();
+  const [otp, setOtp] = useState("");
 
+  const { email, isOpen, closeOtpDialog } = useOtpDialogStore(
+    useShallow((s) => ({
+      email: s.email,
+      isOpen: s.isOpen,
+      closeOtpDialog: s.closeOtpDialog,
+    }))
+  );
+  const { startLoading, stopLoading } = useAppLoadingStore(
+    useShallow((s) => ({
+      startLoading: s.startLoading,
+      stopLoading: s.stopLoading,
+    }))
+  );
+
+  const openSuccessDialog = useSuccessDialogStore((s) => s.openSuccessDialog);
   const openAlertDialog = useAlertDialogStore((s) => s.openAlertDialog);
-  const setAppLoadingState = useAppLoadingStore((s) => s.setAppLoadingState);
 
+  const router = useIonRouter();
   const resendOtpMutation = useResendOtpMutation();
   const confirmOtpMutation = useConfirmOtpMutation();
 
   useEffect(() => {
     if (confirmOtpMutation.isPending) {
-      setAppLoadingState(true);
+      startLoading(LOADER_KEY);
     } else {
-      setAppLoadingState(false);
+      stopLoading(LOADER_KEY);
     }
-  }, [confirmOtpMutation.isPending, setAppLoadingState]);
+  }, [confirmOtpMutation.isPending, startLoading, stopLoading]);
 
   function handleResend() {
     setDisabled(true);
-    resendOtpMutation.mutate(props.email, {
+    resendOtpMutation.mutate(email, {
       onError: (error) =>
         openAlertDialog({ title: error.name, content: error.message }),
-      onSettled: () => setDisabled(false),
+      onSettled: () => {
+        setDisabled(false);
+      },
     });
   }
 
-  function handleConfirm() {
+  function handleConfirm(code?: string) {
+    const verfCode = code ? code : otp;
+
     const result = v.safeParse(
       v.pipe(
         v.union([v.string(), v.number()]),
         v.transform((i) => i.toString()),
         v.minLength(6)
       ),
-      otp
+      verfCode
     );
 
     if (result.success) {
       confirmOtpMutation.mutate(
         {
-          email: props.email,
+          email: email,
           verificationCode: result.output,
         },
         {
           onError: (error) =>
             openAlertDialog({ title: error.name, content: error.message }),
-          onSuccess: () => {},
+          onSuccess: () => {
+            openSuccessDialog({
+              title: "Verified Successfully",
+              closeFn: () => {
+                router.push(ROUTES.AUTH_LOGIN, "back");
+              },
+            });
+            closeOtpDialog();
+          },
         }
       );
     } else {
@@ -78,8 +113,8 @@ export default function OtpDialog(props: OtpDialogProps) {
 
   return (
     <IonModal
-      isOpen={props.isOpen}
-      onDidDismiss={() => props.setIsOpen(false)}
+      isOpen={isOpen}
+      onDidDismiss={closeOtpDialog}
       backdropDismiss={false}
       className="ion-w-fit ion-h-fit ion-b-r-[10px] ion-box-shadow"
     >
@@ -97,10 +132,12 @@ export default function OtpDialog(props: OtpDialogProps) {
           size="small"
           value={otp}
           onIonInput={(e) => {
-            setOtpError(false);
-            setOtp(e.target.value ?? undefined);
+            setOtp(e.detail.value ?? "");
           }}
-          onIonComplete={handleConfirm}
+          onIonFocus={() => {
+            setOtpError(false);
+          }}
+          onIonComplete={(e) => handleConfirm(e.detail.value ?? "")}
           className={cn(
             "ion-min-w-[0px]! ion-w-[2.4rem]!",
             otpError && "ion-invalid ion-touched"
@@ -127,7 +164,7 @@ export default function OtpDialog(props: OtpDialogProps) {
             )}
           </IonButton>
           <IonButton
-            onClick={handleConfirm}
+            onClick={() => handleConfirm()}
             disabled={disabled}
             size="small"
             className="w-full text-base"

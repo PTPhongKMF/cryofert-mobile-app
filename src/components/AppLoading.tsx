@@ -1,16 +1,17 @@
-import { IonLoading } from "@ionic/react";
+import { IonModal, IonSpinner } from "@ionic/react";
 import { useAppLoadingStore } from "@src/stores/app-loading";
-import React from "react";
 
 export default function AppLoading() {
-  const appLoadingState = useAppLoadingStore((s) => s.appLoadingState);
+  const isOpen = useAppLoadingStore((s) => s.loaders.size > 0);
 
   return (
-    <IonLoading
-      isOpen={appLoadingState}
-      keyboardClose
-      spinner="circular"
-      className="ion-bg-transparent! ion-spinner-c-blue-700!"
-    />
+    <IonModal
+      animated={false}
+      isOpen={isOpen}
+      backdropDismiss={false}
+      className="ion-w-fit ion-h-fit ion-bg-transparent z-100 bg-black/40"
+    >
+      <IonSpinner name="circular" className="text-blue-700 size-10" />
+    </IonModal>
   );
 }

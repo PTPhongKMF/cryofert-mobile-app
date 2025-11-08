@@ -169,6 +169,7 @@
 
 @utility ion-bg-* {
   --background: --value(--color- *);
+  --background: --value([ *]);
 }
 @utility ion-bg-transparent {
   --background: transparent;
