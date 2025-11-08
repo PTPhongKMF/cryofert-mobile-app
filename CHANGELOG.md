@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.1.0...v0.2.0) (2025-11-08)
+
+
+### Features
+
+* **android:** add android build ([ed12136](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/ed121368a53de27246335278a8ab735ce53328fc))
+* **auth:** add login / register page ([#3](https://github.com/PTPhongKMF/cryofert-mobile-app/issues/3)) ([b9cbbb6](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/b9cbbb69726754993ecd860e76aa2cb1d78b50f1))
+
 ## 0.1.0 (2025-11-03)
 
 
