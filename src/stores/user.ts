@@ -6,6 +6,7 @@ import type { StateStorage } from "zustand/middleware";
 interface LocalUser {
   id: string;
   userName: string;
+  email: string;
   roleId: string;
   roleName: string;
 }

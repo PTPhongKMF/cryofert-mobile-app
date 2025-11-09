@@ -12,7 +12,7 @@ import {
 } from "@ionic/react";
 import { Route } from "react-router-dom";
 import Home from "@src/pages/Home";
-import Auth from "@src/pages/Auth";
+import Auth from "@src/pages/landing-tabs/Auth";
 import { ROUTES } from "@src/routes/routes";
 import { home, logInOutline } from "ionicons/icons";
 

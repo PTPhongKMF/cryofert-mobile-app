@@ -2,12 +2,15 @@ const BASE = {
   ROOT: "/",
   LANDING: "/landing",
   TABS: "/tabs",
+  BOOK_TREATMENT: `/book-treatment`,
+  UPDATE_ACCOUNT: `/update-account`,
 } as const;
 
 /////////////////////////////////////////////////////////
 
 export const ROUTES = {
   ...BASE,
+
   L_HOME: `${BASE.LANDING}/home`,
   L_AUTH: `${BASE.LANDING}/auth`,
 
@@ -17,5 +20,5 @@ export const ROUTES = {
   T_HOME: `${BASE.TABS}/home`,
   T_SERVICE: `${BASE.TABS}/service`,
   T_HISTORY: `${BASE.TABS}/history`,
-  T_PROFILE: `${BASE.TABS}/profile`,
+  T_ACCOUNT: `${BASE.TABS}/account`,
 } as const;

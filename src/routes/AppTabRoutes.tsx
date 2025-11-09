@@ -18,11 +18,12 @@ import { Route } from "react-router-dom";
 import Home from "@src/pages/Home";
 import { ROUTES } from "@src/routes/routes";
 import History from "@src/pages/History";
-import Profile from "@src/pages/Profile";
+import Account from "@src/pages/Account";
 import {
   add,
   bagAdd,
   bagAddOutline,
+  bug,
   document,
   fileTrayFull,
   home,
@@ -33,6 +34,7 @@ import { useLocalUserStore } from "@src/stores/user";
 import { clearAllSecuredTokens } from "@src/services/token-service";
 import { useAlertDialogStore } from "@src/stores/dialog";
 import { ClipboardPlus, Stethoscope } from "lucide-react";
+import Profile from "@src/pages/Profile";
 
 export default function AppTabRoutes() {
   const router = useIonRouter();
@@ -72,7 +74,8 @@ export default function AppTabRoutes() {
       <IonRouterOutlet>
         <Route exact path={ROUTES.T_HOME} component={Home} />
         <Route exact path={ROUTES.T_HISTORY} component={History} />
-        <Route exact path={ROUTES.T_PROFILE} component={Profile} />
+        <Route exact path={ROUTES.T_ACCOUNT} component={Account} />
+        <Route exact path={"/tabs/test"} component={Profile} />
       </IonRouterOutlet>
 
       <IonTabBar slot="bottom" className="ion-bg-violet-100">
@@ -86,21 +89,31 @@ export default function AppTabRoutes() {
           <IonLabel className="text-xs">History</IonLabel>
         </IonTabButton>
 
-        <IonTabButton tab="profile" href={ROUTES.T_PROFILE}>
+        <IonTabButton tab="account" href={ROUTES.T_ACCOUNT}>
           <IonIcon icon={personCircle} className="size-6" />
-          <IonLabel className="text-xs">Profile</IonLabel>
+          <IonLabel className="text-xs">Account</IonLabel>
+        </IonTabButton>
+
+        <IonTabButton tab="test" href={"/tabs/test"}>
+          <IonIcon icon={bug} className="size-6" />
+          <IonLabel className="text-xs">Test</IonLabel>
         </IonTabButton>
       </IonTabBar>
 
       <IonFab vertical="bottom" horizontal="end">
-        <IonFabButton color="warning">
+        <IonFabButton className="ion-bg-sky-500">
           <Stethoscope className="size-8" />
         </IonFabButton>
 
         <IonFabList side="start" className="flex gap-2 me-20">
-          <IonFabButton className="ion-b-r-[6px] w-[70vw] h-14 text-lg font-semibold ion-bg-amber-300">
-            <ClipboardPlus className="me-4" />
-            Book a Treatment
+          <IonFabButton
+            onClick={() => router.push(ROUTES.BOOK_TREATMENT)}
+            className="ion-b-r-[6px] w-[70vw] h-14 ion-bg-sky-500"
+          >
+            <ClipboardPlus className="me-4 text-gray-50" />
+            <p className="text-gray-50 font-semibold text-lg [text-box:trim-both_cap_alphabetic]">
+              Book a Treatment
+            </p>
           </IonFabButton>
         </IonFabList>
       </IonFab>

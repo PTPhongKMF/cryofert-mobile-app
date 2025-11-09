@@ -1,6 +1,6 @@
 import { IonApp, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import AppRoutes from "@src/routes/AppRoutes";
+import RootRoutes from "@src/routes/RootRoutes";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -42,7 +42,7 @@ export default function App() {
   return (
     <IonApp>
       <IonReactRouter>
-        <AppRoutes />
+        <RootRoutes />
 
         <OtpDialog />
         <SuccessDialog />

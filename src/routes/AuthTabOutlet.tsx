@@ -1,6 +1,6 @@
 import { IonContent, IonRouterOutlet } from "@ionic/react";
-import LoginForm from "@src/components/auth-pages/LoginForm";
-import RegisterForm from "@src/components/auth-pages/RegisterForm";
+import LoginForm from "@src/pages/landing-tabs/LoginForm";
+import RegisterForm from "@src/pages/landing-tabs/RegisterForm";
 import { ROUTES } from "@src/routes/routes";
 import { Redirect, Route, Switch } from "react-router";
 
