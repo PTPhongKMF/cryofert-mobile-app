@@ -18,9 +18,9 @@ export async function setSecuredToken(key: TokenKey, value: string) {
 }
 
 export async function clearSecuredToken(key: TokenKey) {
-  // implement
+  await SecureStorage.remove(key);
 }
 
 export async function clearAllSecuredTokens() {
-  // implement
+  await SecureStorage.clear();
 }

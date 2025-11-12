@@ -32,6 +32,9 @@ importers:
       '@capacitor/status-bar':
         specifier: 7.0.2
         version: 7.0.2(@capacitor/core@7.4.3)
+      '@formkit/tempo':
+        specifier: ^0.1.2
+        version: 0.1.2
       '@hookform/resolvers':
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.66.0(react@19.0.0))
@@ -838,6 +841,9 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [win32]
+
+  '@formkit/tempo@0.1.2':
+    resolution: {integrity: sha512-jNPPbjL8oj7hK3eHX++CwbR6X4GKQt+x00/q4yeXkwynXHGKL27dylYhpEgwrmediPP4y7s0XtN1if/M/JYujg==}
 
   '@hookform/resolvers@5.2.2':
     resolution: {integrity: sha512-A/IxlMLShx3KjV/HeTcTfaMxdwy690+L/ZADoeaTltLx+CVuzkeVIPuybK3jrRfw7YZnmdKsVVHAlEPIAEUNlA==}
@@ -2965,6 +2971,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.20.2':
     optional: true
+
+  '@formkit/tempo@0.1.2': {}
 
   '@hookform/resolvers@5.2.2(react-hook-form@7.66.0(react@19.0.0))':
     dependencies:

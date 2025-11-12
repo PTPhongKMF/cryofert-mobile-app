@@ -10,6 +10,7 @@ import { slideDirectionRouter } from "@src/animations/slide-directional";
 import { ROUTES } from "@src/routes/routes";
 import { RegisterRequestSchema, type RegisterRequest } from "@src/schemas/auth";
 import {
+  alertCircleOutline,
   arrowBackCircleOutline,
   eyeOffOutline,
   eyeOutline,
@@ -20,13 +21,13 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { cn } from "@src/utils/cn";
 import { useRegisterMutation } from "@src/services/api-services/auth-service";
-import { useAlertDialogStore, useOtpDialogStore } from "@src/stores/dialog";
+import { useGenericDialogStore, useOtpDialogStore } from "@src/stores/dialog";
 import { useAppLoadingStore } from "@src/stores/app-loading";
 import { useShallow } from "zustand/react/shallow";
 
-  const LOADER_KEY = "RegisterForm";
+const LOADER_KEY = "RegisterForm";
 
-  export default function RegisterForm() {
+export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRpPassword, setShowRpPassword] = useState(false);
 
@@ -39,7 +40,7 @@ import { useShallow } from "zustand/react/shallow";
     }))
   );
   const openOtpDialog = useOtpDialogStore((s) => s.openOtpDialog);
-  const openAlertDialog = useAlertDialogStore((s) => s.openAlertDialog);
+  const openGenericDialog = useGenericDialogStore((s) => s.openGenericDialog);
 
   const registerMutation = useRegisterMutation();
 
@@ -65,7 +66,12 @@ import { useShallow } from "zustand/react/shallow";
 
     registerMutation.mutate(formData, {
       onError: (error) => {
-        openAlertDialog({ title: error.name, content: error.message });
+        openGenericDialog({
+          title: error.name,
+          content: error.message,
+          svgIcon: alertCircleOutline,
+          svgIconColor: "danger",
+        });
       },
       onSuccess: () => {
         openOtpDialog(formData.email);

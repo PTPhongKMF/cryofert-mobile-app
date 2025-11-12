@@ -11,12 +11,9 @@ import {
   useResendOtpMutation,
 } from "@src/services/api-services/auth-service";
 import { useAppLoadingStore } from "@src/stores/app-loading";
-import {
-  useAlertDialogStore,
-  useOtpDialogStore,
-  useSuccessDialogStore,
-} from "@src/stores/dialog";
+import { useOtpDialogStore, useGenericDialogStore } from "@src/stores/dialog";
 import { cn } from "@utils/cn";
+import { alertCircleOutline, checkmarkCircleOutline } from "ionicons/icons";
 import { ShieldQuestionMark } from "lucide-react";
 import { useEffect, useState } from "react";
 import * as v from "valibot";
@@ -48,8 +45,7 @@ export default function OtpDialog() {
     }))
   );
 
-  const openSuccessDialog = useSuccessDialogStore((s) => s.openSuccessDialog);
-  const openAlertDialog = useAlertDialogStore((s) => s.openAlertDialog);
+  const openGenericDialog = useGenericDialogStore((s) => s.openGenericDialog);
 
   const router = useIonRouter();
   const resendOtpMutation = useResendOtpMutation();
@@ -67,7 +63,12 @@ export default function OtpDialog() {
     setDisabled(true);
     resendOtpMutation.mutate(email, {
       onError: (error) =>
-        openAlertDialog({ title: error.name, content: error.message }),
+        openGenericDialog({
+          title: error.name,
+          content: error.message,
+          svgIcon: alertCircleOutline,
+          svgIconColor: "danger",
+        }),
       onSettled: () => {
         setDisabled(false);
       },
@@ -94,10 +95,20 @@ export default function OtpDialog() {
         },
         {
           onError: (error) =>
-            openAlertDialog({ title: error.name, content: error.message }),
+            openGenericDialog({
+              title: error.name,
+              content: error.message,
+              svgIcon: alertCircleOutline,
+              svgIconColor: "danger",
+            }),
           onSuccess: () => {
-            openSuccessDialog({
+            openGenericDialog({
               title: "Verified Successfully",
+              svgIcon: checkmarkCircleOutline,
+              svgIconColor: "success",
+              showBtn: true,
+              btnText: "Back to Log In",
+              btnColor: "success",
               closeFn: () => {
                 router.push(ROUTES.AUTH_LOGIN, "back");
               },

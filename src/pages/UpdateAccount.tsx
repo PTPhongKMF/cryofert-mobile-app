@@ -12,14 +12,15 @@ import {
 import { useForm } from "react-hook-form";
 
 export default function UpdateAccount() {
-  const updateAccountForm = useForm<LoginRequest>({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-    reValidateMode: "onSubmit",
-    resolver: valibotResolver(LoginRequestSchema),
-  });
+  // const updateAccountForm = useForm<>({
+  //   defaultValues: {
+  //     email: "",
+  //     password: "",
+  //   },
+  //   reValidateMode: "onSubmit",
+  //   resolver: valibotResolver(),
+  // });
+
   return (
     <IonPage>
       <IonHeader>

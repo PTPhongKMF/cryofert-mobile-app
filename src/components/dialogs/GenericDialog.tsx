@@ -1,0 +1,58 @@
+import { IonButton, IonIcon, IonModal } from "@ionic/react";
+import { useGenericDialogStore } from "@src/stores/dialog";
+import { informationCircleOutline } from "ionicons/icons";
+import { useShallow } from "zustand/react/shallow";
+
+export default function GenericDialog() {
+  const { data, isOpen, closeSuccessDialog } = useGenericDialogStore(
+    useShallow((s) => ({
+      data: s.data,
+      isOpen: s.isOpen,
+      closeSuccessDialog: s.closeGenericDialog,
+    }))
+  );
+
+  function handleClose() {
+    if (data?.closeFn) data.closeFn();
+    closeSuccessDialog();
+  }
+
+  return (
+    <IonModal
+      isOpen={isOpen}
+      onDidDismiss={closeSuccessDialog}
+      backdropDismiss={data?.backdropDismiss ?? true}
+      className="ion-w-fit ion-h-fit ion-b-r-[10px] ion-box-shadow"
+    >
+      <div
+        className="size-full p-4 w-[80vw] max-h-[50vh]
+          grid grid-rows-[2.5rem_3rem_1fr_minmax(fit-content,3rem)] justify-items-center items-center gap-2"
+      >
+        <IonIcon
+          icon={data?.svgIcon ?? informationCircleOutline}
+          color={data?.svgIconColor ?? "primary"}
+          className="size-10 mb-3"
+        />
+
+        {data?.title && (
+          <h2 className="my-0! mb-1! font-semibold!">{data.title}</h2>
+        )}
+
+        <p className="text-sm font-se px-4  max-h-20 text-center overflow-y-auto">
+          {data?.content}
+        </p>
+
+        {data?.showBtn && (
+          <IonButton
+            size="small"
+            color={data?.btnColor ?? "primary"}
+            className="self-end w-full text-base"
+            onClick={handleClose}
+          >
+            {data?.btnText ?? "Ok"}
+          </IonButton>
+        )}
+      </div>
+    </IonModal>
+  );
+}

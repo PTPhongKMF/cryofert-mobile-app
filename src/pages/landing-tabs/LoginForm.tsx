@@ -1,16 +1,15 @@
 import {
   IonButton,
-  IonContent,
   IonIcon,
   IonInput,
   IonPage,
   useIonRouter,
 } from "@ionic/react";
 import { slideDirectionRouter } from "@src/animations/slide-directional";
-import { Button } from "@src/components/libs/shadcn/Button";
 import { ROUTES } from "@src/routes/routes";
 import { LoginRequestSchema, type LoginRequest } from "@src/schemas/auth";
 import {
+  alertCircleOutline,
   arrowForwardCircleOutline,
   eyeOffOutline,
   eyeOutline,
@@ -21,7 +20,7 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { cn } from "@src/utils/cn";
-import { useAlertDialogStore, useOtpDialogStore } from "@src/stores/dialog";
+import { useGenericDialogStore, useOtpDialogStore } from "@src/stores/dialog";
 import { useLoginMutation } from "@src/services/api-services/auth-service";
 import { useAppLoadingStore } from "@src/stores/app-loading";
 import { setSecuredToken } from "@src/services/token-service";
@@ -39,7 +38,7 @@ export default function LoginForm() {
     }))
   );
   const setLocalUser = useLocalUserStore((s) => s.setLocalUser);
-  const openAlertDialog = useAlertDialogStore((s) => s.openAlertDialog);
+  const openGenericDialog = useGenericDialogStore((s) => s.openGenericDialog);
   const openOtpDialog = useOtpDialogStore((s) => s.openOtpDialog);
 
   const router = useIonRouter();
@@ -66,7 +65,12 @@ export default function LoginForm() {
     console.log(data);
     loginMutation.mutate(data, {
       onError: (error) => {
-        openAlertDialog({ title: error.name, content: error.message });
+        openGenericDialog({
+          title: error.name,
+          content: error.message,
+          svgIcon: alertCircleOutline,
+          svgIconColor: "danger",
+        });
       },
       onSuccess: (data) => {
         if (data.systemCode === "NEED_OTP") {

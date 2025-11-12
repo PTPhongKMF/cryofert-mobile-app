@@ -11,6 +11,7 @@ import SafeAreaView from "@src/components/SafeAreaView";
 import { useLocalUserStore } from "@src/stores/user";
 import EditProfile from "@assets/images/lucide/user-pen.svg";
 import { ROUTES } from "@src/routes/routes";
+import BlueToGrayGradientBg from "@src/components/backgrounds/BlueToGrayGradientBg";
 
 export default function Account() {
   const router = useIonRouter();
@@ -18,7 +19,7 @@ export default function Account() {
 
   return (
     <IonContent className="relative">
-      <div className="fixed inset-0 bg-gradient-to-b from-blue-100 via-sky-100 to-gray-50" />
+      <BlueToGrayGradientBg />
 
       <SafeAreaView className="relative">
         <div className="pt-6 px-4">
@@ -64,6 +65,7 @@ export default function Account() {
 
           <IonList className="mt-14! text-sm! bg-transparent!">
             <IonItem
+              detail
               button
               onClick={() => router.push(ROUTES.UPDATE_ACCOUNT, "forward")}
               className="ion-bg-transparent text-sm"

@@ -28,6 +28,7 @@ interface UserStore {
   localUser: LocalUser | null;
   hasHydrated: boolean;
   setLocalUser: (newUser: LocalUser | null) => void;
+  clearLocalUser: () => void;
   setHasHydrated: (hasHydrated: boolean) => void;
 }
 
@@ -37,6 +38,7 @@ export const useLocalUserStore = create<UserStore>()(
       localUser: null,
       hasHydrated: false,
       setLocalUser: (newUser) => set({ localUser: newUser }),
+      clearLocalUser: () => set({ localUser: null }),
       setHasHydrated: (hasHydrated) => set({ hasHydrated }),
     }),
     {

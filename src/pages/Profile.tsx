@@ -1,13 +1,26 @@
-import { IonContent } from "@ionic/react";
+import {
+  IonContent,
+  IonDatetime,
+  IonDatetimeButton,
+  IonModal,
+} from "@ionic/react";
 import SafeAreaView from "@src/components/SafeAreaView";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { UserCircle, Mail, Phone, Star, CheckCircle2 } from "lucide-react";
 
 export default function Profile() {
+  const [presentingElement, setPresentingElement] =
+    useState<HTMLElement | null>(null);
+  const page = useRef(null);
+
+  useEffect(() => {
+    setPresentingElement(page.current);
+  }, []);
+
   return (
     <IonContent>
       <SafeAreaView>
-        <div className="flex flex-col gap-6 bg-gradient-to-b from-sky-50 via-blue-50 to-white px-4 py-6">
+        {/* <div className="flex flex-col gap-6 bg-gradient-to-b from-sky-50 via-blue-50 to-white px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <UserCircle className="h-6 w-6 text-blue-600" />
@@ -54,7 +67,7 @@ export default function Profile() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </SafeAreaView>
     </IonContent>
   );

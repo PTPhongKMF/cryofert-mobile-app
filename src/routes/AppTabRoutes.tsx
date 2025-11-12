@@ -20,11 +20,8 @@ import { ROUTES } from "@src/routes/routes";
 import History from "@src/pages/History";
 import Account from "@src/pages/Account";
 import {
-  add,
-  bagAdd,
-  bagAddOutline,
+  alertCircleOutline,
   bug,
-  document,
   fileTrayFull,
   home,
   personCircle,
@@ -32,15 +29,15 @@ import {
 import { useEffect } from "react";
 import { useLocalUserStore } from "@src/stores/user";
 import { clearAllSecuredTokens } from "@src/services/token-service";
-import { useAlertDialogStore } from "@src/stores/dialog";
 import { ClipboardPlus, Stethoscope } from "lucide-react";
 import Profile from "@src/pages/Profile";
+import { useGenericDialogStore } from "@src/stores/dialog";
 
 export default function AppTabRoutes() {
   const router = useIonRouter();
   const localUser = useLocalUserStore((s) => s.localUser);
   const hasHydrated = useLocalUserStore((s) => s.hasHydrated);
-  const openAlertDialog = useAlertDialogStore((s) => s.openAlertDialog);
+  const openGenericDialog = useGenericDialogStore((s) => s.openGenericDialog);
 
   useEffect(() => {
     if (!hasHydrated) {
@@ -51,9 +48,15 @@ export default function AppTabRoutes() {
       if (router.routeInfo.pathname.startsWith(ROUTES.TABS)) {
         if (!localUser) {
           await clearAllSecuredTokens();
-          openAlertDialog({
+          openGenericDialog({
             title: "Auhtentication Error",
             content: "We can't verify your account, please log in again",
+            svgIcon: alertCircleOutline,
+            svgIconColor: "danger",
+            showBtn: true,
+            btnText: "Back to Log In",
+            btnColor: "danger",
+            backdropDismiss: false,
             closeFn: () => {
               router.push(ROUTES.AUTH_LOGIN, "back");
             },
@@ -66,7 +69,7 @@ export default function AppTabRoutes() {
     router.routeInfo.pathname,
     localUser,
     hasHydrated,
-    openAlertDialog,
+    openGenericDialog,
   ]);
 
   return (
