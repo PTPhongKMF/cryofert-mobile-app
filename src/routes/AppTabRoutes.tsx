@@ -49,7 +49,7 @@ export default function AppTabRoutes() {
         if (!localUser) {
           await clearAllSecuredTokens();
           openGenericDialog({
-            title: "Auhtentication Error",
+            title: "Authentication Error",
             content: "We can't verify your account, please log in again",
             svgIcon: alertCircleOutline,
             svgIconColor: "danger",
@@ -58,7 +58,7 @@ export default function AppTabRoutes() {
             btnColor: "danger",
             backdropDismiss: false,
             closeFn: () => {
-              router.push(ROUTES.AUTH_LOGIN, "back");
+              router.push(ROUTES.L_AUTH, "back");
             },
           });
         }

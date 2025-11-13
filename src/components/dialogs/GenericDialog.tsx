@@ -26,7 +26,7 @@ export default function GenericDialog() {
     >
       <div
         className="size-full p-4 w-[80vw] max-h-[50vh]
-          grid grid-rows-[2.5rem_3rem_1fr_minmax(fit-content,3rem)] justify-items-center items-center gap-2"
+          grid grid-rows-[2.5rem_3rem_1fr_minmax(min-content,3rem)] justify-items-center items-center gap-2"
       >
         <IonIcon
           icon={data?.svgIcon ?? informationCircleOutline}
@@ -34,9 +34,7 @@ export default function GenericDialog() {
           className="size-10 mb-3"
         />
 
-        {data?.title && (
-          <h2 className="my-0! mb-1! font-semibold!">{data.title}</h2>
-        )}
+        <h2 className="my-0! mb-1! font-semibold!">{data?.title ?? ""}</h2>
 
         <p className="text-sm font-se px-4  max-h-20 text-center overflow-y-auto">
           {data?.content}
@@ -46,7 +44,7 @@ export default function GenericDialog() {
           <IonButton
             size="small"
             color={data?.btnColor ?? "primary"}
-            className="self-end w-full text-base"
+            className="self-end w-full text-base mt-8"
             onClick={handleClose}
           >
             {data?.btnText ?? "Ok"}
