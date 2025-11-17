@@ -31,21 +31,25 @@ import "@ionic/react/css/palettes/dark.system.css";
 import AppLoading from "@src/components/AppLoading";
 import OtpDialog from "@src/components/dialogs/OtpDialog";
 import GenericDialog from "@src/components/dialogs/GenericDialog";
+import WebPreviewAlert from "@src/components/dialogs/WebPreviewAlert";
 
 /* Theme variables */
 // import './theme/variables.css';
 
 setupIonicReact();
 
+const isWebPreview = import.meta.env.VITE_WEB_PREVIEW === "true";
+
 export default function App() {
   return (
     <IonApp>
       <IonReactRouter>
         <RootRoutes />
-
         <OtpDialog />
         <GenericDialog />
         <AppLoading />
+
+        {isWebPreview && <WebPreviewAlert />}
       </IonReactRouter>
     </IonApp>
   );

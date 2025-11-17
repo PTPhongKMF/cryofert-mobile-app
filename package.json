@@ -5,8 +5,9 @@
   "description": "A comprehensive fertility clinic and cryobank management system designed to streamline patient care, sample tracking, and clinical workflows.",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode webpreview",
     "build": "tsc && vite build",
+    "build:web-preview": "vite build --mode webpreview",
     "preview": "vite preview",
     "sync": "ionic cap sync",
     "emu": "emulator -avd ionic",
