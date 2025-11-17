@@ -15,7 +15,7 @@ export default function SplashScreen() {
     }
 
     (async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       if (localUser) {
         router.push(ROUTES.T_HOME, "none");
