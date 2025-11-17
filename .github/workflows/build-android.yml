@@ -23,7 +23,7 @@ jobs:
           node-version: latest
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install @ionic/cli; pnpm install
 
       - name: Sync Capacitor Android project
         run: pnpm run sync
