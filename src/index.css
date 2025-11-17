@@ -89,41 +89,41 @@
   --width: fit-content;
 }
 @utility ion-w-* {
-  --width: --value([length]);
+  --width: --value([ *]);
 }
 
 @utility ion-min-w-auto {
   --min-width: auto;
 }
 @utility ion-min-w-* {
-  --min-width: --value([length]);
+  --min-width: --value([ *]);
 }
 @utility ion-max-w-auto {
   --max-width: auto;
 }
 @utility ion-max-w-* {
-  --max-width: --value([length]);
+  --max-width: --value([ *]);
 }
 
 @utility ion-h-fit {
   --height: fit-content;
 }
 @utility ion-h-* {
-  --height: --value([length]);
+  --height: --value([ *]);
 }
 
 @utility ion-min-h-auto {
   --min-height: auto;
 }
 @utility ion-min-h-* {
-  --min-height: --value([length]);
+  --min-height: --value([ *]);
 }
 
 @utility ion-max-h-auto {
   --max-height: auto;
 }
 @utility ion-max-h-* {
-  --max-height: --value([length]);
+  --max-height: --value([ *]);
 }
 
 @utility ion-size-auto {
@@ -131,8 +131,8 @@
   --width: auto;
 }
 @utility ion-size-* {
-  --height: --value([length]);
-  --width: --value([length]);
+  --height: --value([ *]);
+  --width: --value([ *]);
 }
 
 @utility ion-min-size-auto {
@@ -140,8 +140,8 @@
   --min-width: auto;
 }
 @utility ion-min-size-* {
-  --min-height: --value([length]);
-  --min-width: --value([length]);
+  --min-height: --value([ *]);
+  --min-width: --value([ *]);
 }
 
 @utility ion-b-r-1 {
@@ -243,4 +243,29 @@
 
 @utility ion-spinner-c-* {
   --spinner-color: --value(--color- *);
+}
+
+@utility ion-wheel-fade-bg-rgb-white {
+  --wheel-fade-background-rgb: 255, 255, 255;
+}
+@utility ion-wheel-fade-bg-rgb-* {
+  --wheel-fade-background-rgb: --value([ *]);
+}
+
+.ion-content-scroll-host::before,
+.ion-content-scroll-host::after {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  content: "";
+}
+
+.ion-content-scroll-host::before {
+  bottom: -1px;
+}
+
+.ion-content-scroll-host::after {
+  top: -1px;
 }

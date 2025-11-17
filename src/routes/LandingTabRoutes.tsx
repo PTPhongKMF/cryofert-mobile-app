@@ -7,11 +7,9 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
-  IonTitle,
-  IonToolbar,
 } from "@ionic/react";
 import { Route } from "react-router-dom";
-import Home from "@src/pages/Home";
+import LandingHome from "@src/pages/LandingHome";
 import Auth from "@src/pages/Auth";
 import { ROUTES } from "@src/routes/routes";
 import { home, logInOutline } from "ionicons/icons";
@@ -20,8 +18,8 @@ export default function LandingTabRoutes() {
   return (
     <IonTabs>
       <IonRouterOutlet>
-        <Route exact path={ROUTES.L_HOME} component={Home} />
-        <Route path={ROUTES.L_AUTH} component={Auth} />
+        <Route exact path={ROUTES.L_HOME} component={LandingHome} />
+        <Route exact path={`${ROUTES.L_AUTH}`} component={Auth} />
       </IonRouterOutlet>
 
       <IonTabBar slot="bottom" className="ion-bg-violet-100">

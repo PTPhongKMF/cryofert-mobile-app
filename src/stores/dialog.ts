@@ -1,44 +1,35 @@
 import { create } from "zustand";
 
-interface GenericDialogData {
-  title?: string;
-  content?: string;
-}
-
-interface AlertDialogData extends GenericDialogData {
+interface BaseGenericDialogOptions {
+  svgIcon?: string;
+  svgIconColor?: "primary" | "success" | "warning" | "danger";
+  backdropDismiss?: boolean;
+  showBtn?: boolean;
+  btnText?: string;
+  btnColor?: "primary" | "success" | "warning" | "danger";
   closeFn?: () => void;
 }
 
-interface AlertDialogStore {
-  data: AlertDialogData | null;
+type GenericDialogOptions = (
+  | { title: string; content?: string }
+  | { title?: string; content: string }
+) &
+  BaseGenericDialogOptions;
+
+interface GenericDialogStore {
+  data: GenericDialogOptions | null;
   isOpen: boolean;
-  openAlertDialog: (data: AlertDialogData) => void;
-  closeAlertDialog: () => void;
+  openGenericDialog: (data: GenericDialogOptions) => void;
+  closeGenericDialog: () => void;
 }
 
-export const useAlertDialogStore = create<AlertDialogStore>((set) => ({
+export const useGenericDialogStore = create<GenericDialogStore>((set) => ({
   data: null,
   isOpen: false,
-  openAlertDialog: (data) => set({ data, isOpen: true }),
-  closeAlertDialog: () => set({ isOpen: false, data: null }),
-}));
-
-interface SuccessDialogData extends GenericDialogData {
-  closeFn?: () => void;
-}
-
-interface SuccessDialogStore {
-  data: SuccessDialogData | null;
-  isOpen: boolean;
-  openSuccessDialog: (data: SuccessDialogData) => void;
-  closeSuccessDialog: () => void;
-}
-
-export const useSuccessDialogStore = create<SuccessDialogStore>((set) => ({
-  data: null,
-  isOpen: false,
-  openSuccessDialog: (data) => set({ data, isOpen: true }),
-  closeSuccessDialog: () => set({ isOpen: false, data: null }),
+  openGenericDialog: (data) => set({ data, isOpen: true }),
+  closeGenericDialog: () => {
+    set({ isOpen: false });
+  },
 }));
 
 interface OtpDialogStore {

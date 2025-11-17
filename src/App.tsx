@@ -1,6 +1,6 @@
 import { IonApp, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import AppRoutes from "@src/routes/AppRoutes";
+import RootRoutes from "@src/routes/RootRoutes";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -28,10 +28,9 @@ import "@ionic/react/css/display.css";
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
 import "@ionic/react/css/palettes/dark.system.css";
-import AlertDialog from "@src/components/dialogs/AlertDialog";
 import AppLoading from "@src/components/AppLoading";
 import OtpDialog from "@src/components/dialogs/OtpDialog";
-import SuccessDialog from "@src/components/dialogs/SuccessDialog";
+import GenericDialog from "@src/components/dialogs/GenericDialog";
 
 /* Theme variables */
 // import './theme/variables.css';
@@ -42,11 +41,10 @@ export default function App() {
   return (
     <IonApp>
       <IonReactRouter>
-        <AppRoutes />
+        <RootRoutes />
 
         <OtpDialog />
-        <SuccessDialog />
-        <AlertDialog />
+        <GenericDialog />
         <AppLoading />
       </IonReactRouter>
     </IonApp>

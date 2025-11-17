@@ -1,17 +1,22 @@
-import { getSecuredToken, setSecuredToken } from "@src/services/token-service";
+import {
+  getSecuredToken,
+  setSecuredToken,
+  clearAllSecuredTokens,
+} from "@src/services/token-service";
 import * as v from "valibot";
 import ky from "ky";
 import { GenericApiResponseSchema } from "@src/schemas/api-response";
+import { useLocalUserStore } from "@src/stores/user";
 
 // const LOCAL = "";
 const CLOUD = "https://cryofert.runasp.net/";
 
-// Dummy placeholders for refresh flow; refine later as needed
-const REFRESH_ENDPOINT = "/auth/refresh";
-type RefreshRequest = { refreshToken: string };
-type RefreshResponse = { accessToken: string; refreshToken?: string };
+interface RefreshResponse {
+  data?: { token?: string; refreshToken?: string };
+}
 
 let refreshPromise: Promise<void> | null = null;
+const clearLocalUser = useLocalUserStore.getState().clearLocalUser;
 
 export const httpClient = ky.extend({
   prefixUrl: CLOUD,
@@ -39,24 +44,25 @@ export const httpClient = ky.extend({
                   throw new Error("No refresh token available");
 
                 const refreshResponse = await ky
-                  .post(REFRESH_ENDPOINT, {
+                  .post("auth/refresh-token", {
                     prefixUrl: CLOUD,
                     retry: 0,
-                    json: { refreshToken } as RefreshRequest,
+                    json: { refreshToken: refreshToken },
                   })
                   .json<RefreshResponse>();
 
-                if (!refreshResponse?.accessToken)
+                if (!refreshResponse?.data?.token)
                   throw new Error("Invalid refresh response");
 
                 await setSecuredToken(
                   "access-token",
-                  refreshResponse.accessToken
+                  refreshResponse.data.token
                 );
-                if (refreshResponse.refreshToken) {
+
+                if (refreshResponse.data.refreshToken) {
                   await setSecuredToken(
                     "refresh-token",
-                    refreshResponse.refreshToken
+                    refreshResponse.data.refreshToken
                   );
                 }
               })().finally(() => {
@@ -75,7 +81,8 @@ export const httpClient = ky.extend({
 
             return httpClient(retryRequest, options);
           } catch {
-            /* ignore */
+            await clearAllSecuredTokens();
+            clearLocalUser();
           }
         }
 

@@ -6,6 +6,9 @@ import type { StateStorage } from "zustand/middleware";
 interface LocalUser {
   id: string;
   userName: string;
+  // firstName: string;
+  // lastName: string;
+  email: string;
   roleId: string;
   roleName: string;
 }
@@ -27,6 +30,7 @@ interface UserStore {
   localUser: LocalUser | null;
   hasHydrated: boolean;
   setLocalUser: (newUser: LocalUser | null) => void;
+  clearLocalUser: () => void;
   setHasHydrated: (hasHydrated: boolean) => void;
 }
 
@@ -36,6 +40,7 @@ export const useLocalUserStore = create<UserStore>()(
       localUser: null,
       hasHydrated: false,
       setLocalUser: (newUser) => set({ localUser: newUser }),
+      clearLocalUser: () => set({ localUser: null }),
       setHasHydrated: (hasHydrated) => set({ hasHydrated }),
     }),
     {
