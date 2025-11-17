@@ -2,6 +2,7 @@ import { createApiResponseSchema } from "@src/schemas/api-response";
 import * as v from "valibot";
 
 export const BookAppointmentFormSchema = v.object({
+  doctorIds: v.string(),
   appointmentDate: v.pipe(v.string(), v.nonEmpty("Required")),
   slotId: v.pipe(v.string(), v.nonEmpty("Required")),
   notes: v.string(),

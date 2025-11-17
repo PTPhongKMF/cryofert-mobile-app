@@ -19,22 +19,24 @@ import {
   IonToolbar,
   useIonRouter,
 } from "@ionic/react";
-import type {
-  BookAppointmentForm,
-  BookAppointmentRequest,
+import {
+  BookAppointmentFormSchema,
+  type BookAppointmentForm,
+  type BookAppointmentRequest,
 } from "@src/schemas/appointment";
-import { BookAppointmentFormSchema } from "@src/schemas/appointment";
 import { Controller, useForm } from "react-hook-form";
 import ChildIcon from "@assets/images/child.png";
 import { useLocalUserStore } from "@src/stores/user";
-import { useBookingAppointmentMutation } from "@src/services/api-services/appointment-service";
-import { useEffect } from "react";
+import { useCreateBookingAppointmentMutation } from "@src/services/api-services/appointment-service";
+import { useEffect, useState } from "react";
 import { useAppLoadingStore } from "@src/stores/app-loading";
 import { useShallow } from "zustand/react/shallow";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import { alertCircleOutline, checkmarkCircleOutline } from "ionicons/icons";
 import { useSlotsQuery } from "@src/services/api-services/slot-service";
 import { cn } from "@utils/cn";
+import DoctorFirst from "@src/components/treatment-booking/DoctorFirst";
+import DateFirst from "@src/components/treatment-booking/DateFirst";
 
 const LOADER_KEY = "booking";
 
@@ -50,10 +52,15 @@ export default function TreatmentBooking() {
 
   const router = useIonRouter();
   const slotsQuery = useSlotsQuery();
-  const bookingMutation = useBookingAppointmentMutation();
+  const bookingMutation = useCreateBookingAppointmentMutation();
+
+  const [formType, setFormType] = useState<"doctor-first" | "date-first">(
+    "doctor-first"
+  );
 
   const bookingForm = useForm<BookAppointmentForm>({
     defaultValues: {
+      doctorIds: "",
       appointmentDate: new Date().toISOString(),
       slotId: "",
       notes: "",
@@ -109,7 +116,7 @@ export default function TreatmentBooking() {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar mode="ios">
+        <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton />
           </IonButtons>
@@ -118,7 +125,7 @@ export default function TreatmentBooking() {
       </IonHeader>
 
       <IonContent className="ion-bg-blue-100">
-        <div className="flex flex-col justify-center items-center size-full gap-14 p-2">
+        <div className="flex flex-col justify-center items-center gap-14 px-2 py-4">
           <div className="w-full px-6 flex flex-col items-center text-center gap-3">
             <div className="flex items-center gap-3">
               <IonImg src={ChildIcon} className="size-20" />
@@ -141,79 +148,72 @@ export default function TreatmentBooking() {
             onSubmit={bookingForm.handleSubmit(handleBooking)}
             className="grow w-full flex flex-col justify-start items-center px-2 gap-10"
           >
-            <Controller
-              name="appointmentDate"
-              control={bookingForm.control}
-              render={(appointmentDate) => (
-                <div className="w-full h-fit flex flex-col justify-center items-start gap-2">
-                  <div
-                    className="flex justify-between items-center w-full
-                  bg-neutral-50 py-2 rounded-md px-2"
-                  >
-                    <label className="">Date</label>
+            <div className="w-full grid grid-cols-2 auto-rows-auto gap-2">
+              <p className="col-span-2 self-end text-xl font-semibold">
+                I would like to
+              </p>
 
-                    <IonDatetimeButton
-                      datetime="appointment-date"
-                      className="self-center"
-                    ></IonDatetimeButton>
-                  </div>
+              <label
+                className={cn(
+                  "flex-1 py-3 px-4 rounded-md transition-colors flex items-center justify-center",
+                  "text-sm font-medium cursor-pointer",
+                  formType === "doctor-first"
+                    ? "border-2 border-blue-500 text-blue-600 bg-neutral-50"
+                    : "border-2 border-gray-300 text-gray-600 bg-gray-200"
+                )}
+              >
+                <input
+                  type="radio"
+                  value="doctor-first"
+                  checked={formType === "doctor-first"}
+                  onChange={() => {
+                    setFormType("doctor-first");
+                    bookingForm.reset({
+                      notes: bookingForm.getValues("notes"),
+                    });
+                  }}
+                  className="appearance-none"
+                />
+                Select a Doctor first
+              </label>
+              <label
+                className={cn(
+                  "flex-1 py-3 px-4 rounded-md transition-colors cursor-pointer flex items-center justify-center",
+                  "text-sm font-medium",
+                  formType === "date-first"
+                    ? "border-2 text-blue-600 border-blue-500 bg-neutral-50"
+                    : "border-2 text-gray-600 border-gray-300 bg-gray-200"
+                )}
+              >
+                <input
+                  type="radio"
+                  value="date-first"
+                  checked={formType === "date-first"}
+                  onChange={() => {
+                    setFormType("date-first");
+                    bookingForm.reset({
+                      notes: bookingForm.getValues("notes"),
+                    });
+                  }}
+                  className="appearance-none"
+                />
+                Select a Date first
+              </label>
+            </div>
 
-                  <IonNote className="ps-1">
-                    Select a desired date for your appointment.
-                  </IonNote>
+            {formType === "doctor-first" && (
+              <DoctorFirst
+                bookingForm={bookingForm}
+                slotList={slotsQuery.data?.data || []}
+              />
+            )}
 
-                  <IonModal
-                    keepContentsMounted
-                    initialBreakpoint={1}
-                    breakpoints={[0, 0.5, 1]}
-                    className="ion-w-[100%]!"
-                  >
-                    <IonDatetime
-                      id="appointment-date"
-                      presentation="date"
-                      min={new Date().toISOString()}
-                      showAdjacentDays
-                      value={appointmentDate.field.value}
-                      onIonChange={appointmentDate.field.onChange}
-                      onIonBlur={appointmentDate.field.onBlur}
-                      ref={appointmentDate.field.ref}
-                      className="bg-transparent! ion-wheel-fade-bg-rgb-white mx-auto w-full my-8"
-                    />
-                  </IonModal>
-                </div>
-              )}
-            />
-
-            <Controller
-              name="slotId"
-              control={bookingForm.control}
-              render={(slotId) => (
-                <div className="w-full h-fit flex flex-col justify-center items-start gap-2">
-                  <IonSelect
-                    label="Slot (time)"
-                    placeholder="Select a slot"
-                    interface="action-sheet"
-                    errorText={slotId.fieldState.error?.message}
-                    value={slotId.field.value}
-                    onIonChange={slotId.field.onChange}
-                    onIonBlur={slotId.field.onBlur}
-                    ref={slotId.field.ref}
-                    className={cn(
-                      "ion-bg-neutral-50! ion-px-[0.5rem]!",
-                      slotId.fieldState.error && "ion-invalid ion-touched"
-                    )}
-                  >
-                    {slotsQuery.data?.data.map((slot) => (
-                      <IonSelectOption key={slot.id} value={slot.id}>
-                        {slot.startTime} - {slot.endTime}
-                      </IonSelectOption>
-                    ))}
-                  </IonSelect>
-
-                  <IonNote className="ps-1">Slot.</IonNote>
-                </div>
-              )}
-            />
+            {formType === "date-first" && (
+              <DateFirst
+                bookingForm={bookingForm}
+                slotList={slotsQuery.data?.data || []}
+              />
+            )}
 
             <Controller
               name="notes"

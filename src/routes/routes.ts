@@ -4,6 +4,8 @@ const BASE = {
   TABS: "/tabs",
   BOOK_TREATMENT: `/book-treatment`,
   UPDATE_ACCOUNT: `/update-account`,
+  TRANSACTION_HISTORY: `/transaction-history`,
+  TREATMENT_DETAIL: `/treatment`,
 } as const;
 
 /////////////////////////////////////////////////////////

@@ -7,6 +7,8 @@ import AppTabRoutes from "@src/routes/AppTabRoutes";
 import { IonRouterOutlet } from "@ionic/react";
 import TreatmentBooking from "@src/pages/TreatmentBooking";
 import UpdateAccount from "@src/pages/UpdateAccount";
+import TransactionHistory from "@src/pages/TransactionHistory";
+import TreatmentDetail from "@src/pages/TreatmentDetail";
 
 export default function RootRoutes() {
   return (
@@ -17,6 +19,11 @@ export default function RootRoutes() {
 
       <Route path={ROUTES.UPDATE_ACCOUNT} component={UpdateAccount} />
       <Route path={ROUTES.BOOK_TREATMENT} component={TreatmentBooking} />
+      <Route path={ROUTES.TRANSACTION_HISTORY} component={TransactionHistory} />
+      <Route
+        path={`${ROUTES.TREATMENT_DETAIL}/:treatmentId`}
+        component={TreatmentDetail}
+      />
     </IonRouterOutlet>
   );
 }

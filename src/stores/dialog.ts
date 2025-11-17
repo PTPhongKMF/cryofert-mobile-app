@@ -27,7 +27,9 @@ export const useGenericDialogStore = create<GenericDialogStore>((set) => ({
   data: null,
   isOpen: false,
   openGenericDialog: (data) => set({ data, isOpen: true }),
-  closeGenericDialog: () => set({ isOpen: false, data: null }),
+  closeGenericDialog: () => {
+    set({ isOpen: false });
+  },
 }));
 
 interface OtpDialogStore {

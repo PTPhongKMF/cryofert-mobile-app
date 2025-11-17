@@ -1,17 +1,13 @@
-import { IonContent, IonImg, useIonRouter } from "@ionic/react";
+import { IonContent, IonImg } from "@ionic/react";
 import BgImgMedical from "@assets/images/bg-login.jpg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SafeAreaView from "@src/components/SafeAreaView";
-import LoginForm from "@src/components/landing-tabs/LoginForm";
-import RegisterForm from "@src/components/landing-tabs/RegisterForm";
-import { useParams } from "react-router";
-
-interface AuthParams {
-  id?: string;
-}
+import LoginForm from "@src/components/landing-auth-tabs/LoginForm";
+import RegisterForm from "@src/components/landing-auth-tabs/RegisterForm";
+import { useLocation, useParams } from "react-router";
 
 export default function Auth() {
-  const { id } = useParams<AuthParams>();
+  const authPage = new URLSearchParams(useLocation().search).get("authPage");
 
   return (
     <IonContent fullscreen>
@@ -28,7 +24,9 @@ export default function Auth() {
 
           <div className="h-full">
             <Swiper
-              initialSlide={Number.isNaN(Number(id)) ? 0 : Number(id)}
+              initialSlide={
+                Number.isNaN(Number(authPage)) ? 0 : Number(authPage)
+              }
               className="h-full"
             >
               <SwiperSlide>

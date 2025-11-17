@@ -25,7 +25,6 @@ export default function RegisterForm() {
   const [showRpPassword, setShowRpPassword] = useState(false);
 
   const swiper = useSwiper();
-  const router = useIonRouter();
 
   const { startLoading, stopLoading } = useAppLoadingStore(
     useShallow((s) => ({

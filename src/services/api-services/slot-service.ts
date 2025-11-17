@@ -9,7 +9,7 @@ import type { HTTPError } from "ky";
 
 export function useSlotsQuery() {
   return useQuery<AllSlotApiResponse, HTTPError>({
-    queryKey: ["getAllSlots"],
+    queryKey: ["api/slots"],
     queryFn: async () => {
       const res = await httpClient.get("api/slots").json();
 

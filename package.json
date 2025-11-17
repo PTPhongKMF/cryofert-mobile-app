@@ -17,6 +17,7 @@
     "@aparajita/capacitor-secure-storage": "^7.1.6",
     "@capacitor/android": "^7.4.4",
     "@capacitor/app": "7.0.2",
+    "@capacitor/clipboard": "^7.0.2",
     "@capacitor/core": "7.4.3",
     "@capacitor/haptics": "7.0.2",
     "@capacitor/keyboard": "7.0.2",

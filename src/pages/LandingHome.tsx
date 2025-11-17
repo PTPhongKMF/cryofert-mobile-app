@@ -32,9 +32,10 @@ import {
   Activity,
   Target,
 } from "lucide-react";
-import { add, document } from "ionicons/icons";
+import { Link } from "react-router-dom";
+import { ROUTES } from "@src/routes/routes";
 
-export default function Home() {
+export default function LandingHome() {
   return (
     <IonContent>
       <SafeAreaView>
@@ -45,7 +46,6 @@ export default function Home() {
               <HeartPulse className="h-7 w-7 text-blue-600" />
               <span className="font-bold text-lg">CryoFert</span>
             </div>
-            {/* <ThemeSwitcher /> */}
           </div>
 
           {/* Hero */}
@@ -62,17 +62,14 @@ export default function Home() {
               and compassionate care.
             </p>
             <div className="flex w-full flex-col sm:flex-row gap-3">
-              <PrimaryButton className="w-full">
-                {/* <Link to="/login"> */}
-                <span className="inline-flex items-center justify-center">
-                  Start Your Journey
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </span>
-                {/* </Link> */}
+              <PrimaryButton className="w-full py-1! rounded-md!">
+                <Link to={ROUTES.L_AUTH}>
+                  <span className="inline-flex items-center justify-center text-white">
+                    Start Your Journey
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </span>
+                </Link>
               </PrimaryButton>
-              <OutlineButton className="w-full">
-                {/* <a href="#services"> */}Explore Services{/* </a> */}
-              </OutlineButton>
             </div>
 
             {/* Trust indicators */}
@@ -308,17 +305,14 @@ export default function Home() {
               personalized care and advanced treatments.
             </p>
             <div className="flex w-full flex-col sm:flex-row gap-3">
-              <PrimaryButton className="w-full">
-                {/* <Link to="/login"> */}
-                <span className="inline-flex items-center justify-center">
-                  Schedule Free Consultation
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </span>
-                {/* </Link> */}
+              <PrimaryButton className="w-full py-1! rounded-sm!">
+                <Link to={ROUTES.L_AUTH}>
+                  <span className="inline-flex items-center justify-center text-white">
+                    Schedule Free Consultation
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </span>
+                </Link>
               </PrimaryButton>
-              <OutlineButton className="w-full">
-                {/* <a href="#services"> */}Explore Options{/* </a> */}
-              </OutlineButton>
             </div>
             <div className="flex flex-wrap justify-center gap-4 text-xs text-slate-600">
               <div className="inline-flex items-center gap-1">
