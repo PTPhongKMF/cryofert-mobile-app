@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.2.0...v0.3.0) (2025-11-17)
+
+
+### Features
+
+* add treatmen booking, transaction and treatment history ([#4](https://github.com/PTPhongKMF/cryofert-mobile-app/issues/4)) ([9708ddf](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/9708ddf09abb3adab7cd0b43e9a690812c4b515d))
+* reduce initial SplashScreen time ([af96fef](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/af96fef948dce12c5cf70c6943a81c246462208d))
+
 ## [0.2.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.1.0...v0.2.0) (2025-11-08)
 
 
