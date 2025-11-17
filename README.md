@@ -9,8 +9,8 @@ Phiên bản di động này được thiết kế đặc biệt cho bệnh nhâ
 
 **Other Project Components / Các thành phần khác của dự án:**
 
-- **Web App:**
-- **Backend:**
+- **Web App (Staff):** <https://github.com/devnguyen0111/cryoweb>
+- **Backend:** <https://github.com/khiemvuong2310/ITCS-Backend>
 
 ## Development Setup / Cài đặt môi trường phát triển
 
