@@ -18,16 +18,12 @@ import {
   IonSpinner,
   IonToolbar,
 } from "@ionic/react";
+import { useDoctorAvailableInfiniteQuery } from "@src/hooks/doctor-hook";
 import type { BookAppointmentForm } from "@src/schemas/appointment";
 import type { DoctorApiResponse, DoctorResponse } from "@src/schemas/doctor";
 import type { Slot } from "@src/schemas/slot";
-import {
-  useDoctorAvailableInfiniteQuery,
-  useDoctorInfiniteQuery,
-} from "@src/services/api-services/doctor-service";
-import type { InfiniteData } from "@tanstack/react-query";
 import { cn } from "@utils/cn";
-import { checkboxOutline, handRightOutline } from "ionicons/icons";
+import { checkboxOutline } from "ionicons/icons";
 import { useRef, useState } from "react";
 import { Controller, type UseFormReturn } from "react-hook-form";
 

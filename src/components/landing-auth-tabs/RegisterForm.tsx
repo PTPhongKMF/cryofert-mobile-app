@@ -12,11 +12,11 @@ import {
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { cn } from "@src/utils/cn";
-import { useRegisterMutation } from "@src/services/api-services/auth-service";
 import { useGenericDialogStore, useOtpDialogStore } from "@src/stores/dialog";
 import { useAppLoadingStore } from "@src/stores/app-loading";
 import { useShallow } from "zustand/react/shallow";
 import { useSwiper } from "swiper/react";
+import { useRegisterMutation } from "@src/hooks/auth-hook";
 
 const LOADER_KEY = "RegisterForm";
 

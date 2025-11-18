@@ -15,12 +15,11 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { useEffect } from "react";
 import GreenToGrayGradientBg from "@src/components/backgrounds/GreenToGrayGradientBg";
 import type { TransactionHistoryApiResponse } from "@src/schemas/transaction";
-import { useTransactionHistoryInfiniteQuery } from "@src/services/api-services/transaction-service";
 import { useLocalUserStore } from "@src/stores/user";
 import { format } from "@formkit/tempo";
+import { useTransactionHistoryInfiniteQuery } from "@src/hooks/transaction-hook";
 
 export default function TransactionHistory() {
   const localUser = useLocalUserStore((s) => s.localUser);

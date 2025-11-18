@@ -1,9 +1,7 @@
 import {
-  IonContent,
   IonFab,
   IonFabButton,
   IonFabList,
-  IonFooter,
   IonIcon,
   IonLabel,
   IonRouterOutlet,
@@ -18,7 +16,7 @@ import History from "@src/pages/History";
 import Account from "@src/pages/Account";
 import {
   alertCircleOutline,
-  bug,
+  codeWorking,
   fileTrayFull,
   home,
   personCircle,
@@ -27,7 +25,7 @@ import { useEffect } from "react";
 import { useLocalUserStore } from "@src/stores/user";
 import { clearAllSecuredTokens } from "@src/services/token-service";
 import { ClipboardPlus, Stethoscope } from "lucide-react";
-import Profile from "@src/pages/Profile";
+import Dev from "@src/pages/Dev";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import AppHome from "@src/pages/AppHome";
 
@@ -76,7 +74,7 @@ export default function AppTabRoutes() {
         <Route exact path={ROUTES.T_HOME} component={AppHome} />
         <Route exact path={ROUTES.T_HISTORY} component={History} />
         <Route exact path={ROUTES.T_ACCOUNT} component={Account} />
-        <Route exact path={"/tabs/test"} component={Profile} />
+        <Route exact path={"/tabs/dev"} component={Dev} />
       </IonRouterOutlet>
 
       <IonTabBar id="app-tab-bar" slot="bottom" className="ion-bg-violet-100">
@@ -95,9 +93,9 @@ export default function AppTabRoutes() {
           <IonLabel className="text-xs">Account</IonLabel>
         </IonTabButton>
 
-        <IonTabButton tab="test" href={"/tabs/test"}>
-          <IonIcon icon={bug} className="size-6" />
-          <IonLabel className="text-xs">Test</IonLabel>
+        <IonTabButton tab="dev" href={"/tabs/dev"}>
+          <IonIcon icon={codeWorking} className="size-6" />
+          <IonLabel className="text-xs">Dev</IonLabel>
         </IonTabButton>
       </IonTabBar>
 

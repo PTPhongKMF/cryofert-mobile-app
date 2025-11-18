@@ -7,10 +7,10 @@ import {
   IonRefresherContent,
   IonSpinner,
 } from "@ionic/react";
-import { usePatientBookingHistoryInfiniteQuery } from "@src/services/api-services/appointment-service";
 import type { PatientBookingAppointmentApiResponse } from "@src/schemas/appointment";
 import { format } from "@formkit/tempo";
 import { useLocalUserStore } from "@src/stores/user";
+import { usePatientBookingHistoryInfiniteQuery } from "@src/hooks/appointment-hook";
 
 export default function AppointmentHistory() {
   const localUser = useLocalUserStore((s) => s.localUser);

@@ -10,10 +10,10 @@ import {
   useIonRouter,
 } from "@ionic/react";
 import type { TreatmentApiResponse } from "@src/schemas/treatment";
-import { useTreatementInfiniteQuery } from "@src/services/api-services/treatment-service";
 import { useLocalUserStore } from "@src/stores/user";
 import { format } from "@formkit/tempo";
 import { ROUTES } from "@src/routes/routes";
+import { useTreatementInfiniteQuery } from "@src/hooks/treatment-hook";
 
 export default function TreatmentHistory() {
   const router = useIonRouter();

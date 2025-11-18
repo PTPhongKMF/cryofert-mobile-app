@@ -5,11 +5,8 @@ import {
   IonSpinner,
   useIonRouter,
 } from "@ionic/react";
+import { useConfirmOtpMutation, useResendOtpMutation } from "@src/hooks/auth-hook";
 import { ROUTES } from "@src/routes/routes";
-import {
-  useConfirmOtpMutation,
-  useResendOtpMutation,
-} from "@src/services/api-services/auth-service";
 import { useAppLoadingStore } from "@src/stores/app-loading";
 import { useOtpDialogStore, useGenericDialogStore } from "@src/stores/dialog";
 import { cn } from "@utils/cn";

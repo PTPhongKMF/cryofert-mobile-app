@@ -12,9 +12,9 @@ import {
   IonLabel,
 } from "@ionic/react";
 import { useParams } from "react-router-dom";
-import { useTreatmentDetailQuery } from "@src/services/api-services/treatment-service";
 import { format } from "@formkit/tempo";
 import SafeAreaView from "@src/components/SafeAreaView";
+import { useTreatmentDetailQuery } from "@src/hooks/treatment-hook";
 
 export default function TreatmentDetail() {
   const { treatmentId } = useParams<{ treatmentId: string }>();
@@ -93,7 +93,9 @@ export default function TreatmentDetail() {
                 <IonItem className="ion-bg-transparent">
                   <IonLabel>
                     <h3 className="text-sm text-gray-500">Status</h3>
-                    <p className="text-base text-gray-900">{treatment.status}</p>
+                    <p className="text-base text-gray-900">
+                      {treatment.status}
+                    </p>
                   </IonLabel>
                 </IonItem>
                 <IonItem className="ion-bg-transparent">
@@ -146,7 +148,9 @@ export default function TreatmentDetail() {
                   <IonLabel>
                     <h3 className="text-sm text-gray-500">Actual Cost</h3>
                     <p className="text-base text-gray-900">
-                      {treatment.actualCost ? `$${treatment.actualCost}` : "TBD"}
+                      {treatment.actualCost
+                        ? `$${treatment.actualCost}`
+                        : "TBD"}
                     </p>
                   </IonLabel>
                 </IonItem>
@@ -290,9 +294,7 @@ export default function TreatmentDetail() {
                   {treatment.ivf.complications && (
                     <IonItem className="ion-bg-transparent">
                       <IonLabel>
-                        <h3 className="text-sm text-gray-500">
-                          Complications
-                        </h3>
+                        <h3 className="text-sm text-gray-500">Complications</h3>
                         <p className="text-base text-gray-900">
                           {treatment.ivf.complications}
                         </p>

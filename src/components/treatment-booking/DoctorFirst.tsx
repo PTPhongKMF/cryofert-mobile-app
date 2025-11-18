@@ -20,13 +20,12 @@ import {
 import type { BookAppointmentForm } from "@src/schemas/appointment";
 import type { DoctorApiResponse, DoctorResponse } from "@src/schemas/doctor";
 import type { Slot } from "@src/schemas/slot";
-import { useDoctorInfiniteQuery } from "@src/services/api-services/doctor-service";
 import { cn } from "@utils/cn";
-import type { InfiniteData } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Controller, type UseFormReturn } from "react-hook-form";
-import { useDoctorScheduleBusyQuery } from "@src/services/api-services/schedules-service";
 import { format, isEqual } from "@formkit/tempo";
+import { useDoctorInfiniteQuery } from "@src/hooks/doctor-hook";
+import { useDoctorScheduleBusyQuery } from "@src/hooks/schedules-hook";
 
 interface DoctorFirstProps {
   bookingForm: UseFormReturn<BookAppointmentForm>;

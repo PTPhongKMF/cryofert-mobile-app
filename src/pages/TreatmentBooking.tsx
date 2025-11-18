@@ -4,16 +4,11 @@ import {
   IonButton,
   IonButtons,
   IonContent,
-  IonDatetime,
-  IonDatetimeButton,
   IonFooter,
   IonHeader,
   IonImg,
-  IonModal,
   IonNote,
   IonPage,
-  IonSelect,
-  IonSelectOption,
   IonTextarea,
   IonTitle,
   IonToolbar,
@@ -27,16 +22,16 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import ChildIcon from "@assets/images/child.png";
 import { useLocalUserStore } from "@src/stores/user";
-import { useCreateBookingAppointmentMutation } from "@src/services/api-services/appointment-service";
 import { useEffect, useState } from "react";
 import { useAppLoadingStore } from "@src/stores/app-loading";
 import { useShallow } from "zustand/react/shallow";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import { alertCircleOutline, checkmarkCircleOutline } from "ionicons/icons";
-import { useSlotsQuery } from "@src/services/api-services/slot-service";
 import { cn } from "@utils/cn";
 import DoctorFirst from "@src/components/treatment-booking/DoctorFirst";
 import DateFirst from "@src/components/treatment-booking/DateFirst";
+import { useSlotsQuery } from "@src/hooks/slot-hook";
+import { useCreateBookingAppointmentMutation } from "@src/hooks/appointment-hook";
 
 const LOADER_KEY = "booking";
 

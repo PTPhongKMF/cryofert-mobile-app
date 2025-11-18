@@ -8,85 +8,70 @@ import {
   type RegisterRequest,
 } from "@src/schemas/auth";
 import { httpClient } from "@src/services/api-services/http-service";
-import { useMutation } from "@tanstack/react-query";
 import { HTTPError } from "ky";
 import * as v from "valibot";
 
-export function useLoginMutation() {
-  return useMutation<LoginApiResponse, HTTPError, LoginRequest>({
-    mutationFn: async (req) => {
-      let res;
+export async function loginMutationFn(
+  req: LoginRequest
+): Promise<LoginApiResponse> {
+  let res;
 
-      try {
-        res = await httpClient
-          .post("api/auth/login", {
-            json: {
-              email: req.email,
-              password: req.password,
-            },
-          })
-          .json();
-      } catch (e) {
-        if (e instanceof HTTPError && e.response.status === 403) {
-          const raw = await e.response.clone().json();
-          const body = v.parse(GenericApiResponseSchema, raw);
+  try {
+    res = await httpClient
+      .post("api/auth/login", {
+        json: {
+          email: req.email,
+          password: req.password,
+        },
+      })
+      .json();
+  } catch (e) {
+    if (e instanceof HTTPError && e.response.status === 403) {
+      const raw = await e.response.clone().json();
+      const body = v.parse(GenericApiResponseSchema, raw);
 
-          if (body.systemCode === "NEED_OTP") {
-            return v.parse(LoginApiResponseSchema, body);
-          }
-        }
-
-        throw e;
+      if (body.systemCode === "NEED_OTP") {
+        return v.parse(LoginApiResponseSchema, body);
       }
+    }
 
-      return v.parse(LoginApiResponseSchema, res);
-    },
-  });
+    throw e;
+  }
+
+  return v.parse(LoginApiResponseSchema, res);
 }
 
-export function useRegisterMutation() {
-  return useMutation<GenericApiResponse, HTTPError, RegisterRequest>({
-    mutationFn: async (req) => {
-      const res = await httpClient
-        .post("api/auth/register", {
-          json: {
-            email: req.email,
-            password: req.password,
-          },
-        })
-        .json();
+export async function registerMutationFn(
+  req: RegisterRequest
+): Promise<GenericApiResponse> {
+  const res = await httpClient
+    .post("api/auth/register", {
+      json: {
+        email: req.email,
+        password: req.password,
+      },
+    })
+    .json();
 
-      return v.parse(GenericApiResponseSchema, res);
-    },
-  });
+  return v.parse(GenericApiResponseSchema, res);
 }
 
-export function useConfirmOtpMutation() {
-  return useMutation<void, HTTPError, ConfirmOtpRequest>({
-    mutationFn: async (req) => {
-      console.log(req);
-
-      await httpClient
-        .post("api/auth/verify-email", {
-          json: { email: req.email, verificationCode: req.verificationCode },
-        })
-        .json();
-    },
-  });
+export async function confirmOtpMutationFn(
+  req: ConfirmOtpRequest
+): Promise<void> {
+  await httpClient
+    .post("api/auth/verify-email", {
+      json: { email: req.email, verificationCode: req.verificationCode },
+    })
+    .json();
 }
 
-export function useResendOtpMutation() {
-  return useMutation<void, HTTPError, string>({
-    mutationFn: async (email) => {
-      console.log(email);
-
-      await httpClient
-        .post("api/auth/send-verification-email", {
-          json: {
-            email: email,
-          },
-        })
-        .json();
-    },
-  });
+export async function resendOtpMutationFn(email: string): Promise<void> {
+  await httpClient
+    .post("api/auth/send-verification-email", {
+      json: {
+        email: email,
+      },
+    })
+    .json();
 }

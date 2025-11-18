@@ -14,12 +14,12 @@ import { Controller, useForm } from "react-hook-form";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { cn } from "@src/utils/cn";
 import { useGenericDialogStore, useOtpDialogStore } from "@src/stores/dialog";
-import { useLoginMutation } from "@src/services/api-services/auth-service";
 import { useAppLoadingStore } from "@src/stores/app-loading";
 import { setSecuredToken } from "@src/services/token-service";
 import { useLocalUserStore } from "@src/stores/user";
 import { useShallow } from "zustand/react/shallow";
 import { useSwiper } from "swiper/react";
+import { useLoginMutation } from "@src/hooks/auth-hook";
 
 const LOADER_KEY = "LoginForm";
 export default function LoginForm() {
