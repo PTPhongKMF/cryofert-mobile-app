@@ -7,6 +7,10 @@ import * as v from "valibot";
 import ky from "ky";
 import { GenericApiResponseSchema } from "@src/schemas/api-response";
 import { useLocalUserStore } from "@src/stores/user";
+import { useGenericDialogStore } from "@src/stores/dialog";
+import { alertCircleOutline } from "ionicons/icons";
+import { globalPush } from "@src/services/navigation-service";
+import { ROUTES } from "@src/routes/routes";
 
 // const LOCAL = "";
 const CLOUD = "https://cryofert.runasp.net/";
@@ -17,6 +21,7 @@ interface RefreshResponse {
 
 let refreshPromise: Promise<void> | null = null;
 const clearLocalUser = useLocalUserStore.getState().clearLocalUser;
+const openGenericDialog = useGenericDialogStore.getState().openGenericDialog;
 
 export const httpClient = ky.extend({
   prefixUrl: CLOUD,
@@ -83,6 +88,18 @@ export const httpClient = ky.extend({
           } catch {
             await clearAllSecuredTokens();
             clearLocalUser();
+            openGenericDialog({
+              title: "Authentication Error",
+              content: "We can't verify your account, please log in again",
+              svgIcon: alertCircleOutline,
+              svgIconColor: "danger",
+              buttons: {
+                text: "Back to Log In",
+                color: "danger",
+                closeFn: () => globalPush(ROUTES.L_AUTH, "back"),
+              },
+              backdropDismiss: false,
+            });
           }
         }
 
