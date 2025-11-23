@@ -1,6 +1,18 @@
 import { createApiResponseSchema } from "@src/schemas/api-response";
 import * as v from "valibot";
 
+export const CreateTransactionRequestSchema = v.object({
+  relatedEntityType: v.union([
+    v.literal("ServiceRequest"),
+    v.literal("Appointment"),
+    v.literal("CryoStorageContract"),
+  ]),
+  relatedEntityId: v.pipe(v.string(), v.nonEmpty()),
+  patientId: v.pipe(v.string(), v.nonEmpty()),
+});
+
+///////////////////////////////////////////////////////////////////////
+
 const TransactionResponseSchema = v.object({
   id: v.string(),
   transactionCode: v.string(),
@@ -29,11 +41,21 @@ export const TransactionHistoryApiResponseSchema = createApiResponseSchema(
   v.array(TransactionResponseSchema)
 );
 
+export const TransactionApiResponseSchema = createApiResponseSchema(
+  TransactionResponseSchema
+);
+
 ///////////////////////////////////////////////////////////////////////
 
 export type TransactionResponse = v.InferOutput<
   typeof TransactionResponseSchema
 >;
+export type CreateTransactionRequest = v.InferOutput<
+  typeof CreateTransactionRequestSchema
+>;
 export type TransactionHistoryApiResponse = v.InferOutput<
   typeof TransactionHistoryApiResponseSchema
+>;
+export type TransactionApiResponse = v.InferOutput<
+  typeof TransactionApiResponseSchema
 >;

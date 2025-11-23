@@ -1,13 +1,16 @@
 import { create } from "zustand";
 
+export type ButtonType = {
+  text?: string;
+  color?: "primary" | "success" | "warning" | "danger";
+  closeFn?: () => void;
+};
+
 interface BaseGenericDialogOptions {
   svgIcon?: string;
   svgIconColor?: "primary" | "success" | "warning" | "danger";
   backdropDismiss?: boolean;
-  showBtn?: boolean;
-  btnText?: string;
-  btnColor?: "primary" | "success" | "warning" | "danger";
-  closeFn?: () => void;
+  buttons?: ButtonType | ButtonType[];
 }
 
 type GenericDialogOptions = (

@@ -25,7 +25,7 @@ import { useEffect } from "react";
 import { useLocalUserStore } from "@src/stores/user";
 import { clearAllSecuredTokens } from "@src/services/token-service";
 import { ClipboardPlus, Stethoscope } from "lucide-react";
-import Dev from "@src/pages/Dev";
+import Dev from "@src/pages/devs/Dev";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import AppHome from "@src/pages/AppHome";
 
@@ -49,13 +49,12 @@ export default function AppTabRoutes() {
             content: "We can't verify your account, please log in again",
             svgIcon: alertCircleOutline,
             svgIconColor: "danger",
-            showBtn: true,
-            btnText: "Back to Log In",
-            btnColor: "danger",
-            backdropDismiss: false,
-            closeFn: () => {
-              router.push(ROUTES.L_AUTH, "back");
+            buttons: {
+              text: "Back to Log In",
+              color: "danger",
+              closeFn: () => router.push(ROUTES.L_AUTH, "back"),
             },
+            backdropDismiss: false,
           });
         }
       }

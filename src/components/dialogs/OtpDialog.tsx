@@ -5,7 +5,10 @@ import {
   IonSpinner,
   useIonRouter,
 } from "@ionic/react";
-import { useConfirmOtpMutation, useResendOtpMutation } from "@src/hooks/auth-hook";
+import {
+  useConfirmOtpMutation,
+  useResendOtpMutation,
+} from "@src/hooks/auth-hook";
 import { ROUTES } from "@src/routes/routes";
 import { useAppLoadingStore } from "@src/stores/app-loading";
 import { useOtpDialogStore, useGenericDialogStore } from "@src/stores/dialog";
@@ -103,11 +106,10 @@ export default function OtpDialog() {
               title: "Verified Successfully",
               svgIcon: checkmarkCircleOutline,
               svgIconColor: "success",
-              showBtn: true,
-              btnText: "Back to Log In",
-              btnColor: "success",
-              closeFn: () => {
-                router.push(ROUTES.L_AUTH);
+              buttons: {
+                text: "Back to Log In",
+                color: "success",
+                closeFn: () => router.push(ROUTES.L_AUTH),
               },
             });
             closeOtpDialog();

@@ -32,6 +32,8 @@ import DoctorFirst from "@src/components/treatment-booking/DoctorFirst";
 import DateFirst from "@src/components/treatment-booking/DateFirst";
 import { useSlotsQuery } from "@src/hooks/slot-hook";
 import { useCreateBookingAppointmentMutation } from "@src/hooks/appointment-hook";
+import { addDay } from "@formkit/tempo";
+import { ROUTES } from "@src/routes/routes";
 
 const LOADER_KEY = "booking";
 
@@ -56,7 +58,7 @@ export default function TreatmentBooking() {
   const bookingForm = useForm<BookAppointmentForm>({
     defaultValues: {
       doctorIds: "",
-      appointmentDate: new Date().toISOString(),
+      appointmentDate: addDay(new Date(), 1).toISOString(),
       slotId: "",
       notes: "",
     },
@@ -93,15 +95,29 @@ export default function TreatmentBooking() {
           svgIconColor: "danger",
         });
       },
-      onSuccess: () => {
+      onSuccess: (data) => {
         openGenericDialog({
           title: "Booking Completed",
           svgIcon: checkmarkCircleOutline,
           svgIconColor: "success",
           backdropDismiss: false,
-          showBtn: true,
-          btnColor: "success",
-          closeFn: () => router.goBack(),
+          buttons: [
+            {
+              text: "Pay later",
+              closeFn: () => router.goBack(),
+            },
+            {
+              text: "Pay now",
+              color: "success",
+              closeFn: () => {
+                router.push(
+                  `${ROUTES.PAYMENT_PORTAL}?relatedEntityType=Appointment&relatedEntityId=${data.data.id}`,
+                  "forward",
+                  "replace"
+                );
+              },
+            },
+          ],
         });
       },
     });
@@ -216,9 +232,9 @@ export default function TreatmentBooking() {
               render={(note) => (
                 <div className="w-full h-fit flex flex-col justify-center items-start gap-2">
                   <IonTextarea
-                    mode="md"
+                    mode="ios"
                     label="Note"
-                    labelPlacement="start"
+                    labelPlacement="stacked"
                     fill="outline"
                     autoGrow
                     value={note.field.value}

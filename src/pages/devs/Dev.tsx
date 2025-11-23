@@ -1,4 +1,4 @@
-import { IonButton, IonContent } from "@ionic/react";
+import { IonButton, IonContent, useIonRouter } from "@ionic/react";
 import SafeAreaView from "@src/components/SafeAreaView";
 import {
   DefaultSystemBrowserOptions,
@@ -7,6 +7,8 @@ import {
 } from "@capacitor/inappbrowser";
 
 export default function Dev() {
+  const router = useIonRouter();
+
   async function handleOpenInWebView() {
     await InAppBrowser.openInWebView({
       url: "https://github.com/PTPhongKMF/cryofert-mobile-app",
@@ -28,6 +30,8 @@ export default function Dev() {
         <IonButton onClick={handleOpenInSystemBrowser}>
           openInSystemBrowser
         </IonButton>
+
+        <IonButton onClick={() => router.push("/test")}>test page 1</IonButton>
       </SafeAreaView>
     </IonContent>
   );

@@ -37,6 +37,8 @@ export default function DateFirst({ bookingForm, slotList }: DateFirstProps) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const doctorModal = useRef<HTMLIonModalElement>(null);
+  const doctorSheet = useRef<HTMLIonButtonElement>(null);
+  const appointmentDateModal = useRef<HTMLIonModalElement>(null);
 
   const doctorQuery = useDoctorAvailableInfiniteQuery(
     searchTerm,
@@ -59,7 +61,10 @@ export default function DateFirst({ bookingForm, slotList }: DateFirstProps) {
         name="appointmentDate"
         control={bookingForm.control}
         render={(appointmentDate) => (
-          <div className="w-full h-fit flex flex-col justify-center items-start gap-2">
+          <div
+            onClick={() => appointmentDateModal.current?.present()}
+            className="w-full h-fit flex flex-col justify-center items-start gap-2"
+          >
             <div
               className="flex justify-between items-center w-full
                   bg-neutral-50 py-2 rounded-md px-2"
@@ -80,12 +85,13 @@ export default function DateFirst({ bookingForm, slotList }: DateFirstProps) {
               keepContentsMounted
               initialBreakpoint={1}
               breakpoints={[0, 0.5, 1]}
+              ref={appointmentDateModal}
               className="ion-w-[100%]!"
             >
               <IonDatetime
                 id="appointment-date"
                 presentation="date"
-                min={new Date().toISOString()}
+                min={bookingForm.formState.defaultValues?.appointmentDate}
                 showAdjacentDays
                 value={appointmentDate.field.value}
                 onIonChange={appointmentDate.field.onChange}
@@ -132,6 +138,7 @@ export default function DateFirst({ bookingForm, slotList }: DateFirstProps) {
       {bookingForm.watch("appointmentDate") && bookingForm.watch("slotId") && (
         <div className="w-full h-full flex flex-col justify-center items-start gap-2">
           <div
+            onClick={() => doctorSheet.current?.click()}
             className="flex justify-between items-center w-full h-12
                             bg-neutral-50 py-2 rounded-md px-2"
           >
@@ -139,6 +146,7 @@ export default function DateFirst({ bookingForm, slotList }: DateFirstProps) {
 
             <IonButton
               id="doctor-sheet"
+              ref={doctorSheet}
               size="small"
               disabled={doctorQuery.isFetching}
               className="normal-case ion-box-shadow-[0] ion-bg-[#edeef0]! text-gray-900"

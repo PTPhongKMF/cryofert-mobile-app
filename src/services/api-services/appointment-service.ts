@@ -1,7 +1,7 @@
 import { format } from "@formkit/tempo";
-import type { GenericApiResponse } from "@src/schemas/api-response";
 import type { PatientBookingAppointmentApiResponse } from "@src/schemas/appointment";
 import {
+  BookingAppointmentApiResponseSchema,
   PatientBookingAppointmentApiResponseSchema,
   type BookAppointmentRequest,
 } from "@src/schemas/appointment";
@@ -10,7 +10,7 @@ import * as v from "valibot";
 
 export async function createBookingAppointmentMutationFn(
   req: BookAppointmentRequest
-): Promise<GenericApiResponse> {
+) {
   const res = await httpClient
     .post("api/appointment", {
       json: {
@@ -24,7 +24,8 @@ export async function createBookingAppointmentMutationFn(
     })
     .json();
 
-  return res as GenericApiResponse;
+  console.log(res);
+  return v.parse(BookingAppointmentApiResponseSchema, res);
 }
 
 export async function patientBookingHistoryQueryFn(params: {

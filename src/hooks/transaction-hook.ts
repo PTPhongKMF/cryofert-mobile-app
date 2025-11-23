@@ -1,8 +1,18 @@
-import type { TransactionHistoryApiResponse } from "@src/schemas/transaction";
+import {
+  TransactionApiResponseSchema,
+  type CreateTransactionRequest,
+  type TransactionApiResponse,
+  type TransactionHistoryApiResponse,
+} from "@src/schemas/transaction";
 import type { InfiniteData } from "@tanstack/react-query";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import type { HTTPError } from "ky";
-import { transactionHistoryQueryFn } from "@src/services/api-services/transaction-service";
+import {
+  createTransactionMutationFn,
+  transactionHistoryQueryFn,
+} from "@src/services/api-services/transaction-service";
+import { httpClient } from "@src/services/api-services/http-service";
+import * as v from "valibot";
 
 export function useTransactionHistoryInfiniteQuery(
   patientId: string,
@@ -28,5 +38,14 @@ export function useTransactionHistoryInfiniteQuery(
   });
 }
 
-
-
+export function useCreateTransactionMutation() {
+  return useMutation<
+    TransactionApiResponse,
+    HTTPError,
+    CreateTransactionRequest
+  >({
+    mutationFn: createTransactionMutationFn,
+    onSuccess: (data) => console.log(data),
+    onError: (e) => console.log(e),
+  });
+}

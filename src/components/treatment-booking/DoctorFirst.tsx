@@ -8,6 +8,7 @@ import {
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonItem,
+  IonLabel,
   IonList,
   IonModal,
   IonNote,
@@ -21,9 +22,9 @@ import type { BookAppointmentForm } from "@src/schemas/appointment";
 import type { DoctorApiResponse, DoctorResponse } from "@src/schemas/doctor";
 import type { Slot } from "@src/schemas/slot";
 import { cn } from "@utils/cn";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Controller, type UseFormReturn } from "react-hook-form";
-import { format, isEqual } from "@formkit/tempo";
+import { format } from "@formkit/tempo";
 import { useDoctorInfiniteQuery } from "@src/hooks/doctor-hook";
 import { useDoctorScheduleBusyQuery } from "@src/hooks/schedules-hook";
 
@@ -40,6 +41,8 @@ export default function DoctorFirst({
   const [searchTerm, setSearchTerm] = useState("");
 
   const doctorModal = useRef<HTMLIonModalElement>(null);
+  const doctorSheet = useRef<HTMLIonButtonElement>(null);
+  const appointmentDateModal = useRef<HTMLIonModalElement>(null);
 
   const watchedDoctorId = bookingForm.watch("doctorIds");
   const watchedAppointmentDate = bookingForm.watch("appointmentDate");
@@ -54,6 +57,12 @@ export default function DoctorFirst({
   const doctors: DoctorResponse[] =
     doctorQuery.data?.pages.flatMap((page: DoctorApiResponse) => page.data) ??
     [];
+
+  useEffect(() => {
+    if (doctorScheduleBusyQuery.isError) {
+      console.log(doctorScheduleBusyQuery.error);
+    }
+  }, [doctorScheduleBusyQuery.isError, doctorScheduleBusyQuery.error]);
 
   async function handleLoadMore(e: CustomEvent<void>) {
     await doctorQuery.fetchNextPage();
@@ -95,20 +104,22 @@ export default function DoctorFirst({
   return (
     <>
       <div className="w-full h-full flex flex-col justify-center items-start gap-2">
-        <div
+        <label
+          onClick={() => doctorSheet.current?.click()}
           className="flex justify-between items-center w-full h-12
                     bg-neutral-50 py-2 rounded-md px-2"
         >
-          <label className="">Doctor</label>
+          <p>Doctor</p>
 
           <IonButton
             id="doctor-sheet"
+            ref={doctorSheet}
             size="small"
             className="normal-case ion-box-shadow-[0] ion-bg-[#edeef0]! text-gray-900"
           >
             {doctorName || "Select"}
           </IonButton>
-        </div>
+        </label>
 
         <IonNote className="ps-1">Select a Doctor.</IonNote>
 
@@ -203,7 +214,7 @@ export default function DoctorFirst({
       </div>
 
       {watchedDoctorId &&
-        (doctorScheduleBusyQuery.isFetching ? (
+        (doctorScheduleBusyQuery.isLoading ? (
           <IonSpinner />
         ) : (
           <>
@@ -213,6 +224,7 @@ export default function DoctorFirst({
               render={(appointmentDate) => (
                 <div className="w-full h-fit flex flex-col justify-center items-start gap-2">
                   <div
+                    onClick={() => appointmentDateModal.current?.present()}
                     className="flex justify-between items-center w-full
                   bg-neutral-50 py-2 rounded-md px-2"
                   >
@@ -233,12 +245,13 @@ export default function DoctorFirst({
                     keepContentsMounted
                     initialBreakpoint={1}
                     breakpoints={[0, 0.5, 1]}
+                    ref={appointmentDateModal}
                     className="ion-w-[100%]!"
                   >
                     <IonDatetime
                       id="appointment-date"
                       presentation="date"
-                      min={new Date().toISOString()}
+                      min={bookingForm.formState.defaultValues?.appointmentDate}
                       isDateEnabled={handleIsDateAvaiable}
                       showAdjacentDays
                       value={appointmentDate.field.value}
