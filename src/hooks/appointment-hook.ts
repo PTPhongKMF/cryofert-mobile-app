@@ -1,5 +1,7 @@
-import type { GenericApiResponse } from "@src/schemas/api-response";
-import type { PatientBookingAppointmentApiResponse } from "@src/schemas/appointment";
+import type {
+  BookingAppointmentApiResponse,
+  PatientBookingAppointmentApiResponse,
+} from "@src/schemas/appointment";
 import type { BookAppointmentRequest } from "@src/schemas/appointment";
 import type { InfiniteData } from "@tanstack/react-query";
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
@@ -10,7 +12,11 @@ import {
 } from "@src/services/api-services/appointment-service";
 
 export function useCreateBookingAppointmentMutation() {
-  return useMutation<GenericApiResponse, HTTPError, BookAppointmentRequest>({
+  return useMutation<
+    BookingAppointmentApiResponse,
+    HTTPError,
+    BookAppointmentRequest
+  >({
     mutationFn: createBookingAppointmentMutationFn,
   });
 }
@@ -38,6 +44,3 @@ export function usePatientBookingHistoryInfiniteQuery(
       lastPage.metaData?.hasNext ? lastPage.metaData.page + 1 : undefined,
   });
 }
-
-
-

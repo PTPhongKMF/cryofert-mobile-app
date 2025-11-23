@@ -94,11 +94,12 @@ export default function Account() {
                 svgIconColor: "danger",
                 content:
                   "Are you sure you want to log out? \n (tap outside to close the modal)",
-                showBtn: true,
-                btnText: "Confirm",
-                btnColor: "danger",
-                closeFn: () => {
-                  router.push(ROUTES.L_AUTH);
+                buttons: {
+                  text: "Confirm",
+                  color: "danger",
+                  closeFn: () => {
+                    router.push(ROUTES.L_AUTH);
+                  },
                 },
               })
             }

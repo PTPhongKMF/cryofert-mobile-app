@@ -4,29 +4,35 @@ import { informationCircleOutline } from "ionicons/icons";
 import { useShallow } from "zustand/react/shallow";
 
 export default function GenericDialog() {
-  const { data, isOpen, closeSuccessDialog } = useGenericDialogStore(
+  const { data, isOpen, closeGenericDialog } = useGenericDialogStore(
     useShallow((s) => ({
       data: s.data,
       isOpen: s.isOpen,
-      closeSuccessDialog: s.closeGenericDialog,
+      closeGenericDialog: s.closeGenericDialog,
     }))
   );
 
-  function handleClose() {
-    if (data?.closeFn) data.closeFn();
-    closeSuccessDialog();
+  function handleButtonClick(button: { closeFn?: () => void }) {
+    if (button.closeFn) button.closeFn();
+    closeGenericDialog();
   }
+
+  const buttons = data?.buttons
+    ? Array.isArray(data.buttons)
+      ? data.buttons
+      : [data.buttons]
+    : [];
 
   return (
     <IonModal
       isOpen={isOpen}
-      onDidDismiss={closeSuccessDialog}
+      onDidDismiss={closeGenericDialog}
       backdropDismiss={data?.backdropDismiss ?? true}
       className="ion-w-fit ion-h-fit ion-b-r-[10px] ion-box-shadow"
     >
       <div
         className="size-full p-4 w-[80vw] max-h-[50vh] auto-rows-min
-          grid  justify-items-center items-center gap-2"
+          grid justify-items-center items-center gap-2"
       >
         <IonIcon
           icon={data?.svgIcon ?? informationCircleOutline}
@@ -34,23 +40,32 @@ export default function GenericDialog() {
           className="size-10 mb-3"
         />
 
-        <h2 className="my-0! mb-1! font-semibold! size-fit whitespace-pre-line">
-          {data?.title ?? ""}
-        </h2>
+        {data?.title && (
+          <h2 className="my-0! mb-1! font-semibold! size-fit whitespace-pre-line">
+            {data.title}
+          </h2>
+        )}
 
-        <p className="text-sm font-se px-4 max-h-20 text-center overflow-y-auto whitespace-pre-line">
-          {data?.content}
-        </p>
+        {data?.content && (
+          <p className="text-sm font-se px-4 max-h-20 text-center overflow-y-auto whitespace-pre-line">
+            {data.content}
+          </p>
+        )}
 
-        {data?.showBtn && (
-          <IonButton
-            size="small"
-            color={data?.btnColor ?? "primary"}
-            className="self-end w-full text-base mt-8"
-            onClick={handleClose}
-          >
-            {data?.btnText ?? "Ok"}
-          </IonButton>
+        {buttons.length > 0 && (
+          <div className="flex gap-2 w-full mt-8">
+            {buttons.map((button, index) => (
+              <IonButton
+                key={index}
+                size="small"
+                color={button.color ?? "primary"}
+                className="flex-1 text-base"
+                onClick={() => handleButtonClick(button)}
+              >
+                {button.text ?? "Ok"}
+              </IonButton>
+            ))}
+          </div>
         )}
       </div>
     </IonModal>

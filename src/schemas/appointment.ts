@@ -33,13 +33,15 @@ export const PatientBookingAppointmentResponseSchema = v.object({
   updatedAt: v.nullable(v.string()),
   treatmentCycle: v.nullable(v.unknown()),
   slot: v.nullable(v.object({ startTime: v.string(), endTime: v.string() })),
-  patient: v.object({
-    id: v.string(),
-    patientCode: v.string(),
-    fullName: v.string(),
-    phone: v.string(),
-    email: v.string(),
-  }),
+  patient: v.nullable(
+    v.object({
+      id: v.string(),
+      patientCode: v.string(),
+      fullName: v.string(),
+      phone: v.string(),
+      email: v.string(),
+    })
+  ),
   doctors: v.array(v.unknown()),
   doctorCount: v.number(),
 });
@@ -48,6 +50,10 @@ export const PatientBookingAppointmentResponseSchema = v.object({
 
 export const PatientBookingAppointmentApiResponseSchema =
   createApiResponseSchema(v.array(PatientBookingAppointmentResponseSchema));
+
+export const BookingAppointmentApiResponseSchema = createApiResponseSchema(
+  PatientBookingAppointmentResponseSchema
+);
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -63,4 +69,8 @@ export type PatientBookingAppointmentResponse = v.InferOutput<
 >;
 export type PatientBookingAppointmentApiResponse = v.InferOutput<
   typeof PatientBookingAppointmentApiResponseSchema
+>;
+
+export type BookingAppointmentApiResponse = v.InferOutput<
+  typeof BookingAppointmentApiResponseSchema
 >;
