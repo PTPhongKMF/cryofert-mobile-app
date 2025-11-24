@@ -52,9 +52,7 @@ export default function TreatmentHistory() {
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
 
-        {!treatmentQuery.isLoading &&
-        treatmentQuery.isSuccess &&
-        treatments.length === 0 ? (
+        {treatmentQuery.isSuccess && treatments.length === 0 ? (
           <div className="flex justify-center items-center py-8 italic text-gray-500">
             No treatments found.
           </div>

@@ -85,6 +85,29 @@
   }
 }
 
+@layer components {
+  .animate-scan {
+    animation: scan 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+}
+
+@keyframes scan {
+  0% {
+    top: -30%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 110%;
+    opacity: 0;
+  }
+}
+
 @utility ion-w-fit {
   --width: fit-content;
 }
@@ -239,6 +262,65 @@
   --padding-end: --value([length]);
   --padding-bottom: --value([length]);
   --padding-start: --value([length]);
+}
+
+@utility ion-inner-ps {
+  --inner-padding-start: 2rem;
+}
+@utility ion-inner-ps-* {
+  --inner-padding-start: --value([length]);
+}
+
+@utility ion-inner-pe {
+  --inner-padding-end: 2rem;
+}
+@utility ion-inner-pe-* {
+  --inner-padding-end: --value([length]);
+}
+
+@utility ion-inner-pt {
+  --inner-padding-top: 2rem;
+}
+@utility ion-inner-pt-* {
+  --inner-padding-top: --value([length]);
+}
+
+@utility ion-inner-pb {
+  --inner-padding-bottom: 2rem;
+}
+@utility ion-inner-pb-* {
+  --inner-padding-bottom: --value([length]);
+}
+
+@utility ion-inner-px {
+  --inner-padding-start: 2rem;
+  --inner-padding-end: 2rem;
+}
+@utility ion-inner-px-* {
+  --inner-padding-start: --value([length]);
+  --inner-padding-end: --value([length]);
+}
+
+@utility ion-inner-py {
+  --inner-padding-top: 2rem;
+  --inner-padding-bottom: 2rem;
+}
+@utility ion-inner-py-* {
+  --inner-padding-top: --value([length]);
+  --inner-padding-bottom: --value([length]);
+}
+
+@utility ion-inner-p {
+  --inner-padding-top: 2rem;
+  --inner-padding-end: 2rem;
+  --inner-padding-bottom: 2rem;
+  --inner-padding-start: 2rem;
+}
+@utility ion-inner-p-* {
+  --inner-padding-top: --value([length]);
+  --inner-padding-end: --value([length]);
+  --inner-padding-bottom: --value([length]);
+  --inner-padding-start: --value([length]);
 }
 
 @utility ion-spinner-c-* {

@@ -1,6 +1,14 @@
 import { createApiResponseSchema } from "@src/schemas/api-response";
 import * as v from "valibot";
 
+const transactionType = v.picklist(["Payment", "Refund", "Adjustment"]);
+const transactionStatus = v.picklist([
+  "Pending",
+  "Completed",
+  "Failed",
+  "Cancelled",
+]);
+
 export const CreateTransactionRequestSchema = v.object({
   relatedEntityType: v.union([
     v.literal("ServiceRequest"),
@@ -11,17 +19,15 @@ export const CreateTransactionRequestSchema = v.object({
   patientId: v.pipe(v.string(), v.nonEmpty()),
 });
 
-///////////////////////////////////////////////////////////////////////
-
-const TransactionResponseSchema = v.object({
+export const TransactionResponseSchema = v.object({
   id: v.string(),
   transactionCode: v.string(),
   paymentUrl: v.string(),
-  transactionType: v.string(),
+  transactionType: transactionType,
   amount: v.number(),
   currency: v.string(),
   transactionDate: v.string(),
-  status: v.string(),
+  status: transactionStatus,
   paymentMethod: v.string(),
   paymentGateway: v.string(),
   referenceNumber: v.string(),

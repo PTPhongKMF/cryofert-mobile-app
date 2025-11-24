@@ -1,18 +1,18 @@
-import { IonContent, IonImg } from "@ionic/react";
+import { IonContent } from "@ionic/react";
 import BgImgMedical from "@assets/images/bg-login.jpg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SafeAreaView from "@src/components/SafeAreaView";
 import LoginForm from "@src/components/landing-auth-tabs/LoginForm";
 import RegisterForm from "@src/components/landing-auth-tabs/RegisterForm";
-import { useLocation, useParams } from "react-router";
+import { useLocation } from "react-router";
 
-export default function Auth() {
+export default function LandingAuth() {
   const authPage = new URLSearchParams(useLocation().search).get("authPage");
 
   return (
     <IonContent fullscreen>
       <SafeAreaView className="grid grid-rows-[12rem_1fr] grid-cols-1 bg-sky-50">
-        <IonImg src={BgImgMedical} className="object-cover w-full h-[14rem]" />
+        <img src={BgImgMedical} className="object-cover w-full h-[14rem]" />
 
         <div
           className="bg-sky-50 flex flex-col justify-start

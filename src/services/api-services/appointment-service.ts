@@ -19,7 +19,7 @@ export async function createBookingAppointmentMutationFn(
         appointmentDate: format(req.appointmentDate, "YYYY-MM-DD"),
         slotId: req.slotId,
         type: req.type,
-        notes: req.notes,
+        // notes: req.notes,
       },
     })
     .json();
@@ -34,7 +34,7 @@ export async function patientBookingHistoryQueryFn(params: {
   pageParam: number;
 }): Promise<PatientBookingAppointmentApiResponse> {
   const res = await httpClient
-    .get(`api/appointment/patient/${params.patientId}/booking`, {
+    .get(`api/appointment/patient/${params.patientId}/history`, {
       searchParams: {
         type: "Booking",
         page: params.pageParam,

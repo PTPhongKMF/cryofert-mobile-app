@@ -20,6 +20,10 @@ import {
   fileTrayFull,
   home,
   personCircle,
+  server,
+  serverOutline,
+  snow,
+  snowOutline,
 } from "ionicons/icons";
 import { useEffect } from "react";
 import { useLocalUserStore } from "@src/stores/user";
@@ -28,6 +32,7 @@ import { ClipboardPlus, Stethoscope } from "lucide-react";
 import Dev from "@src/pages/devs/Dev";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import AppHome from "@src/pages/AppHome";
+import CryoStorage from "@src/pages/CryoStorage";
 
 export default function AppTabRoutes() {
   const router = useIonRouter();
@@ -72,6 +77,7 @@ export default function AppTabRoutes() {
       <IonRouterOutlet>
         <Route exact path={ROUTES.T_HOME} component={AppHome} />
         <Route exact path={ROUTES.T_HISTORY} component={History} />
+        <Route exact path={ROUTES.T_CRYO} component={CryoStorage} />
         <Route exact path={ROUTES.T_ACCOUNT} component={Account} />
         <Route exact path={"/tabs/dev"} component={Dev} />
       </IonRouterOutlet>
@@ -85,6 +91,15 @@ export default function AppTabRoutes() {
         <IonTabButton tab="history" href={ROUTES.T_HISTORY}>
           <IonIcon icon={fileTrayFull} className="size-6" />
           <IonLabel className="text-xs">History</IonLabel>
+        </IonTabButton>
+
+        <IonTabButton tab="cryo" href={ROUTES.T_CRYO}>
+          <IonIcon icon={serverOutline} className="size-6" />
+          <IonIcon
+            icon={snow}
+            className="size-5 absolute bottom-[43%] right-[7%]"
+          />
+          <IonLabel className="text-xs">Cryo</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="account" href={ROUTES.T_ACCOUNT}>

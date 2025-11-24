@@ -1,5 +1,6 @@
 import { createApiResponseSchema } from "@src/schemas/api-response";
 import * as v from "valibot";
+import { AgreementResponseSchema } from "@src/schemas/agreement";
 
 const TreatmentResponseSchema = v.object({
   id: v.string(),
@@ -89,6 +90,7 @@ const BaseTreatmentDetailFields = {
   actualCost: v.nullable(v.number()),
   createdAt: v.string(),
   updatedAt: v.nullable(v.string()),
+  agreements: v.array(AgreementResponseSchema),
 };
 
 export const TreatmentDetailSchema = v.variant("treatmentType", [
@@ -102,14 +104,11 @@ export const TreatmentDetailSchema = v.variant("treatmentType", [
     treatmentType: v.literal("IUI"),
     iui: IuiSchema,
   }),
-  v.object({
-    ...BaseTreatmentDetailFields,
-    treatmentType: v.string(),
-  }),
 ]);
 
-export const TreatmentDetailApiResponseSchema =
-  createApiResponseSchema(TreatmentDetailSchema);
+export const TreatmentDetailApiResponseSchema = createApiResponseSchema(
+  TreatmentDetailSchema
+);
 
 ////////////////////////////////////////////////////////
 
