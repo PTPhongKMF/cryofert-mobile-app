@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.3.0...v0.4.0) (2025-11-25)
+
+
+### Features
+
+* add cycles view on treatment detail ([#9](https://github.com/PTPhongKMF/cryofert-mobile-app/issues/9)) ([517da28](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/517da284b2098cbdb7bbba98e58af6314ee824f3))
+* add error modal on refresh fail ([#8](https://github.com/PTPhongKMF/cryofert-mobile-app/issues/8)) ([8c44de1](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/8c44de1c86182ff6cbc806ed1461d7a124757035))
+* add vnpay payment portal ([e34aefe](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/e34aefece4eebdcfd9f49986a334a7b3f13ac6a8))
+
 ## [0.3.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.2.0...v0.3.0) (2025-11-17)
 
 
