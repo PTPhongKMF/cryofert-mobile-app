@@ -135,12 +135,24 @@ export default function DateFirst({ bookingForm, slotList }: DateFirstProps) {
         )}
       />
 
-      {bookingForm.watch("appointmentDate") && bookingForm.watch("slotId") && (
-        <div className="w-full h-full flex flex-col justify-center items-start gap-2">
+      <div className="w-full h-fit flex flex-col justify-center items-start gap-2">
+        <div className="w-full relative">
           <div
-            onClick={() => doctorSheet.current?.click()}
-            className="flex justify-between items-center w-full h-12
-                            bg-neutral-50 py-2 rounded-md px-2"
+            onClick={() => {
+              if (
+                bookingForm.watch("appointmentDate") &&
+                bookingForm.watch("slotId") &&
+                !doctorQuery.isFetching
+              ) {
+                doctorSheet.current?.click();
+              }
+            }}
+            className={cn(
+              "flex justify-between items-center w-full h-12 bg-neutral-50 py-2 rounded-md px-2",
+              (!bookingForm.watch("appointmentDate") ||
+                !bookingForm.watch("slotId")) &&
+                "opacity-50"
+            )}
           >
             <label className="">Doctor</label>
 
@@ -148,7 +160,11 @@ export default function DateFirst({ bookingForm, slotList }: DateFirstProps) {
               id="doctor-sheet"
               ref={doctorSheet}
               size="small"
-              disabled={doctorQuery.isFetching}
+              disabled={
+                !bookingForm.watch("appointmentDate") ||
+                !bookingForm.watch("slotId") ||
+                doctorQuery.isFetching
+              }
               className="normal-case ion-box-shadow-[0] ion-bg-[#edeef0]! text-gray-900"
             >
               {doctorQuery.isFetching ? (
@@ -159,114 +175,137 @@ export default function DateFirst({ bookingForm, slotList }: DateFirstProps) {
             </IonButton>
           </div>
 
-          <IonNote className="ps-1">Select a Doctor.</IonNote>
+          {(() => {
+            const hasDate = !!bookingForm.watch("appointmentDate");
+            const hasSlot = !!bookingForm.watch("slotId");
+            const isQueryEnabled = hasDate && hasSlot;
+            const shouldShowOverlay =
+              !hasDate || !hasSlot || (isQueryEnabled && doctorQuery.isFetching);
+            const shouldShowSpinner = isQueryEnabled && doctorQuery.isFetching;
 
-          <IonModal
-            trigger="doctor-sheet"
-            ref={doctorModal}
-            initialBreakpoint={0.5}
-            breakpoints={[0, 0.25, 0.5, 0.75]}
-          >
-            <IonHeader>
-              <IonToolbar className="pt-2!">
-                <IonSearchbar
-                  showClearButton="always"
-                  debounce={300}
-                  value={searchTerm}
-                  onIonInput={(e) => setSearchTerm(e.target.value ?? "")}
-                  className="ion-box-shadow-[0]! ion-bg-neutral-100! ion-b-r-[6px]! pt-2"
-                />
-              </IonToolbar>
-            </IonHeader>
-            <IonContent>
-              <IonList className="mt-4!">
-                {doctorQuery.isPending && (
-                  <div className="flex justify-center py-4">
-                    <IonSpinner color="primary" />
-                  </div>
+            return shouldShowOverlay ? (
+              <div
+                className={cn(
+                  "absolute inset-0 bg-gray-200/60 rounded-md flex items-center justify-center z-10",
+                  shouldShowSpinner && "bg-gray-300/70"
+                )}
+                style={{ pointerEvents: "auto" }}
+              >
+                {shouldShowSpinner && (
+                  <IonSpinner color="primary" className="z-20" />
+                )}
+              </div>
+            ) : null;
+          })()}
+        </div>
+
+        <IonNote className="ps-1">Select a Doctor.</IonNote>
+
+        <IonModal
+          trigger="doctor-sheet"
+          ref={doctorModal}
+          initialBreakpoint={0.5}
+          breakpoints={[0, 0.25, 0.5, 0.75]}
+        >
+          <IonHeader>
+            <IonToolbar className="pt-2!">
+              <IonSearchbar
+                showClearButton="always"
+                debounce={300}
+                value={searchTerm}
+                onIonInput={(e) => setSearchTerm(e.target.value ?? "")}
+                className="ion-box-shadow-[0]! ion-bg-neutral-100! ion-b-r-[6px]! pt-2"
+              />
+            </IonToolbar>
+          </IonHeader>
+          <IonContent>
+            <IonList className="mt-4!">
+              {doctorQuery.isPending && (
+                <div className="flex justify-center py-4">
+                  <IonSpinner color="primary" />
+                </div>
+              )}
+
+              {!doctorQuery.isLoading &&
+                doctorQuery.isSuccess &&
+                doctors.length === 0 && (
+                  <IonNote className="flex justify-center py-6 text-sm text-gray-500">
+                    No doctors found.
+                  </IonNote>
                 )}
 
-                {!doctorQuery.isLoading &&
-                  doctorQuery.isSuccess &&
-                  doctors.length === 0 && (
-                    <IonNote className="flex justify-center py-6 text-sm text-gray-500">
-                      No doctors found.
-                    </IonNote>
-                  )}
+              {doctors.length > 0 && (
+                <>
+                  <IonItem
+                    button
+                    detail={false}
+                    onClick={() => {
+                      setDoctorName("Let us decide");
+                      bookingForm.setValue("doctorIds", "");
+                      doctorModal.current?.dismiss();
+                    }}
+                    className=" ion-bg-blue-100! mb-2!"
+                  >
+                    <p className="w-full font-semibold text-base h-20 flex justify-center items-center gap-3">
+                      <IonIcon icon={checkboxOutline} className="size-6" />
+                      Let us decide
+                    </p>
+                  </IonItem>
 
-                {doctors.length > 0 && (
-                  <>
+                  {doctors.map((doctor) => (
                     <IonItem
+                      key={doctor.id}
                       button
                       detail={false}
                       onClick={() => {
-                        setDoctorName("Let us decide");
-                        bookingForm.setValue("doctorIds", "");
+                        setDoctorName(doctor.account.firstName);
+                        bookingForm.setValue("doctorIds", doctor.id);
                         doctorModal.current?.dismiss();
                       }}
-                      className=" ion-bg-blue-100! mb-2!"
+                      className="ion-bg-neutral-50!"
                     >
-                      <p className="w-full font-semibold text-base h-20 flex justify-center items-center gap-3">
-                        <IonIcon icon={checkboxOutline} className="size-6" />
-                        Let us decide
-                      </p>
-                    </IonItem>
-
-                    {doctors.map((doctor) => (
-                      <IonItem
-                        key={doctor.id}
-                        button
-                        detail={false}
-                        onClick={() => {
-                          setDoctorName(doctor.account.firstName);
-                          bookingForm.setValue("doctorIds", doctor.id);
-                          doctorModal.current?.dismiss();
-                        }}
-                        className="ion-bg-neutral-50!"
-                      >
-                        <div className="flex flex-col gap-2 py-2 w-full">
-                          <div className="flex items-center justify-between">
-                            <p className="text-base font-semibold text-gray-900">
-                              {`${doctor.account.lastName} ${doctor.account.firstName}`}
-                            </p>
-                            <IonBadge color="primary" className="p-1">
-                              {doctor.badgeId}
-                            </IonBadge>
-                          </div>
-
-                          <div className="text-sm text-gray-700">
-                            {doctor.specialty}
-                            {doctor.yearsOfExperience > 0 && (
-                              <span className="text-xs text-gray-500 ml-2">
-                                · {doctor.yearsOfExperience} years experience
-                              </span>
-                            )}
-                          </div>
-
-                          <div className="text-xs text-gray-500">
-                            {doctor.certificates}
-                          </div>
-
-                          <div className="text-xs text-gray-500 flex flex-wrap gap-2">
-                            {`${doctor.account.email} | ${doctor.account.phone}`}
-                          </div>
+                      <div className="flex flex-col gap-2 py-2 w-full">
+                        <div className="flex items-center justify-between">
+                          <p className="text-base font-semibold text-gray-900">
+                            {`${doctor.account.lastName} ${doctor.account.firstName}`}
+                          </p>
+                          <IonBadge color="primary" className="p-1">
+                            {doctor.badgeId}
+                          </IonBadge>
                         </div>
-                      </IonItem>
-                    ))}
 
-                    <IonInfiniteScroll
-                      disabled={!doctorQuery.hasNextPage}
-                      onIonInfinite={handleLoadMore}
-                    >
-                      <IonInfiniteScrollContent loadingText="Loading more..." />
-                    </IonInfiniteScroll>
-                  </>
-                )}
-              </IonList>
-            </IonContent>
-          </IonModal>
-        </div>
-      )}
+                        <div className="text-sm text-gray-700">
+                          {doctor.specialty}
+                          {doctor.yearsOfExperience > 0 && (
+                            <span className="text-xs text-gray-500 ml-2">
+                              · {doctor.yearsOfExperience} years experience
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="text-xs text-gray-500">
+                          {doctor.certificates}
+                        </div>
+
+                        <div className="text-xs text-gray-500 flex flex-wrap gap-2">
+                          {`${doctor.account.email} | ${doctor.account.phone}`}
+                        </div>
+                      </div>
+                    </IonItem>
+                  ))}
+
+                  <IonInfiniteScroll
+                    disabled={!doctorQuery.hasNextPage}
+                    onIonInfinite={handleLoadMore}
+                  >
+                    <IonInfiniteScrollContent loadingText="Loading more..." />
+                  </IonInfiniteScroll>
+                </>
+              )}
+            </IonList>
+          </IonContent>
+        </IonModal>
+      </div>
     </>
   );
 }

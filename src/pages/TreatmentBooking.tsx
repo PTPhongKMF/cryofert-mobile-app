@@ -60,7 +60,7 @@ export default function TreatmentBooking() {
       doctorIds: "",
       appointmentDate: addDay(new Date(), 1).toISOString(),
       slotId: "",
-      notes: "",
+      // notes: "",
     },
     reValidateMode: "onSubmit",
     resolver: valibotResolver(BookAppointmentFormSchema),
@@ -104,11 +104,11 @@ export default function TreatmentBooking() {
           buttons: [
             {
               text: "Pay later",
+              color: "medium",
               closeFn: () => router.goBack(),
             },
             {
               text: "Pay now",
-              color: "success",
               closeFn: () => {
                 router.push(
                   `${ROUTES.PAYMENT_PORTAL}?relatedEntityType=Appointment&relatedEntityId=${data.data.id}`,
@@ -179,9 +179,10 @@ export default function TreatmentBooking() {
                   checked={formType === "doctor-first"}
                   onChange={() => {
                     setFormType("doctor-first");
-                    bookingForm.reset({
-                      notes: bookingForm.getValues("notes"),
-                    });
+                    bookingForm.reset()
+                    // bookingForm.reset({
+                    //   notes: bookingForm.getValues("notes"),
+                    // });
                   }}
                   className="appearance-none"
                 />
@@ -202,9 +203,10 @@ export default function TreatmentBooking() {
                   checked={formType === "date-first"}
                   onChange={() => {
                     setFormType("date-first");
-                    bookingForm.reset({
-                      notes: bookingForm.getValues("notes"),
-                    });
+                    bookingForm.reset()
+                    // bookingForm.reset({
+                    //   notes: bookingForm.getValues("notes"),
+                    // });
                   }}
                   className="appearance-none"
                 />
@@ -226,7 +228,7 @@ export default function TreatmentBooking() {
               />
             )}
 
-            <Controller
+            {/* <Controller
               name="notes"
               control={bookingForm.control}
               render={(note) => (
@@ -247,7 +249,7 @@ export default function TreatmentBooking() {
                   <IonNote className="ps-1">Additional information.</IonNote>
                 </div>
               )}
-            />
+            /> */}
           </form>
         </div>
       </IonContent>

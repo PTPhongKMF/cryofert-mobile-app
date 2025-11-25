@@ -48,7 +48,8 @@ export default function PaymentPortal() {
   const VnPayPayment = useVnPayPayment({
     onSuccess: (transactionCode) => {
       openGenericDialog({
-        title: `Payment ${transactionCode} Successful`,
+        title: "Payment Successful",
+        content: transactionCode,
         svgIcon: checkmarkCircleOutline,
         svgIconColor: "success",
         backdropDismiss: false,
@@ -80,7 +81,7 @@ export default function PaymentPortal() {
         router.push(ROUTES.T_HOME, "back");
       }
     }
-  }, [relatedEntityType, router, relatedEntityId]);
+  }, []);
 
   useEffect(() => {
     if (VnPayPayment.isPaymentInProgress) {
@@ -99,14 +100,17 @@ export default function PaymentPortal() {
 
     if (!res.success) {
       openGenericDialog({
-        title: "Something wrong",
+        title: "Something went wrong",
         svgIcon: alertCircleOutline,
         svgIconColor: "danger",
         backdropDismiss: true,
         buttons: {
           text: "Ok",
           color: "danger",
-          closeFn: () => router.goBack(),
+          closeFn: () =>
+            router.canGoBack()
+              ? router.goBack()
+              : router.push(ROUTES.T_HOME, "back", "replace"),
         },
       });
     } else {
@@ -119,7 +123,7 @@ export default function PaymentPortal() {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton />
+            <IonBackButton defaultHref={ROUTES.T_HOME} />
           </IonButtons>
           <IonTitle>Payment Portal</IonTitle>
         </IonToolbar>

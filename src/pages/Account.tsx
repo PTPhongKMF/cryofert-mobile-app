@@ -92,15 +92,19 @@ export default function Account() {
               openGenericDialog({
                 svgIcon: alertCircleOutline,
                 svgIconColor: "danger",
-                content:
-                  "Are you sure you want to log out? \n (tap outside to close the modal)",
-                buttons: {
-                  text: "Confirm",
-                  color: "danger",
-                  closeFn: () => {
-                    router.push(ROUTES.L_AUTH);
+                content: "Are you sure you want to log out?",
+                buttons: [
+                  {
+                    text: "Cancel",
                   },
-                },
+                  {
+                    text: "Confirm",
+                    color: "danger",
+                    closeFn: () => {
+                      router.push(ROUTES.L_AUTH);
+                    },
+                  },
+                ],
               })
             }
             className="w-full grid justify-end mt-2 pe-2"

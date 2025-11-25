@@ -20,7 +20,7 @@ export default function SafeAreaView({
 }: SafeAreaViewProps) {
   return (
     <div
-      className={`h-full
+      className={`min-h-full
     pt-[var(--ion-safe-area-top)] pr-[var(--ion-safe-area-right)] pb-[var(--ion-safe-area-bottom)] pl-[var(--ion-safe-area-left)]
     ${className}`}
       {...props}

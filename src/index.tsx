@@ -8,7 +8,13 @@ import "swiper/css";
 const container = document.getElementById("root");
 const root = createRoot(container!);
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 1000 * 60 * 60 * 24,
+    },
+  },
+});
 
 root.render(
   <React.StrictMode>

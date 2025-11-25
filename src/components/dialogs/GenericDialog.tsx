@@ -28,7 +28,7 @@ export default function GenericDialog() {
       isOpen={isOpen}
       onDidDismiss={closeGenericDialog}
       backdropDismiss={data?.backdropDismiss ?? true}
-      className="ion-w-fit ion-h-fit ion-b-r-[10px] ion-box-shadow"
+      className="ion-w-fit ion-h-fit ion-b-r-[10px]! ion-box-shadow! bg-black/40!"
     >
       <div
         className="size-full p-4 w-[80vw] max-h-[50vh] auto-rows-min
@@ -41,13 +41,13 @@ export default function GenericDialog() {
         />
 
         {data?.title && (
-          <h2 className="my-0! mb-1! font-semibold! size-fit whitespace-pre-line">
+          <h2 className="my-0! mb-1! font-semibold! h-fit w-full text-center whitespace-pre-line">
             {data.title}
           </h2>
         )}
 
         {data?.content && (
-          <p className="text-sm font-se px-4 max-h-20 text-center overflow-y-auto whitespace-pre-line">
+          <p className="text-sm font-se px-4 max-h-20 h-fit w-full text-center overflow-y-auto! whitespace-pre-line">
             {data.content}
           </p>
         )}

@@ -1,11 +1,12 @@
 import { createApiResponseSchema } from "@src/schemas/api-response";
+import { TransactionResponseSchema } from "@src/schemas/transaction";
 import * as v from "valibot";
 
 export const BookAppointmentFormSchema = v.object({
   doctorIds: v.string(),
   appointmentDate: v.pipe(v.string(), v.nonEmpty("Required")),
   slotId: v.pipe(v.string(), v.nonEmpty("Required")),
-  notes: v.string(),
+  // notes: v.string(),
 });
 
 export const BookAppointmentRequestSchema = v.object({
@@ -44,6 +45,7 @@ export const PatientBookingAppointmentResponseSchema = v.object({
   ),
   doctors: v.array(v.unknown()),
   doctorCount: v.number(),
+  transactions: v.array(TransactionResponseSchema),
 });
 
 ///////////////////////////////////////////////////////////////////////

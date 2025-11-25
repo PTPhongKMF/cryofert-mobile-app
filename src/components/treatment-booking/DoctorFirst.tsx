@@ -70,6 +70,11 @@ export default function DoctorFirst({
   }
 
   function handleIsDateAvaiable(date: string) {
+    const dayOfWeek = new Date(date).getUTCDay();
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      return false;
+    }
+
     const fmtDate = format(date, "YYYY-MM-DD");
 
     const match = doctorScheduleBusyQuery.data?.data.scheduleByDate.find(
@@ -213,94 +218,161 @@ export default function DoctorFirst({
         </IonModal>
       </div>
 
-      {watchedDoctorId &&
-        (doctorScheduleBusyQuery.isLoading ? (
-          <IonSpinner />
-        ) : (
-          <>
-            <Controller
-              name="appointmentDate"
-              control={bookingForm.control}
-              render={(appointmentDate) => (
-                <div className="w-full h-fit flex flex-col justify-center items-start gap-2">
-                  <div
-                    onClick={() => appointmentDateModal.current?.present()}
-                    className="flex justify-between items-center w-full
-                  bg-neutral-50 py-2 rounded-md px-2"
-                  >
-                    <label className="">Date</label>
+      <div className="w-full h-fit flex flex-col justify-center items-start gap-2">
+        <Controller
+          name="appointmentDate"
+          control={bookingForm.control}
+          render={(appointmentDate) => (
+            <div className="w-full h-fit flex flex-col justify-center items-start gap-2">
+              <div className="w-full relative">
+                <div
+                  onClick={() => {
+                    if (
+                      watchedDoctorId &&
+                      !doctorScheduleBusyQuery.isLoading &&
+                      !doctorScheduleBusyQuery.isFetching
+                    ) {
+                      appointmentDateModal.current?.present();
+                    }
+                  }}
+                  className={cn(
+                    "flex justify-between items-center w-full bg-neutral-50 py-2 rounded-md px-2",
+                    !watchedDoctorId && "opacity-50"
+                  )}
+                >
+                  <label className="">Date</label>
 
-                    <IonDatetimeButton
-                      disabled={doctorScheduleBusyQuery.isFetching}
-                      datetime="appointment-date"
-                      className="self-center"
-                    ></IonDatetimeButton>
-                  </div>
-
-                  <IonNote className="ps-1">
-                    Select a desired date for your appointment.
-                  </IonNote>
-
-                  <IonModal
-                    keepContentsMounted
-                    initialBreakpoint={1}
-                    breakpoints={[0, 0.5, 1]}
-                    ref={appointmentDateModal}
-                    className="ion-w-[100%]!"
-                  >
-                    <IonDatetime
-                      id="appointment-date"
-                      presentation="date"
-                      min={bookingForm.formState.defaultValues?.appointmentDate}
-                      isDateEnabled={handleIsDateAvaiable}
-                      showAdjacentDays
-                      value={appointmentDate.field.value}
-                      onIonChange={appointmentDate.field.onChange}
-                      onIonBlur={appointmentDate.field.onBlur}
-                      ref={appointmentDate.field.ref}
-                      className="bg-transparent! ion-wheel-fade-bg-rgb-white mx-auto w-full my-8"
-                    />
-                  </IonModal>
+                  <IonDatetimeButton
+                    disabled={
+                      !watchedDoctorId ||
+                      doctorScheduleBusyQuery.isFetching ||
+                      doctorScheduleBusyQuery.isLoading
+                    }
+                    datetime="appointment-date"
+                    className="self-center"
+                  ></IonDatetimeButton>
                 </div>
-              )}
-            />
 
-            <Controller
-              name="slotId"
-              control={bookingForm.control}
-              render={(slotId) => (
-                <div className="w-full h-fit flex flex-col justify-center items-start gap-2">
-                  <IonSelect
-                    label="Slot (time)"
-                    placeholder="Select a slot"
-                    interface="popover"
-                    errorText={slotId.fieldState.error?.message}
-                    value={slotId.field.value}
-                    onIonChange={slotId.field.onChange}
-                    onIonBlur={slotId.field.onBlur}
-                    ref={slotId.field.ref}
-                    className={cn(
-                      "ion-bg-neutral-50! ion-px-[0.5rem]!",
-                      slotId.fieldState.error && "ion-invalid ion-touched"
-                    )}
-                  >
-                    {slotList.map((slot) => (
-                      <IonSelectOption
-                        key={slot.id}
-                        value={slot.id}
-                        disabled={handleIsSlotDisable(slot.id)}
-                      >
-                        {slot.startTime} - {slot.endTime}
-                      </IonSelectOption>
-                    ))}
-                  </IonSelect>
+                {(() => {
+                  const isQueryEnabled = !!watchedDoctorId;
+                  const isLoading =
+                    isQueryEnabled &&
+                    (doctorScheduleBusyQuery.isLoading ||
+                      doctorScheduleBusyQuery.isFetching);
+                  const shouldShowOverlay = !watchedDoctorId || isLoading;
 
-                  <IonNote className="ps-1">Slot.</IonNote>
-                </div>
-              )}
-            />
-          </>
-        ))}
+                  return shouldShowOverlay ? (
+                    <div
+                      className={cn(
+                        "absolute inset-0 bg-gray-200/60 rounded-md flex items-center justify-center z-10",
+                        isLoading && "bg-gray-300/70"
+                      )}
+                      style={{ pointerEvents: "auto" }}
+                    >
+                      {isLoading && (
+                        <IonSpinner color="primary" className="z-20" />
+                      )}
+                    </div>
+                  ) : null;
+                })()}
+              </div>
+
+              <IonNote className="ps-1">
+                Select a desired date for your appointment.
+              </IonNote>
+
+              <IonModal
+                keepContentsMounted
+                initialBreakpoint={1}
+                breakpoints={[0, 0.5, 1]}
+                ref={appointmentDateModal}
+                className="ion-w-[100%]!"
+              >
+                <IonDatetime
+                  id="appointment-date"
+                  presentation="date"
+                  min={bookingForm.formState.defaultValues?.appointmentDate}
+                  isDateEnabled={
+                    watchedDoctorId ? handleIsDateAvaiable : undefined
+                  }
+                  showAdjacentDays
+                  value={appointmentDate.field.value}
+                  onIonChange={appointmentDate.field.onChange}
+                  onIonBlur={appointmentDate.field.onBlur}
+                  ref={appointmentDate.field.ref}
+                  className="bg-transparent! ion-wheel-fade-bg-rgb-white mx-auto w-full my-8"
+                />
+              </IonModal>
+            </div>
+          )}
+        />
+
+        <Controller
+          name="slotId"
+          control={bookingForm.control}
+          render={(slotId) => (
+            <div className="w-full h-fit flex flex-col justify-center items-start gap-2">
+              <div className="w-full relative">
+                <IonSelect
+                  label="Slot (time)"
+                  placeholder="Select a slot"
+                  interface="popover"
+                  disabled={
+                    !watchedDoctorId ||
+                    doctorScheduleBusyQuery.isLoading ||
+                    doctorScheduleBusyQuery.isFetching
+                  }
+                  errorText={slotId.fieldState.error?.message}
+                  value={slotId.field.value}
+                  onIonChange={slotId.field.onChange}
+                  onIonBlur={slotId.field.onBlur}
+                  ref={slotId.field.ref}
+                  className={cn(
+                    "ion-bg-neutral-50! ion-px-[0.5rem]!",
+                    slotId.fieldState.error && "ion-invalid ion-touched",
+                    !watchedDoctorId && "opacity-50"
+                  )}
+                >
+                  {slotList.map((slot) => (
+                    <IonSelectOption
+                      key={slot.id}
+                      value={slot.id}
+                      disabled={handleIsSlotDisable(slot.id)}
+                    >
+                      {slot.startTime} - {slot.endTime}
+                    </IonSelectOption>
+                  ))}
+                </IonSelect>
+
+                {(() => {
+                  const isQueryEnabled = !!watchedDoctorId;
+                  const isLoading =
+                    isQueryEnabled &&
+                    (doctorScheduleBusyQuery.isLoading ||
+                      doctorScheduleBusyQuery.isFetching);
+                  const shouldShowOverlay = !watchedDoctorId || isLoading;
+
+                  return shouldShowOverlay ? (
+                    <div
+                      className={cn(
+                        "absolute inset-0 bg-gray-200/60 rounded-md flex items-center justify-center z-10",
+                        isLoading && "bg-gray-300/70"
+                      )}
+                      style={{ pointerEvents: "auto" }}
+                    >
+                      {isLoading && (
+                        <IonSpinner color="primary" className="z-20" />
+                      )}
+                    </div>
+                  ) : null;
+                })()}
+              </div>
+
+              <IonNote className="ps-1">Slot.</IonNote>
+            </div>
+          )}
+        />
+      </div>
     </>
   );
 }

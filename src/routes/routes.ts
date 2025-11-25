@@ -22,5 +22,6 @@ export const ROUTES = {
   T_HOME: `${BASE.TABS}/home`,
   T_SERVICE: `${BASE.TABS}/service`,
   T_HISTORY: `${BASE.TABS}/history`,
+  T_CRYO: `${BASE.TABS}/cryo`,
   T_ACCOUNT: `${BASE.TABS}/account`,
 } as const;

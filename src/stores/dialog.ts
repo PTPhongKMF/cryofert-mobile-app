@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export type ButtonType = {
   text?: string;
-  color?: "primary" | "success" | "warning" | "danger";
+  color?: "primary" | "success" | "warning" | "danger" | "medium";
   closeFn?: () => void;
 };
 

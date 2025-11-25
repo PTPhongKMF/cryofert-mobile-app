@@ -23,12 +23,12 @@ export default function SplashScreen() {
         router.push(ROUTES.L_HOME, "none");
       }
     })();
-  }, [hasHydrated]);
+  }, [hasHydrated, router, localUser]);
 
   return (
     <IonPage>
       <IonContent fullscreen>
-        <SafeAreaView className="relative bg-gradient-to-br from-blue-300 via-blue-200 to-blue-300">
+        <SafeAreaView className="relative h-full! bg-gradient-to-br from-blue-300 via-blue-200 to-blue-300">
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
             viewBox="0 0 200 200"
