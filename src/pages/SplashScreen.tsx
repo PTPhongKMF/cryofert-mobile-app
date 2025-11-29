@@ -3,14 +3,20 @@ import SafeAreaView from "@src/components/SafeAreaView";
 import { ROUTES } from "@src/routes/routes";
 import { useLocalUserStore } from "@src/stores/user";
 import { useEffect } from "react";
+import { useLocation } from "react-router";
 
 export default function SplashScreen() {
   const router = useIonRouter();
+  const location = useLocation();
   const localUser = useLocalUserStore((s) => s.localUser);
   const hasHydrated = useLocalUserStore((s) => s.hasHydrated);
 
   useEffect(() => {
     if (!hasHydrated) {
+      return;
+    }
+
+    if (location.pathname !== ROUTES.ROOT) {
       return;
     }
 
@@ -23,7 +29,7 @@ export default function SplashScreen() {
         router.push(ROUTES.L_HOME, "none");
       }
     })();
-  }, [hasHydrated, router, localUser]);
+  }, [hasHydrated]);
 
   return (
     <IonPage>

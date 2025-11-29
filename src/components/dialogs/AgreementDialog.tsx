@@ -29,6 +29,7 @@ interface AgreementDialogProps {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   agreement: AgreementResponse | null;
+  onAgreementSigned?: () => void;
 }
 
 const LOADER_KEY = "agreement-sign";
@@ -127,6 +128,7 @@ export default function AgreementDialog(props: AgreementDialogProps) {
                 closeFn: () => {
                   setOtpIsOpen(false);
                   props.setIsOpen(false);
+                  props.onAgreementSigned?.();
                 },
               },
             });

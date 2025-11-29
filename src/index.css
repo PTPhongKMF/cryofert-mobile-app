@@ -76,35 +76,33 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+@theme {
+  --animate-scan: scan 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+
+  @keyframes scan {
+    0% {
+      top: -30%;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      top: 110%;
+      opacity: 0;
+    }
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
-  }
-}
-
-@layer components {
-  .animate-scan {
-    animation: scan 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  }
-}
-
-@keyframes scan {
-  0% {
-    top: -30%;
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    top: 110%;
-    opacity: 0;
   }
 }
 

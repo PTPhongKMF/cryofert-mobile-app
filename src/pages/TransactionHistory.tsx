@@ -132,7 +132,10 @@ export default function TransactionHistory() {
                     disabled={!transactionQuery.hasNextPage}
                     onIonInfinite={handleLoadMore}
                   >
-                    <IonInfiniteScrollContent loadingText="Loading more..." />
+                    <IonInfiniteScrollContent
+                      loadingText="Loading more..."
+                      className="mt-8"
+                    />
                   </IonInfiniteScroll>
                 </>
               )}

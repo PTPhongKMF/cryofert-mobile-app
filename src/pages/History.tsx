@@ -1,10 +1,13 @@
 import {
   IonContent,
+  IonHeader,
   IonLabel,
   IonSegment,
   IonSegmentButton,
+  IonToolbar,
   useIonRouter,
 } from "@ionic/react";
+import AppTabHeader from "@src/components/AppTabHeader";
 import SafeAreaView from "@src/components/SafeAreaView";
 import BlueToGrayGradientBg from "@src/components/backgrounds/BlueToGrayGradientBg";
 import AppointmentHistory from "@src/components/history-tab/AppointmentHistory";
@@ -18,7 +21,7 @@ export default function History() {
 
   function getSegmentFromUrl(search: string) {
     const params = new URLSearchParams(search);
-    const segmentParam = params.get("segment");
+    const segmentParam = params.get("history-segment");
     return segmentParam === "treatment" ? "treatment" : "appointments";
   }
 
@@ -41,16 +44,16 @@ export default function History() {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const currentUrlSegment = params.get("segment");
+    const currentUrlSegment = params.get("history-segment");
     const expectedUrlSegment = segment === "appointments" ? null : segment;
 
     if (currentUrlSegment !== expectedUrlSegment) {
       setIsUpdatingFromUrl(true);
 
       if (segment === "appointments") {
-        params.delete("segment");
+        params.delete("history-segment");
       } else {
-        params.set("segment", segment);
+        params.set("history-segment", segment);
       }
 
       const newSearch = params.toString();
@@ -60,20 +63,22 @@ export default function History() {
   }, [segment, location.pathname, location.search, router]);
 
   return (
-    <IonContent className="relative">
-      <BlueToGrayGradientBg />
-      <SafeAreaView className="relative">
-        <div className="pt-6">
-          <h1 className="text-xl! font-semibold! text-blue-500 p-0! m-0! mb-4! px-4!">
-            History
-          </h1>
+    <>
+      <AppTabHeader />
 
+      <IonContent scrollY={false} className="relative">
+        <BlueToGrayGradientBg />
+        <SafeAreaView
+          withFixedHeader={true}
+          className="relative flex flex-col h-full"
+        >
           <IonSegment
             value={segment}
             onIonChange={(e) => {
               const newSegment = e.detail.value?.toString() ?? "appointments";
               setSegment(newSegment);
             }}
+            className="shrink-0"
           >
             <IonSegmentButton value="appointments">
               <IonLabel>Appointments</IonLabel>
@@ -83,7 +88,7 @@ export default function History() {
             </IonSegmentButton>
           </IonSegment>
 
-          <div className="size-full px-4 mt-8">
+          <div className="flex-1 min-h-0 overflow-y-auto px-4 ion-content-scroll-host">
             {segment === "appointments" ? (
               <AppointmentHistory />
             ) : segment === "treatment" ? (
@@ -92,8 +97,8 @@ export default function History() {
               <AppointmentHistory />
             )}
           </div>
-        </div>
-      </SafeAreaView>
-    </IonContent>
+        </SafeAreaView>
+      </IonContent>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 import { createApiResponseSchema } from "@src/schemas/api-response";
 import * as v from "valibot";
 
-const TreatmentCycleSatus = v.picklist([
+export const TreatmentCycleSatus = v.picklist([
   "Planned",
   "InProgress",
   "Completed",
@@ -16,7 +16,6 @@ export const TreatmentCycleResponseSchema = v.object({
   treatmentId: v.string(),
   cycleName: v.string(),
   cycleNumber: v.number(),
-  orderIndex: v.number(),
   stepType: v.string(),
   expectedDurationDays: v.number(),
   startDate: v.string(),
@@ -29,10 +28,28 @@ export const TreatmentCycleResponseSchema = v.object({
   updatedAt: v.nullable(v.string()),
 });
 
+export const TreatmentCycleDetailResponseSchema = v.object({
+  ...TreatmentCycleResponseSchema.entries,
+  patientId: v.string(),
+  doctorId: v.string(),
+  treatmentName: v.string(),
+  appointments: v.array(v.object({
+    id: v.string(),
+    appointmentDate: v.string(),
+    type: v.string(),
+    status: v.string(),
+  })),
+  documents: v.array(v.unknown()),
+});
+
 ///////////////////////////////////////////////////////////////////////
 
 export const TreatmentCycleListApiResponseSchema = createApiResponseSchema(
   v.array(TreatmentCycleResponseSchema)
+);
+
+export const TreatmentCycleDetailApiResponseSchema = createApiResponseSchema(
+  TreatmentCycleDetailResponseSchema
 );
 
 ///////////////////////////////////////////////////////////////////////
@@ -42,4 +59,10 @@ export type TreatmentCycleResponse = v.InferOutput<
 >;
 export type TreatmentCycleListApiResponse = v.InferOutput<
   typeof TreatmentCycleListApiResponseSchema
+>;
+export type TreatmentCycleDetailResponse = v.InferOutput<
+  typeof TreatmentCycleDetailResponseSchema
+>;
+export type TreatmentCycleDetailApiResponse = v.InferOutput<
+  typeof TreatmentCycleDetailApiResponseSchema
 >;

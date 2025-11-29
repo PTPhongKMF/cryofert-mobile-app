@@ -1,5 +1,7 @@
 import { createApiResponseSchema } from "@src/schemas/api-response";
+import { SlotResponseSchema } from "@src/schemas/slot";
 import { TransactionResponseSchema } from "@src/schemas/transaction";
+import { TreatmentCycleSatus } from "@src/schemas/treatment-cycle";
 import * as v from "valibot";
 
 export const BookAppointmentFormSchema = v.object({
@@ -15,7 +17,7 @@ export const BookAppointmentRequestSchema = v.object({
   type: v.literal("Booking"),
 });
 
-export const PatientBookingAppointmentResponseSchema = v.object({
+export const AppointmentResponseSchema = v.object({
   id: v.string(),
   treatmentCycleId: v.nullable(v.string()),
   slotId: v.nullable(v.string()),
@@ -32,8 +34,18 @@ export const PatientBookingAppointmentResponseSchema = v.object({
   isReminderSent: v.boolean(),
   createdAt: v.string(),
   updatedAt: v.nullable(v.string()),
-  treatmentCycle: v.nullable(v.unknown()),
-  slot: v.nullable(v.object({ startTime: v.string(), endTime: v.string() })),
+  treatmentCycle: v.nullable(
+    v.object({
+      cycleName: v.string(),
+      cycleNumber: v.number(),
+      endDate: v.nullable(v.string()),
+      id: v.string(),
+      startDate: v.string(),
+      status: TreatmentCycleSatus,
+      treatment: v.object({ id: v.string() }),
+    })
+  ),
+  slot: v.nullable(SlotResponseSchema),
   patient: v.nullable(
     v.object({
       id: v.string(),
@@ -43,18 +55,28 @@ export const PatientBookingAppointmentResponseSchema = v.object({
       email: v.string(),
     })
   ),
-  doctors: v.array(v.unknown()),
+  doctors: v.array(
+    v.object({
+      id: v.string(),
+      doctorId: v.string(),
+      badgeId: v.string(),
+      specialty: v.nullable(v.string()),
+      fullName: v.string(),
+      notes: v.nullable(v.string()),
+    })
+  ),
   doctorCount: v.number(),
   transactions: v.array(TransactionResponseSchema),
 });
 
 ///////////////////////////////////////////////////////////////////////
 
-export const PatientBookingAppointmentApiResponseSchema =
-  createApiResponseSchema(v.array(PatientBookingAppointmentResponseSchema));
+export const AppointmentHistoryApiResponseSchema = createApiResponseSchema(
+  v.array(AppointmentResponseSchema)
+);
 
-export const BookingAppointmentApiResponseSchema = createApiResponseSchema(
-  PatientBookingAppointmentResponseSchema
+export const AppointmentApiResponseSchema = createApiResponseSchema(
+  AppointmentResponseSchema
 );
 
 ///////////////////////////////////////////////////////////////////////
@@ -66,13 +88,13 @@ export type BookAppointmentRequest = v.InferOutput<
   typeof BookAppointmentRequestSchema
 >;
 
-export type PatientBookingAppointmentResponse = v.InferOutput<
-  typeof PatientBookingAppointmentResponseSchema
+export type AppointmentResponse = v.InferOutput<
+  typeof AppointmentResponseSchema
 >;
-export type PatientBookingAppointmentApiResponse = v.InferOutput<
-  typeof PatientBookingAppointmentApiResponseSchema
+export type AppointmentHistoryApiResponse = v.InferOutput<
+  typeof AppointmentHistoryApiResponseSchema
 >;
 
-export type BookingAppointmentApiResponse = v.InferOutput<
-  typeof BookingAppointmentApiResponseSchema
+export type AppointmentApiResponse = v.InferOutput<
+  typeof AppointmentApiResponseSchema
 >;

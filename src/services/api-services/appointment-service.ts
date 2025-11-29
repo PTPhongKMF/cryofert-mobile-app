@@ -1,8 +1,11 @@
 import { format } from "@formkit/tempo";
-import type { PatientBookingAppointmentApiResponse } from "@src/schemas/appointment";
+import type {
+  AppointmentApiResponse,
+  AppointmentHistoryApiResponse,
+} from "@src/schemas/appointment";
 import {
-  BookingAppointmentApiResponseSchema,
-  PatientBookingAppointmentApiResponseSchema,
+  AppointmentApiResponseSchema,
+  AppointmentHistoryApiResponseSchema,
   type BookAppointmentRequest,
 } from "@src/schemas/appointment";
 import { httpClient } from "@src/services/api-services/http-service";
@@ -25,18 +28,20 @@ export async function createBookingAppointmentMutationFn(
     .json();
 
   console.log(res);
-  return v.parse(BookingAppointmentApiResponseSchema, res);
+
+  return v.parse(AppointmentApiResponseSchema, res);
 }
 
-export async function patientBookingHistoryQueryFn(params: {
+export async function appointmentHistoryQueryFn(params: {
   patientId: string;
+  type?: string;
   pageSize: number;
   pageParam: number;
-}): Promise<PatientBookingAppointmentApiResponse> {
+}): Promise<AppointmentHistoryApiResponse> {
   const res = await httpClient
     .get(`api/appointment/patient/${params.patientId}/history`, {
       searchParams: {
-        type: "Booking",
+        type: params.type,
         page: params.pageParam,
         size: params.pageSize,
         sort: "createdAt",
@@ -45,5 +50,17 @@ export async function patientBookingHistoryQueryFn(params: {
     })
     .json();
 
-  return v.parse(PatientBookingAppointmentApiResponseSchema, res);
+  return v.parse(AppointmentHistoryApiResponseSchema, res);
+}
+
+export async function appointmentDetailQueryFn(params: {
+  appointmentId: string;
+}): Promise<AppointmentApiResponse> {
+  const res = await httpClient
+    .get(`api/appointment/${params.appointmentId}/details`)
+    .json();
+
+  console.log(res);
+
+  return v.parse(AppointmentApiResponseSchema, res);
 }

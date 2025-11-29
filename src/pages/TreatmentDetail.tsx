@@ -14,11 +14,9 @@ import {
   IonSegmentButton,
 } from "@ionic/react";
 import { useParams } from "react-router-dom";
-import { format } from "@formkit/tempo";
-import SafeAreaView from "@src/components/SafeAreaView";
 import { useTreatmentDetailQuery } from "@src/hooks/treatment-hook";
 import { useTreatmentCycleList } from "@src/hooks/treatment-cycle-hook";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TreatmentDetailInfo from "@src/components/treatment-detail-segments/TreatmentDetailInfo";
 import TreatmentDetailAgreements from "@src/components/treatment-detail-segments/TreatmentDetailAgreements";
 import TreatmentDetailCycles from "@src/components/treatment-detail-segments/TreatmentDetailCycles";
@@ -39,6 +37,16 @@ export default function TreatmentDetail() {
 
   const isLoading = treatmentQuery.isPending || cyclesQuery.isPending;
 
+  useEffect(() => {
+    if (treatmentQuery.isError) console.log(treatmentQuery.error);
+    if (cyclesQuery.isError) console.log(cyclesQuery.error);
+  }, [
+    treatmentQuery.error,
+    cyclesQuery.isError,
+    cyclesQuery.error,
+    treatmentQuery.isError,
+  ]);
+
   return (
     <IonPage>
       <IonHeader className="shadow-none!">
@@ -47,7 +55,13 @@ export default function TreatmentDetail() {
             <IonBackButton />
           </IonButtons>
           <IonTitle>
-            {treatment ? `Treatment: ${treatment.treatmentName}` : "Treatment"}
+            {treatment ? (
+              <>
+                Treatment <span className="text-xs">{treatment.treatmentName}</span>
+              </>
+            ) : (
+              "Treatment"
+            )}
           </IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -95,7 +109,10 @@ export default function TreatmentDetail() {
                     isError={cyclesQuery.isError}
                   />
                 ) : segment === "agreement" ? (
-                  <TreatmentDetailAgreements treatment={treatment} />
+                  <TreatmentDetailAgreements
+                    treatment={treatment}
+                    onAgreementSigned={() => treatmentQuery.refetch()}
+                  />
                 ) : (
                   <TreatmentDetailInfo treatment={treatment} />
                 )}

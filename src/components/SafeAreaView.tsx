@@ -1,7 +1,9 @@
+import { cn } from "@utils/cn";
 import React from "react";
 
 type SafeAreaViewProps = React.HTMLAttributes<HTMLDivElement> & {
   className?: string;
+  withFixedHeader?: boolean;
 };
 
 /**
@@ -15,14 +17,21 @@ type SafeAreaViewProps = React.HTMLAttributes<HTMLDivElement> & {
  */
 export default function SafeAreaView({
   className,
+  withFixedHeader,
   children,
   ...props
 }: SafeAreaViewProps) {
   return (
     <div
-      className={`min-h-full
-    pt-[var(--ion-safe-area-top)] pr-[var(--ion-safe-area-right)] pb-[var(--ion-safe-area-bottom)] pl-[var(--ion-safe-area-left)]
-    ${className}`}
+      className={cn(
+        "min-h-full",
+        "pb-[var(--ion-safe-area-bottom)]",
+        withFixedHeader
+          ? "pt-[var(--app-fixed-header-height)]"
+          : "pt-[var(--ion-safe-area-top)]",
+        "pr-[var(--ion-safe-area-right)]  pl-[var(--ion-safe-area-left)]",
+        className
+      )}
       {...props}
     >
       {children}

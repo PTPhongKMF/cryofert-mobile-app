@@ -15,8 +15,8 @@ export default function TreatmentDetailInfo({
 }: TreatmentDetailInfoProps) {
   return (
     <div className="px-4 flex flex-col justify-center items-center gap-4">
-      <div className="bg-gray-50 w-full p-4 rounded-xl border border-blue-200 flex flex-col gap-3">
-        <h2 className="text-lg font-semibold text-blue-500 mb-2">
+      <div className="bg-gray-50 w-full p-4 rounded-xl border shadow-lg border-blue-200 flex flex-col gap-3">
+        <h2 className="text-lg font-semibold text-blue-500 my-2!">
           Basic Information
         </h2>
 
@@ -61,8 +61,8 @@ export default function TreatmentDetailInfo({
       </div>
 
       {(treatment.diagnosis || treatment.goals || treatment.notes) && (
-        <div className="bg-gray-50 w-full p-4 rounded-xl border border-blue-200 flex flex-col gap-3">
-          <h2 className="text-lg font-semibold text-blue-500 mb-2">
+        <div className="bg-gray-50 w-full p-4 rounded-xl shadow-lg border border-blue-200 flex flex-col gap-3">
+          <h2 className="text-lg font-semibold text-blue-500 my-2!">
             Medical Information
           </h2>
 
@@ -98,8 +98,8 @@ export default function TreatmentDetailInfo({
       )}
 
       {(treatment.estimatedCost !== null || treatment.actualCost !== null) && (
-        <div className="bg-gray-50 w-full p-4 rounded-xl border border-blue-200 flex flex-col gap-3">
-          <h2 className="text-lg font-semibold text-blue-500 mb-2">
+        <div className="bg-gray-50 w-full p-4 rounded-xl shadow-lg border border-blue-200 flex flex-col gap-3">
+          <h2 className="text-lg font-semibold text-blue-500 my-2!">
             Financial Information
           </h2>
 
@@ -122,8 +122,8 @@ export default function TreatmentDetailInfo({
       )}
 
       {treatment.treatmentType === "IVF" && (
-        <div className="bg-gray-50 w-full p-4 rounded-xl border border-blue-200 flex flex-col gap-3">
-          <h2 className="text-lg font-semibold text-blue-500 mb-2">
+        <div className="bg-gray-50 w-full p-4 rounded-xl shadow-lg border border-blue-200 flex flex-col gap-3">
+          <h2 className="text-lg font-semibold text-blue-500 my-2!">
             IVF Details
           </h2>
 
@@ -301,8 +301,8 @@ export default function TreatmentDetailInfo({
       )}
 
       {treatment.treatmentType === "IUI" && (
-        <div className="bg-gray-50 w-full p-4 rounded-xl border border-blue-200 flex flex-col gap-3">
-          <h2 className="text-lg font-semibold text-blue-500 mb-2">
+        <div className="bg-gray-50 w-full p-4 rounded-xl shadow-lg border border-blue-200 flex flex-col gap-3">
+          <h2 className="text-lg font-semibold text-blue-500 my-2!">
             IUI Details
           </h2>
 

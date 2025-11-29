@@ -13,6 +13,8 @@ import PaymentPortal from "@src/pages/PaymentPortal";
 import TestPage from "@src/pages/devs/TestPage";
 import TestPage2 from "@src/pages/devs/TestPage2";
 import { setGlobalPush } from "@src/services/navigation-service";
+import AppointmentDetail from "@src/pages/AppointmentDetail";
+import TreatmentCycleDetail from "@src/pages/TreatmentCycleDetail";
 
 export default function RootRoutes() {
   const router = useIonRouter();
@@ -33,8 +35,16 @@ export default function RootRoutes() {
       <Route path={ROUTES.PAYMENT_PORTAL} component={PaymentPortal} />
       <Route path={ROUTES.TRANSACTION_HISTORY} component={TransactionHistory} />
       <Route
-        path={`${ROUTES.TREATMENT_DETAIL}/:treatmentId`}
+        path={`${ROUTES.TREATMENT}/:treatmentId`}
         component={TreatmentDetail}
+      />
+      <Route
+        path={`${ROUTES.APPOINTMENT}/:appointmentId`}
+        component={AppointmentDetail}
+      />
+      <Route
+        path={`${ROUTES.TREATMENT_CYCLE}/:cycleId`}
+        component={TreatmentCycleDetail}
       />
 
       {/* ////////////////////////////////////////////////// */}

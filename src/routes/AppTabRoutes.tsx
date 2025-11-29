@@ -1,13 +1,17 @@
 import {
+  IonContent,
   IonFab,
   IonFabButton,
   IonFabList,
+  IonHeader,
   IonIcon,
   IonLabel,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
+  IonTitle,
+  IonToolbar,
   useIonRouter,
 } from "@ionic/react";
 import { Route } from "react-router-dom";
@@ -75,11 +79,13 @@ export default function AppTabRoutes() {
   return (
     <IonTabs>
       <IonRouterOutlet>
-        <Route exact path={ROUTES.T_HOME} component={AppHome} />
-        <Route exact path={ROUTES.T_HISTORY} component={History} />
-        <Route exact path={ROUTES.T_CRYO} component={CryoStorage} />
-        <Route exact path={ROUTES.T_ACCOUNT} component={Account} />
-        <Route exact path={"/tabs/dev"} component={Dev} />
+        <IonContent>
+          <Route exact path={ROUTES.T_HOME} component={AppHome} />
+          <Route exact path={ROUTES.T_HISTORY} component={History} />
+          <Route exact path={ROUTES.T_CRYO} component={CryoStorage} />
+          <Route exact path={ROUTES.T_ACCOUNT} component={Account} />
+          <Route exact path={"/tabs/dev"} component={Dev} />
+        </IonContent>
       </IonRouterOutlet>
 
       <IonTabBar id="app-tab-bar" slot="bottom" className="ion-bg-violet-100">

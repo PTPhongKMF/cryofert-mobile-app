@@ -29,6 +29,9 @@ const LoginResponseSchema = v.object({
   user: v.object({
     id: v.string(),
     userName: v.string(),
+    firstName: v.string(),
+    lastName: v.string(),
+    gender: v.nullable(v.boolean()),
     age: v.nullable(v.number()),
     email: v.string(),
     phone: v.string(),

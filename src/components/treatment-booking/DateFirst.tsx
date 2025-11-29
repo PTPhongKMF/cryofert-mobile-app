@@ -298,7 +298,10 @@ export default function DateFirst({ bookingForm, slotList }: DateFirstProps) {
                     disabled={!doctorQuery.hasNextPage}
                     onIonInfinite={handleLoadMore}
                   >
-                    <IonInfiniteScrollContent loadingText="Loading more..." />
+                    <IonInfiniteScrollContent
+                      loadingText="Loading more..."
+                      className="mt-8"
+                    />
                   </IonInfiniteScroll>
                 </>
               )}
