@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.4.0...v0.5.0) (2025-11-29)
+
+
+### Features
+
+* add appointment and treatment detail page ([#10](https://github.com/PTPhongKMF/cryofert-mobile-app/issues/10)) ([2408f75](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/2408f75429b38e278f703b783937e327ff992286))
+
 ## [0.4.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.3.0...v0.4.0) (2025-11-25)
 
 
