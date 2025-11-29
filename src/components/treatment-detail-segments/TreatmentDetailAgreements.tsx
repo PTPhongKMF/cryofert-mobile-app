@@ -10,6 +10,7 @@ import AgreementDialog from "@src/components/dialogs/AgreementDialog";
 
 interface TreatmentDetailAgreementsProps {
   treatment: TreatmentDetail;
+  onAgreementSigned?: () => void;
 }
 
 function getStatusColor(status: AgreementStatusType) {
@@ -34,6 +35,7 @@ function formatDate(date: string | null | undefined) {
 
 export default function TreatmentDetailAgreements({
   treatment,
+  onAgreementSigned,
 }: TreatmentDetailAgreementsProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectAgreement, setSelectAgreement] =
@@ -153,6 +155,7 @@ export default function TreatmentDetailAgreements({
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
         agreement={selectAgreement}
+        onAgreementSigned={onAgreementSigned}
       />
     </>
   );

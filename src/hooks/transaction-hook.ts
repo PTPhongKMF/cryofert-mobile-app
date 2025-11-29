@@ -1,5 +1,4 @@
 import {
-  TransactionApiResponseSchema,
   type CreateTransactionRequest,
   type TransactionApiResponse,
   type TransactionHistoryApiResponse,
@@ -11,8 +10,6 @@ import {
   createTransactionMutationFn,
   transactionHistoryQueryFn,
 } from "@src/services/api-services/transaction-service";
-import { httpClient } from "@src/services/api-services/http-service";
-import * as v from "valibot";
 
 export function useTransactionHistoryInfiniteQuery(
   patientId: string,

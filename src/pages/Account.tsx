@@ -22,6 +22,7 @@ import { useGenericDialogStore } from "@src/stores/dialog";
 import { Clipboard } from "@capacitor/clipboard";
 import { useState } from "react";
 import { clearAllSecuredTokens } from "@src/services/token-service";
+import { cn } from "@utils/cn";
 
 export default function Account() {
   const [isOpenToastCopy, setIsOpenToastCopy] = useState(false);
@@ -70,16 +71,37 @@ export default function Account() {
 
             <div className="flex flex-col justify-start items-start w-full gap-1">
               <div className="flex justify-between items-center w-full text-sm font-semibold text-blue-500">
-                <p>Username:</p>
+                <p>Email:</p>
                 <span className="font-normal text-xs text-black">
-                  {localUser?.userName}
+                  {localUser?.email}
                 </span>
               </div>
 
               <div className="flex justify-between items-center w-full text-sm font-semibold text-blue-500">
-                <p>Email:</p>
-                <span className="font-normal text-xs text-black">
-                  {localUser?.email}
+                <p>Name:</p>
+                <span
+                  className={cn(
+                    "font-normal text-xs text-black",
+                    localUser?.lastName && localUser.firstName
+                      ? "text-black"
+                      : "text-gray-600"
+                  )}
+                >
+                  {localUser?.lastName && localUser.firstName
+                    ? `${localUser.lastName} ${localUser.firstName}`
+                    : "N/A"}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center w-full text-sm font-semibold text-blue-500">
+                <p>Gender:</p>
+                <span
+                  className={cn(
+                    "font-normal text-xs",
+                    localUser?.gender ? "text-black" : "text-gray-600"
+                  )}
+                >
+                  {localUser?.gender ? localUser.gender : "N/A"}
                 </span>
               </div>
             </div>

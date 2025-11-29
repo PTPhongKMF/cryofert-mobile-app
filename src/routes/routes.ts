@@ -8,7 +8,9 @@ const BASE = {
   PAYMENT_PORTAL: `/payment-portal`,
   TRANSACTION_HISTORY: `/transaction-history`,
 
-  TREATMENT_DETAIL: `/treatment`,
+  TREATMENT: `/treatment`,
+  APPOINTMENT: `/appointment`,
+  TREATMENT_CYCLE: `/treatment-cycle`,
 } as const;
 
 /////////////////////////////////////////////////////////

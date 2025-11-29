@@ -5,6 +5,7 @@ import {
   DefaultWebViewOptions,
   InAppBrowser,
 } from "@capacitor/inappbrowser";
+import AnimatedProgressLine from "@src/components/AnimatedProgressLine";
 
 export default function Dev() {
   const router = useIonRouter();
@@ -32,6 +33,8 @@ export default function Dev() {
         </IonButton>
 
         <IonButton onClick={() => router.push("/test")}>test page 1</IonButton>
+
+        <AnimatedProgressLine className="h-64" />
       </SafeAreaView>
     </IonContent>
   );

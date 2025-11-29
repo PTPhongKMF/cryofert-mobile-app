@@ -76,6 +76,9 @@ export default function LoginForm() {
             roleId: data.data.user.roleId,
             roleName: data.data.user.roleName,
             userName: data.data.user.userName,
+            firstName: data.data.user.firstName,
+            lastName: data.data.user.lastName,
+            gender: data.data.user.gender || "",
             email: data.data.user.email,
           });
           setSecuredToken("access-token", data.data.token ?? "");

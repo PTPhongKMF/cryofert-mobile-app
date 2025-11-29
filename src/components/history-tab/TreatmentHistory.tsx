@@ -14,6 +14,7 @@ import { useLocalUserStore } from "@src/stores/user";
 import { format } from "@formkit/tempo";
 import { ROUTES } from "@src/routes/routes";
 import { useTreatementInfiniteQuery } from "@src/hooks/treatment-hook";
+import { useEffect } from "react";
 
 export default function TreatmentHistory() {
   const router = useIonRouter();
@@ -26,6 +27,10 @@ export default function TreatmentHistory() {
     treatmentQuery.data?.pages.flatMap(
       (page: TreatmentApiResponse) => page.data
     ) ?? [];
+
+  useEffect(() => {
+    if (treatmentQuery.isError) console.log(treatmentQuery.error);
+  });
 
   async function handleLoadMore(e: CustomEvent<void>) {
     await treatmentQuery.fetchNextPage();
@@ -46,7 +51,7 @@ export default function TreatmentHistory() {
   }
 
   return (
-    <div className="size-full overflow-y-scroll!">
+    <div className="size-full">
       <IonList className="bg-transparent!">
         <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
           <IonRefresherContent></IonRefresherContent>
@@ -64,7 +69,7 @@ export default function TreatmentHistory() {
                 detail
                 key={treatment.id}
                 onClick={() =>
-                  router.push(`${ROUTES.TREATMENT_DETAIL}/${treatment.id}`)
+                  router.push(`${ROUTES.TREATMENT}/${treatment.id}`)
                 }
                 className="ion-bg-transparent"
               >
@@ -85,7 +90,9 @@ export default function TreatmentHistory() {
                     <span>
                       {format(treatment.startDate, "MMM DD, YYYY")}
                       {" - "}
-                      {format(treatment.endDate, "MMM DD, YYYY")}
+                      {treatment.endDate
+                        ? format(treatment.endDate, "MMM DD, YYYY")
+                        : "TBD"}
                     </span>
                   </div>
 
@@ -115,7 +122,10 @@ export default function TreatmentHistory() {
               disabled={!treatmentQuery.hasNextPage}
               onIonInfinite={handleLoadMore}
             >
-              <IonInfiniteScrollContent loadingText="Loading more..." />
+              <IonInfiniteScrollContent
+                loadingText="Loading more..."
+                className="mt-8"
+              />
             </IonInfiniteScroll>
           </>
         )}

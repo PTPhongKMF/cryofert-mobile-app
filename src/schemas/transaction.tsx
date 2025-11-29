@@ -16,7 +16,6 @@ export const CreateTransactionRequestSchema = v.object({
     v.literal("CryoStorageContract"),
   ]),
   relatedEntityId: v.pipe(v.string(), v.nonEmpty()),
-  patientId: v.pipe(v.string(), v.nonEmpty()),
 });
 
 export const TransactionResponseSchema = v.object({

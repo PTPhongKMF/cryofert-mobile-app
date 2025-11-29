@@ -1,5 +1,11 @@
-import type { TreatmentCycleListApiResponse } from "@src/schemas/treatment-cycle";
-import { TreatmentCycleListApiResponseSchema } from "@src/schemas/treatment-cycle";
+import type {
+  TreatmentCycleListApiResponse,
+  TreatmentCycleDetailApiResponse,
+} from "@src/schemas/treatment-cycle";
+import {
+  TreatmentCycleListApiResponseSchema,
+  TreatmentCycleDetailApiResponseSchema,
+} from "@src/schemas/treatment-cycle";
 import { httpClient } from "@src/services/api-services/http-service";
 import * as v from "valibot";
 
@@ -19,4 +25,14 @@ export async function treatmentCycleListQueryFn(params: {
     .json();
 
   return v.parse(TreatmentCycleListApiResponseSchema, res);
+}
+
+export async function treatmentCycleDetailQueryFn(params: {
+  cycleId: string;
+}): Promise<TreatmentCycleDetailApiResponse> {
+  const res = await httpClient
+    .get(`api/treatment-cycles/${params.cycleId}`)
+    .json();
+
+  return v.parse(TreatmentCycleDetailApiResponseSchema, res);
 }

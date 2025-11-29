@@ -22,9 +22,6 @@ import { useEffect } from "react";
 import { useLocalUserStore } from "@src/stores/user";
 import * as v from "valibot";
 import { CreateTransactionRequestSchema } from "@src/schemas/transaction";
-import { useAppLoadingStore } from "@src/stores/app-loading";
-
-const LOADER_KEY = "payment-portal";
 
 export default function PaymentPortal() {
   const location = useLocation();
@@ -35,12 +32,6 @@ export default function PaymentPortal() {
   const relatedEntityId = searchParams.get("relatedEntityId");
 
   const localUser = useLocalUserStore((s) => s.localUser);
-  const { startLoading, stopLoading } = useAppLoadingStore(
-    useShallow((s) => ({
-      startLoading: s.startLoading,
-      stopLoading: s.stopLoading,
-    }))
-  );
   const openGenericDialog = useGenericDialogStore(
     useShallow((s) => s.openGenericDialog)
   );
@@ -74,28 +65,23 @@ export default function PaymentPortal() {
   });
 
   useEffect(() => {
-    if (!relatedEntityType && !relatedEntityId) {
+    if (
+      location.pathname === ROUTES.PAYMENT_PORTAL &&
+      !relatedEntityType &&
+      !relatedEntityId
+    ) {
       if (router.canGoBack()) {
         router.goBack();
       } else {
         router.push(ROUTES.T_HOME, "back");
       }
     }
-  }, []);
-
-  useEffect(() => {
-    if (VnPayPayment.isPaymentInProgress) {
-      startLoading(LOADER_KEY);
-    } else {
-      stopLoading(LOADER_KEY);
-    }
-  }, [VnPayPayment.isPaymentInProgress, startLoading, stopLoading]);
+  }, [location.pathname, router, relatedEntityType, relatedEntityId]);
 
   async function handleVnPay() {
     const res = v.safeParse(CreateTransactionRequestSchema, {
       relatedEntityId: relatedEntityId,
       relatedEntityType: relatedEntityType,
-      patientId: localUser?.id,
     });
 
     if (!res.success) {
@@ -131,9 +117,15 @@ export default function PaymentPortal() {
 
       <IonContent>
         <div
-          className="size-full flex flex-col justify-start items-center gap-10 pt-8
+          className="relative size-full flex flex-col justify-start items-center gap-10 pt-8
         bg-gradient-to-br from-sky-50 from-10% via-cyan-50 to-blue-50 to-90%"
         >
+          {VnPayPayment.isPaymentInProgress && (
+            <div className="absolute inset-0 z-20 bg-black/60 pointer-events-auto flex items-center justify-center">
+              <IonSpinner name="crescent" />
+            </div>
+          )}
+
           <p className="text-2xl font-semibold text-blue-500">
             CryoFert Online Payment Portal
           </p>

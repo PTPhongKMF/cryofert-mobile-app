@@ -35,7 +35,6 @@ export async function createTransactionMutationFn(
       searchParams: {
         relatedEntityType: req.relatedEntityType,
         relatedEntityId: req.relatedEntityId,
-        patientId: req.patientId,
       },
     })
     .json();

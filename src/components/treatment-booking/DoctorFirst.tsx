@@ -209,7 +209,10 @@ export default function DoctorFirst({
                     disabled={!doctorQuery.hasNextPage}
                     onIonInfinite={handleLoadMore}
                   >
-                    <IonInfiniteScrollContent loadingText="Loading more..." />
+                    <IonInfiniteScrollContent
+                      loadingText="Loading more..."
+                      className="mt-8"
+                    />
                   </IonInfiniteScroll>
                 </>
               )}

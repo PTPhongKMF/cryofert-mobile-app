@@ -88,7 +88,7 @@ export default function TreatmentDetailCycles({
           <div key={cycle.id} className="size-full">
             <div
               className={cn(
-                "w-full relative grid grid-cols-[3.5rem_1fr]  justify-items-center",
+                "w-full relative grid grid-cols-[3.5rem_1fr]  justify-items-center gap-x-2",
                 isLast
                   ? "grid-rows-[3.5rem_auto]"
                   : "grid-rows-[3.5rem_auto_2.5rem]"
@@ -116,7 +116,7 @@ export default function TreatmentDetailCycles({
                 button
                 lines="none"
                 onClick={() => handleCycleClick(cycle)}
-                className="row-span-2 col-start-2 row-start-1 w-full ps-2 ion-b-r-[8px] ion-inner-py-[1rem]"
+                className="row-span-2 col-start-2 row-start-1 w-full ion-b-r-[8px] ion-inner-py-[1rem] shadow-lg"
               >
                 <div className="size-full flex flex-col justify-start items-center gap-4">
                   <div className="size-full grid grid-cols-[1fr_auto] auto-rows-auto gap-x-2 gap-y-1">

@@ -9,7 +9,7 @@ const TreatmentResponseSchema = v.object({
   treatmentName: v.string(),
   treatmentType: v.string(),
   startDate: v.string(),
-  endDate: v.string(),
+  endDate: v.nullable(v.string()),
   status: v.string(),
   diagnosis: v.nullable(v.string()),
   goals: v.nullable(v.string()),
@@ -54,8 +54,10 @@ const IvfSchema = v.object({
   usedICSI: v.nullable(v.boolean()),
   complications: v.nullable(v.string()),
   status: v.string(),
+  currentStep: v.nullable(v.number()),
   createdAt: v.string(),
   updatedAt: v.nullable(v.string()),
+  agreements: v.nullable(v.array(AgreementResponseSchema)),
 });
 
 const IuiSchema = v.object({
@@ -81,7 +83,7 @@ const BaseTreatmentDetailFields = {
   doctorId: v.string(),
   treatmentName: v.string(),
   startDate: v.string(),
-  endDate: v.string(),
+  endDate: v.nullable(v.string()),
   status: v.string(),
   diagnosis: v.nullable(v.string()),
   goals: v.nullable(v.string()),
@@ -90,7 +92,7 @@ const BaseTreatmentDetailFields = {
   actualCost: v.nullable(v.number()),
   createdAt: v.string(),
   updatedAt: v.nullable(v.string()),
-  agreements: v.array(AgreementResponseSchema),
+  agreements: v.nullable(v.array(AgreementResponseSchema)),
 };
 
 export const TreatmentDetailSchema = v.variant("treatmentType", [

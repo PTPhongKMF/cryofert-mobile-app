@@ -6,12 +6,14 @@ import {
   IonRefresher,
   IonRefresherContent,
   IonSpinner,
+  useIonRouter,
 } from "@ionic/react";
-import type { PatientBookingAppointmentApiResponse } from "@src/schemas/appointment";
+import type { AppointmentHistoryApiResponse } from "@src/schemas/appointment";
 import type { TransactionResponse } from "@src/schemas/transaction";
 import { format } from "@formkit/tempo";
 import { useLocalUserStore } from "@src/stores/user";
-import { usePatientBookingHistoryInfiniteQuery } from "@src/hooks/appointment-hook";
+import { useAppointmentHistoryInfiniteQuery } from "@src/hooks/appointment-hook";
+import { ROUTES } from "@src/routes/routes";
 
 function getPrioritizedPaymentTransaction(
   transactions: TransactionResponse[]
@@ -31,7 +33,8 @@ function getPrioritizedPaymentTransaction(
 
   return paymentTransactions.sort(
     (a, b) =>
-      (statusPriority[a.status] ?? 999) - (statusPriority[b.status] ?? 999)
+      (statusPriority[a.status] ?? Infinity) -
+      (statusPriority[b.status] ?? Infinity)
   )[0];
 }
 
@@ -51,15 +54,16 @@ function getStatusColorClass(status: string): string {
 }
 
 export default function AppointmentHistory() {
+  const router = useIonRouter();
   const localUser = useLocalUserStore((s) => s.localUser);
 
-  const bookingHistoryQuery = usePatientBookingHistoryInfiniteQuery(
+  const bookingHistoryQuery = useAppointmentHistoryInfiniteQuery(
     localUser?.id || ""
   );
 
   const appointments =
     bookingHistoryQuery.data?.pages.flatMap(
-      (page: PatientBookingAppointmentApiResponse) => page.data
+      (page: AppointmentHistoryApiResponse) => page.data
     ) ?? [];
 
   async function handleLoadMore(e: CustomEvent<void>) {
@@ -81,7 +85,7 @@ export default function AppointmentHistory() {
   }
 
   return (
-    <div className="size-full overflow-y-scroll!">
+    <div className="size-full">
       <IonList className="bg-transparent!">
         <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
           <IonRefresherContent></IonRefresherContent>
@@ -103,6 +107,12 @@ export default function AppointmentHistory() {
                   button
                   detail
                   key={appointment.id}
+                  onClick={() =>
+                    router.push(
+                      `${ROUTES.APPOINTMENT}/${appointment.id}`,
+                      "forward"
+                    )
+                  }
                   className="ion-bg-transparent"
                 >
                   <div className="grid grid-cols-2 grid-rows-2 auto-rows-min items-center w-full py-2">
@@ -153,7 +163,10 @@ export default function AppointmentHistory() {
               disabled={!bookingHistoryQuery.hasNextPage}
               onIonInfinite={handleLoadMore}
             >
-              <IonInfiniteScrollContent loadingText="Loading more..." />
+              <IonInfiniteScrollContent
+                loadingText="Loading more..."
+                className="mt-8"
+              />
             </IonInfiniteScroll>
           </>
         )}
