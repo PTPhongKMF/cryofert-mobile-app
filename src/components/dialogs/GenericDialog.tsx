@@ -12,8 +12,10 @@ export default function GenericDialog() {
     }))
   );
 
-  function handleButtonClick(button: { closeFn?: () => void }) {
-    if (button.closeFn) button.closeFn();
+  async function handleButtonClick(button: { closeFn?: () => void | Promise<void> }) {
+    if (button.closeFn) {
+      await button.closeFn();
+    }
     closeGenericDialog();
   }
 

@@ -17,7 +17,7 @@ import {
 import { Route } from "react-router-dom";
 import { ROUTES } from "@src/routes/routes";
 import History from "@src/pages/History";
-import Account from "@src/pages/Account";
+import Account from "@src/pages/account-center/Account";
 import {
   alertCircleOutline,
   codeWorking,
@@ -32,11 +32,11 @@ import {
 import { useEffect } from "react";
 import { useLocalUserStore } from "@src/stores/user";
 import { clearAllSecuredTokens } from "@src/services/token-service";
-import { ClipboardPlus, Stethoscope } from "lucide-react";
+import { ClipboardPlus, Snowflake, Stethoscope } from "lucide-react";
 import Dev from "@src/pages/devs/Dev";
 import { useGenericDialogStore } from "@src/stores/dialog";
-import AppHome from "@src/pages/AppHome";
-import CryoStorage from "@src/pages/CryoStorage";
+import Home from "@src/pages/Home";
+import CryoReservation from "@src/pages/CryoReservation";
 
 export default function AppTabRoutes() {
   const router = useIonRouter();
@@ -80,9 +80,9 @@ export default function AppTabRoutes() {
     <IonTabs>
       <IonRouterOutlet>
         <IonContent>
-          <Route exact path={ROUTES.T_HOME} component={AppHome} />
+          <Route exact path={ROUTES.T_HOME} component={Home} />
           <Route exact path={ROUTES.T_HISTORY} component={History} />
-          <Route exact path={ROUTES.T_CRYO} component={CryoStorage} />
+          <Route exact path={ROUTES.T_CRYO} component={CryoReservation} />
           <Route exact path={ROUTES.T_ACCOUNT} component={Account} />
           <Route exact path={"/tabs/dev"} component={Dev} />
         </IonContent>
@@ -120,18 +120,28 @@ export default function AppTabRoutes() {
       </IonTabBar>
 
       <IonFab vertical="bottom" horizontal="end">
-        <IonFabButton className="ion-bg-sky-500">
+        <IonFabButton className="ion-bg-sky-700">
           <Stethoscope className="size-8" />
         </IonFabButton>
 
         <IonFabList side="start" className="flex gap-2 me-20">
           <IonFabButton
             onClick={() => router.push(ROUTES.BOOK_TREATMENT)}
-            className="ion-b-r-[6px] w-[70vw] h-14 ion-bg-sky-500"
+            className="ion-b-r-[6px] w-[10rem] h-14 ion-bg-sky-500"
           >
             <ClipboardPlus className="me-4 text-gray-50" />
             <p className="text-gray-50 font-semibold text-lg [text-box:trim-both_cap_alphabetic]">
-              Book a Treatment
+              Treatment
+            </p>
+          </IonFabButton>
+
+          <IonFabButton
+            onClick={() => router.push(ROUTES.BOOK_TREATMENT)}
+            className="ion-b-r-[6px] w-[8rem] h-14 ion-bg-blue-500"
+          >
+            <Snowflake className="me-4 text-gray-50" />
+            <p className="text-gray-50 font-semibold text-lg [text-box:trim-both_cap_alphabetic]">
+              Cryo
             </p>
           </IonFabButton>
         </IonFabList>

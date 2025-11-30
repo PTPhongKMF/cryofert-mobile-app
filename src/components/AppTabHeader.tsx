@@ -1,6 +1,7 @@
-import { IonHeader, IonToolbar, useIonRouter } from "@ionic/react";
+import { IonHeader, IonIcon, IonToolbar, useIonRouter } from "@ionic/react";
 import { ROUTES } from "@src/routes/routes";
-import { HeartPulse } from "lucide-react";
+import { notificationsOutline } from "ionicons/icons";
+import { HeartPulse, List, Snowflake, UserRoundCog } from "lucide-react";
 import { useLayoutEffect, useRef } from "react";
 
 export default function AppTabHeader() {
@@ -39,7 +40,26 @@ export default function AppTabHeader() {
           </>
         );
       case ROUTES.T_HISTORY:
-        return <>History</>;
+        return (
+          <>
+            <List className="h-7 w-7 text-blue-600" />
+            History
+          </>
+        );
+      case ROUTES.T_CRYO:
+        return (
+          <>
+            <Snowflake className="h-7 w-7 text-blue-600" />
+            Cryo Reservation
+          </>
+        );
+      case ROUTES.T_ACCOUNT:
+        return (
+          <>
+            <UserRoundCog className="h-7 w-7 text-blue-600" />
+            Account Center
+          </>
+        );
       default:
         return (
           <>
@@ -57,6 +77,13 @@ export default function AppTabHeader() {
           <h1 className="text-xl! font-semibold! text-blue-500 p-0! m-0! mb-1! flex justify-start items-center gap-2">
             {topBarTitle()}
           </h1>
+
+          <IonIcon
+            icon={notificationsOutline}
+            color="primary"
+            onClick={() => console.log("click bell")}
+            className="size-7"
+          ></IonIcon>
         </div>
       </IonToolbar>
     </IonHeader>

@@ -3,7 +3,7 @@ import type { GenericApiResponse } from "@src/schemas/api-response";
 import type { LoginApiResponse } from "@src/schemas/auth";
 import type { LoginRequest, RegisterRequest } from "@src/schemas/auth";
 import { useMutation } from "@tanstack/react-query";
-import { HTTPError } from "ky";
+import type { HTTPError } from "ky";
 import {
   confirmOtpMutationFn,
   loginMutationFn,
@@ -34,6 +34,3 @@ export function useResendOtpMutation() {
     mutationFn: resendOtpMutationFn,
   });
 }
-
-
-

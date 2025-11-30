@@ -3,14 +3,16 @@ const BASE = {
   LANDING: "/landing",
   TABS: "/tabs",
   BOOK_TREATMENT: `/book-treatment`,
-  UPDATE_ACCOUNT: `/update-account`,
 
   PAYMENT_PORTAL: `/payment-portal`,
-  TRANSACTION_HISTORY: `/transaction-history`,
 
   TREATMENT: `/treatment`,
   APPOINTMENT: `/appointment`,
   TREATMENT_CYCLE: `/treatment-cycle`,
+
+  UPDATE_ACCOUNT: `/update-account`,
+  RELATIONSHIP: `/relationship`,
+  TRANSACTION_HISTORY: `/transaction-history`,
 } as const;
 
 /////////////////////////////////////////////////////////

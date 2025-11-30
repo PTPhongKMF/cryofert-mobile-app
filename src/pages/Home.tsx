@@ -22,7 +22,7 @@ import { useIonRouter } from "@ionic/react";
 import { ROUTES } from "@src/routes/routes";
 import AppTabHeader from "@src/components/AppTabHeader";
 
-export default function AppHome() {
+export default function Home() {
   const router = useIonRouter();
 
   // Mock data - replace with actual data later
