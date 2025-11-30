@@ -25,6 +25,7 @@ const openGenericDialog = useGenericDialogStore.getState().openGenericDialog;
 
 export const httpClient = ky.extend({
   prefixUrl: CLOUD,
+  timeout: 30000,
   hooks: {
     beforeRequest: [
       async (request) => {

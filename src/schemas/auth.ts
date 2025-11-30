@@ -1,3 +1,4 @@
+import { diffYears } from "@formkit/tempo";
 import { createApiResponseSchema } from "@src/schemas/api-response";
 import * as v from "valibot";
 
@@ -7,10 +8,34 @@ export const LoginRequestSchema = v.object({
 });
 
 export const RegisterRequestSchema = v.pipe(
-  v.object({
-    ...LoginRequestSchema.entries,
-    repeatPassword: v.pipe(v.string(), v.nonEmpty("Required")),
-  }),
+  v.variant("gender", [
+    v.object({
+      ...LoginRequestSchema.entries,
+      gender: v.literal(true),
+      birthDate: v.pipe(
+        v.string(),
+        v.custom(
+          (input) =>
+            typeof input === "string" && diffYears(new Date(), input) >= 20,
+          "You must be 20 or older."
+        )
+      ),
+      repeatPassword: v.pipe(v.string(), v.nonEmpty("Required")),
+    }),
+    v.object({
+      ...LoginRequestSchema.entries,
+      gender: v.literal(false),
+      birthDate: v.pipe(
+        v.string(),
+        v.custom(
+          (input) =>
+            typeof input === "string" && diffYears(new Date(), input) >= 18,
+          "You must be 18 or older."
+        )
+      ),
+      repeatPassword: v.pipe(v.string(), v.nonEmpty("Required")),
+    }),
+  ]),
   v.forward(
     v.partialCheck(
       [["password"], ["repeatPassword"]],

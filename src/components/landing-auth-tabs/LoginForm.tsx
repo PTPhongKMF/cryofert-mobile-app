@@ -18,7 +18,6 @@ import { useAppLoadingStore } from "@src/stores/app-loading";
 import { setSecuredToken } from "@src/services/token-service";
 import { useLocalUserStore } from "@src/stores/user";
 import { useShallow } from "zustand/react/shallow";
-import { useSwiper } from "swiper/react";
 import { useLoginMutation } from "@src/hooks/auth-hook";
 
 const LOADER_KEY = "LoginForm";
@@ -35,7 +34,6 @@ export default function LoginForm() {
   const openGenericDialog = useGenericDialogStore((s) => s.openGenericDialog);
   const openOtpDialog = useOtpDialogStore((s) => s.openOtpDialog);
 
-  const swiper = useSwiper();
   const router = useIonRouter();
 
   const loginMutation = useLoginMutation();
@@ -78,7 +76,7 @@ export default function LoginForm() {
             userName: data.data.user.userName,
             firstName: data.data.user.firstName,
             lastName: data.data.user.lastName,
-            gender: data.data.user.gender || "",
+            gender: data.data.user.gender,
             email: data.data.user.email,
           });
           setSecuredToken("access-token", data.data.token ?? "");
@@ -173,7 +171,9 @@ export default function LoginForm() {
         size="small"
         fill="clear"
         color="warning"
-        onClick={() => swiper.slideNext()}
+        onClick={() =>
+          router.push(`${ROUTES.L_AUTH}?authPage=1`, "none", "replace")
+        }
         className="text-base font-semibold ion-py-[0.1rem] self-center ion-b-w-[1px] text-amber-900!"
       >
         Create an account

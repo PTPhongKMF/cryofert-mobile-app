@@ -11,7 +11,7 @@ interface LocalUser {
   email: string;
   roleId: string;
   roleName: string;
-  gender: string;
+  gender: boolean | null;
 }
 
 const capPrefStorage: StateStorage = {

@@ -49,6 +49,8 @@ export async function registerMutationFn(
       json: {
         email: req.email,
         password: req.password,
+        birthDate: req.birthDate,
+        gender: req.gender,
       },
     })
     .json();

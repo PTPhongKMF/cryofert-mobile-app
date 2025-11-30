@@ -3,7 +3,7 @@ import { create } from "zustand";
 export type ButtonType = {
   text?: string;
   color?: "primary" | "success" | "warning" | "danger" | "medium";
-  closeFn?: () => void;
+  closeFn?: () => void | Promise<void>;
 };
 
 interface BaseGenericDialogOptions {

@@ -1,5 +1,16 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { IonButton, IonIcon, IonInput, useIonRouter } from "@ionic/react";
+import {
+  IonButton,
+  IonDatetime,
+  IonDatetimeButton,
+  IonIcon,
+  IonInput,
+  IonModal,
+  IonNote,
+  IonRadio,
+  IonRadioGroup,
+  useIonRouter,
+} from "@ionic/react";
 import { RegisterRequestSchema, type RegisterRequest } from "@src/schemas/auth";
 import {
   alertCircleOutline,
@@ -9,14 +20,15 @@ import {
   lockClosedOutline,
   mailOutline,
 } from "ionicons/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { cn } from "@src/utils/cn";
 import { useGenericDialogStore, useOtpDialogStore } from "@src/stores/dialog";
 import { useAppLoadingStore } from "@src/stores/app-loading";
 import { useShallow } from "zustand/react/shallow";
-import { useSwiper } from "swiper/react";
 import { useRegisterMutation } from "@src/hooks/auth-hook";
+import { VenusAndMars } from "lucide-react";
+import { ROUTES } from "@src/routes/routes";
 
 const LOADER_KEY = "RegisterForm";
 
@@ -24,7 +36,8 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRpPassword, setShowRpPassword] = useState(false);
 
-  const swiper = useSwiper();
+  const router = useIonRouter();
+  const genderDateModal = useRef<HTMLIonModalElement>(null);
 
   const { startLoading, stopLoading } = useAppLoadingStore(
     useShallow((s) => ({
@@ -41,8 +54,11 @@ export default function RegisterForm() {
     defaultValues: {
       email: "",
       password: "",
+      gender: true,
+      birthDate: new Date().toISOString(),
       repeatPassword: "",
     },
+    reValidateMode: "onSubmit",
     resolver: valibotResolver(RegisterRequestSchema),
   });
 
@@ -76,7 +92,7 @@ export default function RegisterForm() {
     <div className="grid grid-rows-[1fr_4rem] h-full pb-2 px-6 py-10">
       <form
         onSubmit={registerForm.handleSubmit(handleRegister)}
-        className="grid grid-rows-[4rem_4rem_4rem_1fr] items-center gap-2"
+        className="grid grid-rows-[4rem_4rem_4rem_4rem_4rem_1fr] items-center gap-2"
       >
         <Controller
           name="email"
@@ -177,6 +193,89 @@ export default function RegisterForm() {
           )}
         />
 
+        <Controller
+          name="gender"
+          control={registerForm.control}
+          render={(gender) => (
+            <IonRadioGroup
+              errorText={gender.fieldState.error?.message}
+              value={gender.field.value}
+              onIonChange={gender.field.onChange}
+              ref={gender.field.ref}
+              className={cn(
+                "w-full px-2",
+                gender.fieldState.error && "ion-invalid ion-touched"
+              )}
+            >
+              <div className="flex w-full justify-between items-center">
+                <p className="flex justify-center items-center gap-2 text-gray-700">
+                  <VenusAndMars className="size-5" />
+                  Gender
+                </p>
+
+                <div className="flex justify-center items-center gap-10 px-4">
+                  <IonRadio value={true} className="text-sm">
+                    Male
+                  </IonRadio>
+                  <IonRadio value={false} className="text-sm">
+                    Female
+                  </IonRadio>
+                </div>
+              </div>
+            </IonRadioGroup>
+          )}
+        />
+
+        <Controller
+          name="birthDate"
+          control={registerForm.control}
+          render={(birthDate) => (
+            <div
+              onClick={() => genderDateModal.current?.present()}
+              className="w-full h-fit flex flex-col justify-center items-start gap-2"
+            >
+              <div
+                className={cn(
+                  "flex justify-between items-center w-full",
+                  "bg-white border-1 rounded-[7px] h-12 py-[0.45rem]py-2 px-2",
+                  birthDate.fieldState.error && "border-red-400"
+                )}
+              >
+                <label className="">Birth Date</label>
+
+                <IonDatetimeButton
+                  datetime="birth-date"
+                  className="self-center"
+                ></IonDatetimeButton>
+              </div>
+
+              <IonNote className="ps-4 text-xs text-red-700!">
+                {birthDate.fieldState.error?.message}
+              </IonNote>
+
+              <IonModal
+                keepContentsMounted
+                initialBreakpoint={1}
+                breakpoints={[0, 0.5, 1]}
+                ref={genderDateModal}
+                className="ion-w-[100%]!"
+              >
+                <IonDatetime
+                  id="birth-date"
+                  presentation="date"
+                  preferWheel
+                  showAdjacentDays
+                  value={birthDate.field.value}
+                  onIonChange={birthDate.field.onChange}
+                  onIonBlur={birthDate.field.onBlur}
+                  ref={birthDate.field.ref}
+                  className="bg-transparent! ion-wheel-fade-bg-rgb-white mx-auto w-full my-8"
+                />
+              </IonModal>
+            </div>
+          )}
+        />
+
         <IonButton
           type="submit"
           size="small"
@@ -190,7 +289,9 @@ export default function RegisterForm() {
         size="small"
         fill="clear"
         color="warning"
-        onClick={() => swiper.slidePrev()}
+        onClick={() =>
+          router.push(`${ROUTES.L_AUTH}?authPage=0`, "none", "replace")
+        }
         className="text-base font-semibold ion-py-[0.1rem] self-center ion-b-w-[1px] text-amber-900!"
       >
         <IonIcon
