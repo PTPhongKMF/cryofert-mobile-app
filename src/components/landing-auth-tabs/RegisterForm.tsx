@@ -89,7 +89,7 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="grid grid-rows-[1fr_4rem] h-full pb-2 px-6 py-10">
+    <div className="grid grid-rows-[1fr_4rem] h-full px-6 pt-10">
       <form
         onSubmit={registerForm.handleSubmit(handleRegister)}
         className="grid grid-rows-[4rem_4rem_4rem_4rem_4rem_1fr] items-center gap-2"
@@ -256,9 +256,9 @@ export default function RegisterForm() {
               <IonModal
                 keepContentsMounted
                 initialBreakpoint={1}
-                breakpoints={[0, 0.5, 1]}
+                breakpoints={[0, 1]}
                 ref={genderDateModal}
-                className="ion-w-[100%]!"
+                className="ion-w-[100%]! ion-bg-gray-100"
               >
                 <IonDatetime
                   id="birth-date"
@@ -269,7 +269,8 @@ export default function RegisterForm() {
                   onIonChange={birthDate.field.onChange}
                   onIonBlur={birthDate.field.onBlur}
                   ref={birthDate.field.ref}
-                  className="bg-transparent! ion-wheel-fade-bg-rgb-white mx-auto w-full my-8"
+                  max={registerForm.formState.defaultValues?.birthDate}
+                  className="mx-auto h-full"
                 />
               </IonModal>
             </div>

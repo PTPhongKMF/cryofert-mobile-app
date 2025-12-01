@@ -5,16 +5,12 @@ import SafeAreaView from "@src/components/SafeAreaView";
 
 export default function Samples() {
   return (
-    <>
-      <AppTabHeader />
+    <IonContent className="relative">
+      <BlueToGrayGradientBg />
 
-      <IonContent className="relative">
-        <BlueToGrayGradientBg />
-
-        <SafeAreaView withFixedHeader={true} className="relative">
-          <div className="pt-6 px-4"></div>
-        </SafeAreaView>
-      </IonContent>
-    </>
+      <SafeAreaView withFixedHeader={true} className="relative">
+        <div className="pt-6 px-4"></div>
+      </SafeAreaView>
+    </IonContent>
   );
 }

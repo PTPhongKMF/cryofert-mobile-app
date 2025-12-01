@@ -63,42 +63,38 @@ export default function History() {
   }, [segment, location.pathname, location.search, router]);
 
   return (
-    <>
-      <AppTabHeader />
-
-      <IonContent scrollY={false} className="relative">
-        <BlueToGrayGradientBg />
-        <SafeAreaView
-          withFixedHeader={true}
-          className="relative flex flex-col h-full"
+    <IonContent scrollY={false} className="relative">
+      <BlueToGrayGradientBg />
+      <SafeAreaView
+        withFixedHeader={true}
+        className="relative flex flex-col h-full"
+      >
+        <IonSegment
+          value={segment}
+          onIonChange={(e) => {
+            const newSegment = e.detail.value?.toString() ?? "appointments";
+            setSegment(newSegment);
+          }}
+          className="shrink-0"
         >
-          <IonSegment
-            value={segment}
-            onIonChange={(e) => {
-              const newSegment = e.detail.value?.toString() ?? "appointments";
-              setSegment(newSegment);
-            }}
-            className="shrink-0"
-          >
-            <IonSegmentButton value="appointments">
-              <IonLabel>Appointments</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="treatment">
-              <IonLabel>Treatment</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
+          <IonSegmentButton value="appointments">
+            <IonLabel>Appointments</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton value="treatment">
+            <IonLabel>Treatment</IonLabel>
+          </IonSegmentButton>
+        </IonSegment>
 
-          <div className="flex-1 min-h-0 overflow-y-auto px-4 ion-content-scroll-host">
-            {segment === "appointments" ? (
-              <AppointmentHistory />
-            ) : segment === "treatment" ? (
-              <TreatmentHistory />
-            ) : (
-              <AppointmentHistory />
-            )}
-          </div>
-        </SafeAreaView>
-      </IonContent>
-    </>
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 ion-content-scroll-host">
+          {segment === "appointments" ? (
+            <AppointmentHistory />
+          ) : segment === "treatment" ? (
+            <TreatmentHistory />
+          ) : (
+            <AppointmentHistory />
+          )}
+        </div>
+      </SafeAreaView>
+    </IonContent>
   );
 }

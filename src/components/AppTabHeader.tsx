@@ -1,7 +1,7 @@
 import { IonHeader, IonIcon, IonToolbar, useIonRouter } from "@ionic/react";
 import { ROUTES } from "@src/routes/routes";
 import { notificationsOutline } from "ionicons/icons";
-import { HeartPulse, List, Snowflake, UserRoundCog } from "lucide-react";
+import { Dna, HeartPulse, List, Snowflake, UserRoundCog } from "lucide-react";
 import { useLayoutEffect, useRef } from "react";
 
 export default function AppTabHeader() {
@@ -49,8 +49,8 @@ export default function AppTabHeader() {
       case ROUTES.T_SAMPLES:
         return (
           <>
-            <Snowflake className="h-7 w-7 text-blue-600" />
-            Cryo Reservation
+            <Dna className="h-7 w-7 text-blue-600" />
+            Samples Reservation
           </>
         );
       case ROUTES.T_ACCOUNT:
