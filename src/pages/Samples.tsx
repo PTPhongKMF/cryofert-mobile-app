@@ -3,7 +3,7 @@ import AppTabHeader from "@src/components/AppTabHeader";
 import BlueToGrayGradientBg from "@src/components/backgrounds/BlueToGrayGradientBg";
 import SafeAreaView from "@src/components/SafeAreaView";
 
-export default function CryoReservation() {
+export default function Samples() {
   return (
     <>
       <AppTabHeader />

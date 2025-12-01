@@ -80,188 +80,182 @@ export default function Home() {
   };
 
   return (
-    <>
-      <AppTabHeader />
+    <IonContent className="relative">
+      <BlueToGrayGradientBg />
 
-      <IonContent className="relative">
-        <BlueToGrayGradientBg />
+      <SafeAreaView withFixedHeader={true} className="relative">
+        <div className="px-4 pb-20 space-y-6">
+          {/* Quick Actions */}
+          <section>
+            <h2 className="text-lg font-semibold text-slate-800 mb-3">
+              Quick Actions
+            </h2>
+            <div className="grid grid-cols-2 gap-3">
+              <QuickActionCard
+                icon={<Calendar className="h-6 w-6" />}
+                title="Book Treatment"
+                subtitle="Schedule appointment"
+                onClick={() => router.push(ROUTES.BOOK_TREATMENT)}
+                color="bg-blue-500"
+              />
+              <QuickActionCard
+                icon={<FileText className="h-6 w-6" />}
+                title="View History"
+                subtitle="Past appointments"
+                onClick={() => router.push(ROUTES.T_HISTORY)}
+                color="bg-teal-500"
+              />
+              <QuickActionCard
+                icon={<CreditCard className="h-6 w-6" />}
+                title="Payments"
+                subtitle="View transactions"
+                onClick={() => router.push(ROUTES.TRANSACTION_HISTORY)}
+                color="bg-purple-500"
+              />
+              <QuickActionCard
+                icon={<Database className="h-6 w-6" />}
+                title="Storage"
+                subtitle="Cryobank samples"
+                onClick={() => {}}
+                color="bg-indigo-500"
+              />
+            </div>
+          </section>
 
-        <SafeAreaView withFixedHeader={true} className="relative">
-          <div className="px-4 pb-20 space-y-6">
-            {/* Quick Actions */}
-            <section>
-              <h2 className="text-lg font-semibold text-slate-800 mb-3">
-                Quick Actions
+          {/* Upcoming Appointments */}
+          <section>
+            <div className="flex justify-between items-center mb-3">
+              <h2 className="text-lg font-semibold text-slate-800">
+                Upcoming Appointments
               </h2>
-              <div className="grid grid-cols-2 gap-3">
-                <QuickActionCard
-                  icon={<Calendar className="h-6 w-6" />}
-                  title="Book Treatment"
-                  subtitle="Schedule appointment"
-                  onClick={() => router.push(ROUTES.BOOK_TREATMENT)}
-                  color="bg-blue-500"
+              <button
+                onClick={() => router.push(ROUTES.T_HISTORY)}
+                className="text-sm text-blue-600 flex items-center gap-1"
+              >
+                View all
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+            <div className="space-y-3">
+              {mockUpcomingAppointments.map((appointment) => (
+                <AppointmentCard
+                  key={appointment.id}
+                  appointment={appointment}
                 />
-                <QuickActionCard
-                  icon={<FileText className="h-6 w-6" />}
-                  title="View History"
-                  subtitle="Past appointments"
-                  onClick={() => router.push(ROUTES.T_HISTORY)}
-                  color="bg-teal-500"
+              ))}
+            </div>
+          </section>
+
+          {/* Storage Status */}
+          <section>
+            <h2 className="text-lg font-semibold text-slate-800 mb-3">
+              Storage Status
+            </h2>
+            <div className="bg-white/80 backdrop-blur rounded-xl border border-blue-200 p-4">
+              <div className="grid grid-cols-3 gap-4">
+                <StorageItem
+                  icon={<Sparkles className="h-5 w-5" />}
+                  label="Eggs"
+                  count={mockStorage.eggs.count}
+                  status={mockStorage.eggs.status}
                 />
-                <QuickActionCard
-                  icon={<CreditCard className="h-6 w-6" />}
-                  title="Payments"
-                  subtitle="View transactions"
-                  onClick={() => router.push(ROUTES.TRANSACTION_HISTORY)}
-                  color="bg-purple-500"
+                <StorageItem
+                  icon={<FlaskConical className="h-5 w-5" />}
+                  label="Embryos"
+                  count={mockStorage.embryos.count}
+                  status={mockStorage.embryos.status}
                 />
-                <QuickActionCard
-                  icon={<Database className="h-6 w-6" />}
-                  title="Storage"
-                  subtitle="Cryobank samples"
-                  onClick={() => {}}
-                  color="bg-indigo-500"
+                <StorageItem
+                  icon={<Activity className="h-5 w-5" />}
+                  label="Sperm"
+                  count={mockStorage.sperm.count}
+                  status={mockStorage.sperm.status}
                 />
               </div>
-            </section>
+              <div className="mt-4 pt-4 border-t border-blue-100">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-slate-600">Next renewal</span>
+                  <span className="font-semibold text-blue-600">
+                    Apr 15, 2025
+                  </span>
+                </div>
+              </div>
+            </div>
+          </section>
 
-            {/* Upcoming Appointments */}
+          {/* Quick Stats */}
+          <section>
+            <h2 className="text-lg font-semibold text-slate-800 mb-3">
+              Your Journey
+            </h2>
+            <div className="grid grid-cols-3 gap-3">
+              <StatCard
+                icon={<Activity className="h-5 w-5" />}
+                value={mockQuickStats.activeTreatments}
+                label="Active Treatments"
+                color="text-blue-600"
+              />
+              <StatCard
+                icon={<Calendar className="h-5 w-5" />}
+                value={mockQuickStats.totalAppointments}
+                label="Total Visits"
+                color="text-teal-600"
+              />
+              <StatCard
+                icon={<TrendingUp className="h-5 w-5" />}
+                value={mockQuickStats.successRate}
+                label="Success Rate"
+                color="text-green-600"
+              />
+            </div>
+          </section>
+
+          {/* Notifications */}
+          {mockNotifications.length > 0 && (
             <section>
               <div className="flex justify-between items-center mb-3">
                 <h2 className="text-lg font-semibold text-slate-800">
-                  Upcoming Appointments
+                  Notifications
                 </h2>
-                <button
-                  onClick={() => router.push(ROUTES.T_HISTORY)}
-                  className="text-sm text-blue-600 flex items-center gap-1"
-                >
-                  View all
-                  <ArrowRight className="h-4 w-4" />
-                </button>
+                <button className="text-sm text-blue-600">Mark all read</button>
               </div>
-              <div className="space-y-3">
-                {mockUpcomingAppointments.map((appointment) => (
-                  <AppointmentCard
-                    key={appointment.id}
-                    appointment={appointment}
+              <div className="space-y-2">
+                {mockNotifications.map((notification) => (
+                  <NotificationCard
+                    key={notification.id}
+                    notification={notification}
                   />
                 ))}
               </div>
             </section>
+          )}
 
-            {/* Storage Status */}
-            <section>
-              <h2 className="text-lg font-semibold text-slate-800 mb-3">
-                Storage Status
-              </h2>
-              <div className="bg-white/80 backdrop-blur rounded-xl border border-blue-200 p-4">
-                <div className="grid grid-cols-3 gap-4">
-                  <StorageItem
-                    icon={<Sparkles className="h-5 w-5" />}
-                    label="Eggs"
-                    count={mockStorage.eggs.count}
-                    status={mockStorage.eggs.status}
-                  />
-                  <StorageItem
-                    icon={<FlaskConical className="h-5 w-5" />}
-                    label="Embryos"
-                    count={mockStorage.embryos.count}
-                    status={mockStorage.embryos.status}
-                  />
-                  <StorageItem
-                    icon={<Activity className="h-5 w-5" />}
-                    label="Sperm"
-                    count={mockStorage.sperm.count}
-                    status={mockStorage.sperm.status}
-                  />
+          {/* Help & Support */}
+          <section>
+            <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-xl border border-blue-200 p-4">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <Shield className="h-5 w-5 text-blue-600" />
                 </div>
-                <div className="mt-4 pt-4 border-t border-blue-100">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-slate-600">Next renewal</span>
-                    <span className="font-semibold text-blue-600">
-                      Apr 15, 2025
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Quick Stats */}
-            <section>
-              <h2 className="text-lg font-semibold text-slate-800 mb-3">
-                Your Journey
-              </h2>
-              <div className="grid grid-cols-3 gap-3">
-                <StatCard
-                  icon={<Activity className="h-5 w-5" />}
-                  value={mockQuickStats.activeTreatments}
-                  label="Active Treatments"
-                  color="text-blue-600"
-                />
-                <StatCard
-                  icon={<Calendar className="h-5 w-5" />}
-                  value={mockQuickStats.totalAppointments}
-                  label="Total Visits"
-                  color="text-teal-600"
-                />
-                <StatCard
-                  icon={<TrendingUp className="h-5 w-5" />}
-                  value={mockQuickStats.successRate}
-                  label="Success Rate"
-                  color="text-green-600"
-                />
-              </div>
-            </section>
-
-            {/* Notifications */}
-            {mockNotifications.length > 0 && (
-              <section>
-                <div className="flex justify-between items-center mb-3">
-                  <h2 className="text-lg font-semibold text-slate-800">
-                    Notifications
-                  </h2>
-                  <button className="text-sm text-blue-600">
-                    Mark all read
+                <div className="flex-1">
+                  <h3 className="font-semibold text-slate-800 mb-1">
+                    Need Help?
+                  </h3>
+                  <p className="text-sm text-slate-600 mb-3">
+                    Our support team is available 24/7 to assist you with any
+                    questions about your treatment or storage.
+                  </p>
+                  <button className="text-sm text-blue-600 font-medium flex items-center gap-1">
+                    Contact Support
+                    <ArrowRight className="h-4 w-4" />
                   </button>
                 </div>
-                <div className="space-y-2">
-                  {mockNotifications.map((notification) => (
-                    <NotificationCard
-                      key={notification.id}
-                      notification={notification}
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* Help & Support */}
-            <section>
-              <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-xl border border-blue-200 p-4">
-                <div className="flex items-start gap-3">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <Shield className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-slate-800 mb-1">
-                      Need Help?
-                    </h3>
-                    <p className="text-sm text-slate-600 mb-3">
-                      Our support team is available 24/7 to assist you with any
-                      questions about your treatment or storage.
-                    </p>
-                    <button className="text-sm text-blue-600 font-medium flex items-center gap-1">
-                      Contact Support
-                      <ArrowRight className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
               </div>
-            </section>
-          </div>
-        </SafeAreaView>
-      </IonContent>
-    </>
+            </div>
+          </section>
+        </div>
+      </SafeAreaView>
+    </IonContent>
   );
 }
 
