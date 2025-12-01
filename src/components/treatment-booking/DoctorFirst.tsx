@@ -132,7 +132,8 @@ export default function DoctorFirst({
           trigger="doctor-sheet"
           ref={doctorModal}
           initialBreakpoint={0.5}
-          breakpoints={[0, 0.25, 0.5, 0.75]}
+          breakpoints={[0, 0.5, 0.75]}
+          expandToScroll={false}
         >
           <IonHeader>
             <IonToolbar className="pt-2!">
@@ -146,7 +147,7 @@ export default function DoctorFirst({
             </IonToolbar>
           </IonHeader>
           <IonContent>
-            <IonList className="mt-4!">
+            <IonList>
               {doctorQuery.isPending && (
                 <div className="flex justify-center py-4">
                   <IonSpinner color="primary" />

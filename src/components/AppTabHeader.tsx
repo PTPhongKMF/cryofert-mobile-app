@@ -46,7 +46,7 @@ export default function AppTabHeader() {
             History
           </>
         );
-      case ROUTES.T_CRYO:
+      case ROUTES.T_SAMPLES:
         return (
           <>
             <Snowflake className="h-7 w-7 text-blue-600" />

@@ -96,13 +96,8 @@ export default function Account() {
 
                 <div className="flex justify-between items-center w-full text-sm font-semibold text-blue-500">
                   <p>Gender:</p>
-                  <span
-                    className={cn(
-                      "font-normal text-xs",
-                      localUser?.gender ? "text-black" : "text-gray-600"
-                    )}
-                  >
-                    {localUser?.gender ? localUser.gender : "N/A"}
+                  <span className="font-normal text-xs text-black">
+                    {localUser?.gender ? "Male" : "Female"}
                   </span>
                 </div>
               </div>

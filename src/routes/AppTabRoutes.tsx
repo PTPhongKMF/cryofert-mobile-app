@@ -32,11 +32,12 @@ import {
 import { useEffect } from "react";
 import { useLocalUserStore } from "@src/stores/user";
 import { clearAllSecuredTokens } from "@src/services/token-service";
-import { ClipboardPlus, Snowflake, Stethoscope } from "lucide-react";
+import { ClipboardPlus, Dna, Snowflake, Stethoscope } from "lucide-react";
 import Dev from "@src/pages/devs/Dev";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import Home from "@src/pages/Home";
-import CryoReservation from "@src/pages/CryoReservation";
+import Samples from "@src/pages/Samples";
+import AppTabHeader from "@src/components/AppTabHeader";
 
 export default function AppTabRoutes() {
   const router = useIonRouter();
@@ -78,17 +79,23 @@ export default function AppTabRoutes() {
 
   return (
     <IonTabs>
+      <AppTabHeader />
+
       <IonRouterOutlet>
         <IonContent>
           <Route exact path={ROUTES.T_HOME} component={Home} />
           <Route exact path={ROUTES.T_HISTORY} component={History} />
-          <Route exact path={ROUTES.T_CRYO} component={CryoReservation} />
+          <Route exact path={ROUTES.T_SAMPLES} component={Samples} />
           <Route exact path={ROUTES.T_ACCOUNT} component={Account} />
           <Route exact path={"/tabs/dev"} component={Dev} />
         </IonContent>
       </IonRouterOutlet>
 
-      <IonTabBar id="app-tab-bar" slot="bottom" className="ion-bg-violet-100">
+      <IonTabBar
+        id="app-tab-bar"
+        slot="bottom"
+        className="ion-bg-violet-100 pb-1"
+      >
         <IonTabButton tab="home" href={ROUTES.T_HOME}>
           <IonIcon icon={home} className="size-6" />
           <IonLabel className="text-xs">Home</IonLabel>
@@ -99,13 +106,10 @@ export default function AppTabRoutes() {
           <IonLabel className="text-xs">History</IonLabel>
         </IonTabButton>
 
-        <IonTabButton tab="cryo" href={ROUTES.T_CRYO}>
+        <IonTabButton tab="cryo" href={ROUTES.T_SAMPLES}>
           <IonIcon icon={serverOutline} className="size-6" />
-          <IonIcon
-            icon={snow}
-            className="size-5 absolute bottom-[43%] right-[7%]"
-          />
-          <IonLabel className="text-xs">Cryo</IonLabel>
+          <Dna className="size-5 absolute bottom-[46%] right-[10%]" />
+          <IonLabel className="text-xs">Samples</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="account" href={ROUTES.T_ACCOUNT}>

@@ -180,7 +180,9 @@ export default function DateFirst({ bookingForm, slotList }: DateFirstProps) {
             const hasSlot = !!bookingForm.watch("slotId");
             const isQueryEnabled = hasDate && hasSlot;
             const shouldShowOverlay =
-              !hasDate || !hasSlot || (isQueryEnabled && doctorQuery.isFetching);
+              !hasDate ||
+              !hasSlot ||
+              (isQueryEnabled && doctorQuery.isFetching);
             const shouldShowSpinner = isQueryEnabled && doctorQuery.isFetching;
 
             return shouldShowOverlay ? (
@@ -205,7 +207,8 @@ export default function DateFirst({ bookingForm, slotList }: DateFirstProps) {
           trigger="doctor-sheet"
           ref={doctorModal}
           initialBreakpoint={0.5}
-          breakpoints={[0, 0.25, 0.5, 0.75]}
+          breakpoints={[0, 0.5, 0.75]}
+          expandToScroll={false}
         >
           <IonHeader>
             <IonToolbar className="pt-2!">
@@ -219,7 +222,7 @@ export default function DateFirst({ bookingForm, slotList }: DateFirstProps) {
             </IonToolbar>
           </IonHeader>
           <IonContent>
-            <IonList className="mt-4!">
+            <IonList>
               {doctorQuery.isPending && (
                 <div className="flex justify-center py-4">
                   <IonSpinner color="primary" />
