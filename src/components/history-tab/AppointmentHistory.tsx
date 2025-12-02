@@ -86,11 +86,11 @@ export default function AppointmentHistory() {
 
   return (
     <div className="size-full">
-      <IonList className="bg-transparent!">
-        <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
-          <IonRefresherContent></IonRefresherContent>
-        </IonRefresher>
+      <IonRefresher slot="fixed" onIonRefresh={handleRefresh} className="z-10!">
+        <IonRefresherContent />
+      </IonRefresher>
 
+      <IonList className="bg-transparent!">
         {bookingHistoryQuery.isSuccess && appointments.length === 0 ? (
           <div className="flex justify-center items-center py-8 italic text-gray-500">
             Empty

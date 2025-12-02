@@ -11,6 +11,7 @@ import AppTabHeader from "@src/components/AppTabHeader";
 import SafeAreaView from "@src/components/SafeAreaView";
 import BlueToGrayGradientBg from "@src/components/backgrounds/BlueToGrayGradientBg";
 import AppointmentHistory from "@src/components/history-tab/AppointmentHistory";
+import AppointmentHistoryFilter from "@src/components/history-tab/AppointmentHistoryFilter";
 import TreatmentHistory from "@src/components/history-tab/TreatmentHistory";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
@@ -85,7 +86,9 @@ export default function History() {
           </IonSegmentButton>
         </IonSegment>
 
-        <div className="flex-1 min-h-0 overflow-y-auto px-4 ion-content-scroll-host">
+        {segment === "appointments" && <AppointmentHistoryFilter />}
+
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 ion-content-scroll-host relative">
           {segment === "appointments" ? (
             <AppointmentHistory />
           ) : segment === "treatment" ? (

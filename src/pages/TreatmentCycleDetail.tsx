@@ -10,15 +10,19 @@ import {
   IonSegment,
   IonSegmentButton,
   IonLabel,
+  IonButton,
+  IonIcon,
 } from "@ionic/react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useTreatmentCycleDetailQuery } from "@src/hooks/treatment-cycle-hook";
 import TreatmentCycleDetailInfo from "@src/components/treatment-cycle-detail-segments/TreatmentCycleDetailInfo";
 import TreatmentCycleDetailAppointments from "@src/components/treatment-cycle-detail-segments/TreatmentCycleDetailAppointments";
+import { reload } from "ionicons/icons";
 
 export default function TreatmentCycleDetail() {
   const [segment, setSegment] = useState("info");
+  const [isManualRefetching, setIsManualRefetching] = useState(false);
 
   const { cycleId } = useParams<{ cycleId: string }>();
 
@@ -47,6 +51,21 @@ export default function TreatmentCycleDetail() {
               "Treatment Cycle"
             )}
           </IonTitle>
+          <IonButtons slot="secondary">
+            <IonButton
+              onClick={async () => {
+                setIsManualRefetching(true);
+                try {
+                  await cycleQuery.refetch();
+                } finally {
+                  setIsManualRefetching(false);
+                }
+              }}
+              disabled={isLoading || isManualRefetching}
+            >
+              <IonIcon slot="icon-only" icon={reload} />
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
 
@@ -61,7 +80,7 @@ export default function TreatmentCycleDetail() {
               Error loading cycle details.
             </div>
           ) : (
-            <>
+            <div className="relative flex flex-col h-full">
               <IonSegment
                 value={segment}
                 onIonChange={(e) => {
@@ -87,11 +106,15 @@ export default function TreatmentCycleDetail() {
                   <TreatmentCycleDetailAppointments
                     appointments={cycle.appointments}
                   />
-                ) : (
-                  <TreatmentCycleDetailInfo cycle={cycle} />
-                )}
+                ) : null}
               </div>
-            </>
+
+              {isManualRefetching && (
+                <div className="absolute inset-0 bg-white/60 flex items-center justify-center z-10">
+                  <IonSpinner name="crescent" />
+                </div>
+              )}
+            </div>
           )}
         </div>
       </IonContent>

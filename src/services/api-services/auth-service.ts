@@ -8,6 +8,7 @@ import {
   type RegisterRequest,
 } from "@src/schemas/auth";
 import { httpClient } from "@src/services/api-services/http-service";
+import { getDateOnly } from "@utils/date";
 import { HTTPError } from "ky";
 import * as v from "valibot";
 
@@ -49,7 +50,7 @@ export async function registerMutationFn(
       json: {
         email: req.email,
         password: req.password,
-        birthDate: req.birthDate,
+        birthDate: getDateOnly(req.birthDate),
         gender: req.gender,
       },
     })

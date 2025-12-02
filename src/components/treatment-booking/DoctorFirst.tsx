@@ -175,7 +175,7 @@ export default function DoctorFirst({
                         bookingForm.setValue("doctorIds", doctor.id);
                         doctorModal.current?.dismiss();
                       }}
-                      className="my-4! ion-bg-neutral-50!"
+                      className="ion-bg-neutral-50!"
                     >
                       <div className="flex flex-col gap-2 py-2 w-full">
                         <div className="flex items-center justify-between">

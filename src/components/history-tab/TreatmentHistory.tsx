@@ -53,8 +53,12 @@ export default function TreatmentHistory() {
   return (
     <div className="size-full">
       <IonList className="bg-transparent!">
-        <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
-          <IonRefresherContent></IonRefresherContent>
+        <IonRefresher
+          slot="fixed"
+          onIonRefresh={handleRefresh}
+          className="z-10!"
+        >
+          <IonRefresherContent />
         </IonRefresher>
 
         {treatmentQuery.isSuccess && treatments.length === 0 ? (

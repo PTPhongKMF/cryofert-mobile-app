@@ -12,6 +12,7 @@ import {
   IonLabel,
   IonFooter,
   IonButton,
+  IonIcon,
   useIonRouter,
 } from "@ionic/react";
 import { useState, useEffect, useMemo } from "react";
@@ -20,9 +21,11 @@ import { useAppointmentDetailQuery } from "@src/hooks/appointment-hook";
 import AppointmentDetailInfo from "@src/components/appointment-detail-segments/AppointmentDetailInfo";
 import AppointmentDetailCycles from "@src/components/appointment-detail-segments/AppointmentDetailCycles";
 import { ROUTES } from "@src/routes/routes";
+import { reload } from "ionicons/icons";
 
 export default function AppointmentDetail() {
   const [segment, setSegment] = useState("info");
+  const [isManualRefetching, setIsManualRefetching] = useState(false);
 
   const router = useIonRouter();
 
@@ -69,6 +72,21 @@ export default function AppointmentDetail() {
               "Appointment"
             )}
           </IonTitle>
+          <IonButtons slot="secondary">
+            <IonButton
+              onClick={async () => {
+                setIsManualRefetching(true);
+                try {
+                  await appointmentQuery.refetch();
+                } finally {
+                  setIsManualRefetching(false);
+                }
+              }}
+              disabled={isLoading || isManualRefetching}
+            >
+              <IonIcon slot="icon-only" icon={reload} />
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
 
@@ -83,7 +101,7 @@ export default function AppointmentDetail() {
               Error loading appointment details.
             </div>
           ) : (
-            <>
+            <div className="relative flex flex-col h-full">
               <IonSegment
                 value={segment}
                 onIonChange={(e) => {
@@ -107,11 +125,15 @@ export default function AppointmentDetail() {
                   <AppointmentDetailCycles
                     treatmentCycle={appointment.treatmentCycle}
                   />
-                ) : (
-                  <AppointmentDetailInfo appointment={appointment} />
-                )}
+                ) : null}
               </div>
-            </>
+
+              {isManualRefetching && (
+                <div className="absolute inset-0 bg-white/60 flex items-center justify-center z-10">
+                  <IonSpinner name="crescent" />
+                </div>
+              )}
+            </div>
           )}
         </div>
       </IonContent>
