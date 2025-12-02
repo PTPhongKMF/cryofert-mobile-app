@@ -12,6 +12,8 @@ import {
   IonLabel,
   IonSegment,
   IonSegmentButton,
+  IonIcon,
+  IonButton,
 } from "@ionic/react";
 import { useParams } from "react-router-dom";
 import { useTreatmentDetailQuery } from "@src/hooks/treatment-hook";
@@ -20,9 +22,11 @@ import { useEffect, useState } from "react";
 import TreatmentDetailInfo from "@src/components/treatment-detail-segments/TreatmentDetailInfo";
 import TreatmentDetailAgreements from "@src/components/treatment-detail-segments/TreatmentDetailAgreements";
 import TreatmentDetailCycles from "@src/components/treatment-detail-segments/TreatmentDetailCycles";
+import { reload } from "ionicons/icons";
 
 export default function TreatmentDetail() {
   const [segment, setSegment] = useState("info");
+  const [isManualRefetching, setIsManualRefetching] = useState(false);
 
   const { treatmentId } = useParams<{ treatmentId: string }>();
 
@@ -57,12 +61,31 @@ export default function TreatmentDetail() {
           <IonTitle>
             {treatment ? (
               <>
-                Treatment <span className="text-xs">{treatment.treatmentName}</span>
+                Treatment{" "}
+                <span className="text-xs">{treatment.treatmentName}</span>
               </>
             ) : (
               "Treatment"
             )}
           </IonTitle>
+          <IonButtons slot="secondary">
+            <IonButton
+              onClick={async () => {
+                setIsManualRefetching(true);
+                try {
+                  await Promise.all([
+                    treatmentQuery.refetch(),
+                    cyclesQuery.refetch(),
+                  ]);
+                } finally {
+                  setIsManualRefetching(false);
+                }
+              }}
+              disabled={isLoading || isManualRefetching}
+            >
+              <IonIcon slot="icon-only" icon={reload} />
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
 
@@ -77,7 +100,7 @@ export default function TreatmentDetail() {
               Error loading treatment details.
             </div>
           ) : (
-            <>
+            <div className="relative flex flex-col h-full">
               <IonSegment
                 value={segment}
                 onIonChange={(e) => {
@@ -104,7 +127,6 @@ export default function TreatmentDetail() {
                   <TreatmentDetailInfo treatment={treatment} />
                 ) : segment === "cycles" ? (
                   <TreatmentDetailCycles
-                    treatment={treatment}
                     cycles={cycles}
                     isError={cyclesQuery.isError}
                   />
@@ -113,11 +135,14 @@ export default function TreatmentDetail() {
                     treatment={treatment}
                     onAgreementSigned={() => treatmentQuery.refetch()}
                   />
-                ) : (
-                  <TreatmentDetailInfo treatment={treatment} />
-                )}
+                ) : null}
               </div>
-            </>
+              {isManualRefetching && (
+                <div className="absolute inset-0 bg-white/60 flex items-center justify-center z-10">
+                  <IonSpinner name="crescent" />
+                </div>
+              )}
+            </div>
           )}
         </div>
       </IonContent>

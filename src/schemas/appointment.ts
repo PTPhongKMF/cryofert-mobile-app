@@ -4,6 +4,29 @@ import { TransactionResponseSchema } from "@src/schemas/transaction";
 import { TreatmentCycleSatus } from "@src/schemas/treatment-cycle";
 import * as v from "valibot";
 
+export const AppointmentTypeSchema = v.picklist([
+  "Consultation",
+  "Ultrasound",
+  "BloodTest",
+  "OPU",
+  "ET",
+  "IUI",
+  "FollowUp",
+  "Injection",
+  "Booking",
+]);
+
+export const AppointmentStatusSchema = v.picklist([
+  "Scheduled",
+  "Confirmed",
+  "CheckedIn",
+  "InProgress",
+  "Completed",
+  "Cancelled",
+  "NoShow",
+  "Rescheduled",
+]);
+
 export const BookAppointmentFormSchema = v.object({
   doctorIds: v.string(),
   appointmentDate: v.pipe(v.string(), v.nonEmpty("Required")),
@@ -21,9 +44,9 @@ export const AppointmentResponseSchema = v.object({
   id: v.string(),
   treatmentCycleId: v.nullable(v.string()),
   slotId: v.nullable(v.string()),
-  type: v.string(),
+  type: AppointmentTypeSchema,
   typeName: v.string(),
-  status: v.string(),
+  status: AppointmentStatusSchema,
   statusName: v.string(),
   appointmentDate: v.string(),
   reason: v.nullable(v.string()),
@@ -98,3 +121,6 @@ export type AppointmentHistoryApiResponse = v.InferOutput<
 export type AppointmentApiResponse = v.InferOutput<
   typeof AppointmentApiResponseSchema
 >;
+
+export type AppointmentType = v.InferOutput<typeof AppointmentTypeSchema>;
+export type AppointmentStatus = v.InferOutput<typeof AppointmentStatusSchema>;

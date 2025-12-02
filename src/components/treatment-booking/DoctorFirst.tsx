@@ -108,23 +108,24 @@ export default function DoctorFirst({
 
   return (
     <>
-      <div className="w-full h-full flex flex-col justify-center items-start gap-2">
-        <label
-          onClick={() => doctorSheet.current?.click()}
-          className="flex justify-between items-center w-full h-12
-                    bg-neutral-50 py-2 rounded-md px-2"
-        >
-          <p>Doctor</p>
-
-          <IonButton
-            id="doctor-sheet"
-            ref={doctorSheet}
-            size="small"
-            className="normal-case ion-box-shadow-[0] ion-bg-[#edeef0]! text-gray-900"
+      <div className="w-full h-fit flex flex-col justify-center items-start gap-2">
+        <div className="w-full relative">
+          <div
+            onClick={() => doctorSheet.current?.click()}
+            className="flex justify-between items-center w-full h-12 bg-neutral-50 py-2 rounded-md px-2"
           >
-            {doctorName || "Select"}
-          </IonButton>
-        </label>
+            <label className="">Doctor</label>
+
+            <IonButton
+              id="doctor-sheet"
+              ref={doctorSheet}
+              size="small"
+              className="normal-case ion-box-shadow-[0] ion-bg-[#edeef0]! text-gray-900"
+            >
+              {doctorName || "Select"}
+            </IonButton>
+          </div>
+        </div>
 
         <IonNote className="ps-1">Select a Doctor.</IonNote>
 
@@ -174,7 +175,7 @@ export default function DoctorFirst({
                         bookingForm.setValue("doctorIds", doctor.id);
                         doctorModal.current?.dismiss();
                       }}
-                      className="my-4! ion-bg-neutral-50!"
+                      className="ion-bg-neutral-50!"
                     >
                       <div className="flex flex-col gap-2 py-2 w-full">
                         <div className="flex items-center justify-between">

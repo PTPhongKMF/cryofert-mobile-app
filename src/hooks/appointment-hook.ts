@@ -12,6 +12,7 @@ import {
   appointmentDetailQueryFn,
 } from "@src/services/api-services/appointment-service";
 import { useLocalUserStore } from "@src/stores/user";
+import { useAppointmentHistoryFilterStore } from "@src/stores/appointment";
 
 export function useCreateBookingAppointmentMutation() {
   return useMutation<AppointmentApiResponse, HTTPError, BookAppointmentRequest>(
@@ -23,9 +24,10 @@ export function useCreateBookingAppointmentMutation() {
 
 export function useAppointmentHistoryInfiniteQuery(
   patientId: string,
-  type?: string,
   pageSize: number = 20
 ) {
+  const filterOptions = useAppointmentHistoryFilterStore((s) => s.filterOptions);
+
   return useInfiniteQuery<
     AppointmentHistoryApiResponse,
     HTTPError,
@@ -33,13 +35,22 @@ export function useAppointmentHistoryInfiniteQuery(
     unknown[],
     number
   >({
-    queryKey: ["PatientBookingHistoryInfinite", patientId, pageSize, type],
+    queryKey: [
+      "PatientBookingHistoryInfinite",
+      patientId,
+      pageSize,
+      filterOptions.type,
+      filterOptions.status,
+      filterOptions.sortType,
+    ],
     queryFn: (queryParams) =>
       appointmentHistoryQueryFn({
-        type,
         patientId,
         pageSize,
         pageParam: queryParams.pageParam,
+        type: filterOptions.type ?? undefined,
+        status: filterOptions.status ?? undefined,
+        sortType: filterOptions.sortType,
       }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>

@@ -1,12 +1,12 @@
 import { format } from "@formkit/tempo";
-import { IonItem } from "@ionic/react";
+import { IonItem, useIonRouter } from "@ionic/react";
 import AnimatedProgressLine from "@src/components/AnimatedProgressLine";
+import { ROUTES } from "@src/routes/routes";
 import type { TreatmentDetail } from "@src/schemas/treatment";
 import type { TreatmentCycleResponse } from "@src/schemas/treatment-cycle";
 import { cn } from "@utils/cn";
 
 interface TreatmentDetailCyclesProps {
-  treatment: TreatmentDetail;
   cycles: TreatmentCycleResponse[];
   isError: boolean;
 }
@@ -50,13 +50,10 @@ function getStatusLineColor(status: TreatmentCycleResponse["status"]) {
 }
 
 export default function TreatmentDetailCycles({
-  treatment,
   cycles,
   isError,
 }: TreatmentDetailCyclesProps) {
-  function handleCycleClick(cycle: TreatmentCycleResponse) {
-    console.log("Cycle clicked:", cycle);
-  }
+  const router = useIonRouter();
 
   if (isError) {
     return (
@@ -115,13 +112,18 @@ export default function TreatmentDetailCycles({
               <IonItem
                 button
                 lines="none"
-                onClick={() => handleCycleClick(cycle)}
+                onClick={() =>
+                  router.push(
+                    `${ROUTES.TREATMENT_CYCLE}/${cycle.id}`,
+                    "forward"
+                  )
+                }
                 className="row-span-2 col-start-2 row-start-1 w-full ion-b-r-[8px] ion-inner-py-[1rem] shadow-lg"
               >
                 <div className="size-full flex flex-col justify-start items-center gap-4">
                   <div className="size-full grid grid-cols-[1fr_auto] auto-rows-auto gap-x-2 gap-y-1">
                     <p className="text-lg font-semibold text-blue-500 line-clamp-1">
-                      Cycle {cycle.cycleNumber}
+                      Cycle {cycle.cycleName}
                     </p>
 
                     <div
@@ -129,10 +131,6 @@ export default function TreatmentDetailCycles({
                     >
                       {cycle.status}
                     </div>
-
-                    <p className="text-sm text-gray-600 col-span-2">
-                      {cycle.stepType}
-                    </p>
                   </div>
 
                   <div className="bg-gray-200 w-full h-0.5" />

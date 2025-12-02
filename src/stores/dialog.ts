@@ -19,7 +19,7 @@ type GenericDialogOptions = (
 ) &
   BaseGenericDialogOptions;
 
-interface GenericDialogStore {
+export interface GenericDialogStore {
   data: GenericDialogOptions | null;
   isOpen: boolean;
   openGenericDialog: (data: GenericDialogOptions) => void;

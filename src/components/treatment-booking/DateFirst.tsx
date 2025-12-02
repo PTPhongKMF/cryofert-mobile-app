@@ -109,26 +109,28 @@ export default function DateFirst({ bookingForm, slotList }: DateFirstProps) {
         control={bookingForm.control}
         render={(slotId) => (
           <div className="w-full h-fit flex flex-col justify-center items-start gap-2">
-            <IonSelect
-              label="Slot (time)"
-              placeholder="Select a slot"
-              interface="action-sheet"
-              errorText={slotId.fieldState.error?.message}
-              value={slotId.field.value}
-              onIonChange={slotId.field.onChange}
-              onIonBlur={slotId.field.onBlur}
-              ref={slotId.field.ref}
-              className={cn(
-                "ion-bg-neutral-50! ion-px-[0.5rem]!",
-                slotId.fieldState.error && "ion-invalid ion-touched"
-              )}
-            >
-              {slotList.map((slot) => (
-                <IonSelectOption key={slot.id} value={slot.id}>
-                  {slot.startTime} - {slot.endTime}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
+            <div className="w-full relative">
+              <IonSelect
+                label="Slot (time)"
+                placeholder="Select a slot"
+                interface="popover"
+                errorText={slotId.fieldState.error?.message}
+                value={slotId.field.value}
+                onIonChange={slotId.field.onChange}
+                onIonBlur={slotId.field.onBlur}
+                ref={slotId.field.ref}
+                className={cn(
+                  "ion-bg-neutral-50! ion-px-[0.5rem]!",
+                  slotId.fieldState.error && "ion-invalid ion-touched"
+                )}
+              >
+                {slotList.map((slot) => (
+                  <IonSelectOption key={slot.id} value={slot.id}>
+                    {slot.startTime} - {slot.endTime}
+                  </IonSelectOption>
+                ))}
+              </IonSelect>
+            </div>
 
             <IonNote className="ps-1">Slot.</IonNote>
           </div>
@@ -167,11 +169,7 @@ export default function DateFirst({ bookingForm, slotList }: DateFirstProps) {
               }
               className="normal-case ion-box-shadow-[0] ion-bg-[#edeef0]! text-gray-900"
             >
-              {doctorQuery.isFetching ? (
-                <IonSpinner color="primary" />
-              ) : (
-                doctorName || "Select"
-              )}
+              {doctorName || "Select"}
             </IonButton>
           </div>
 

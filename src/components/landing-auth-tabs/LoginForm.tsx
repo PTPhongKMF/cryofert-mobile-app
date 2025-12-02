@@ -88,7 +88,7 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="grid grid-rows-[1fr_4rem] h-full pb-2 px-6 py-10 bg-sky-50 ion-bg-sky-50!">
+    <div className="grid grid-rows-[1fr_4rem] h-full px-6 pt-10 bg-sky-50 ion-bg-sky-50!">
       <form
         noValidate
         onSubmit={loginForm.handleSubmit(handleLogin)}
@@ -183,8 +183,6 @@ export default function LoginForm() {
           className="size-6 ms-4"
         ></IonIcon>
       </IonButton>
-
-      <div></div>
     </div>
   );
 }
