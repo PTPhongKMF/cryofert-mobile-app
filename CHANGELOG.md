@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.5.0...v0.6.0) (2025-12-02)
+
+
+### Features
+
+* add sort options to appointment history ([#15](https://github.com/PTPhongKMF/cryofert-mobile-app/issues/15)) ([915e19b](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/915e19bb7bbd9dab9920f2dbba778e88edda8461))
+* update register and add simple relationship page ([#12](https://github.com/PTPhongKMF/cryofert-mobile-app/issues/12)) ([a9a3b6e](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/a9a3b6e8e387ce21cbd132fec4a371f0c1ecf55b))
+
+
+### Bug Fixes
+
+* fix scroll problem on sheet modal in booking appointment - doctor choosing ([#14](https://github.com/PTPhongKMF/cryofert-mobile-app/issues/14)) ([1ffefa8](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/1ffefa813cb0dc078554ce02224d835452c9e867))
+
 ## [0.5.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.4.0...v0.5.0) (2025-11-29)
 
 
