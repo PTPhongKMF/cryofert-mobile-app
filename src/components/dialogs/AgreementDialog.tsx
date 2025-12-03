@@ -15,15 +15,21 @@ import {
   useRequestSignAgreementMutation,
   useVerifySignAgreementMutation,
 } from "@src/hooks/agreement-hook";
-import type { AgreementResponse } from "@src/schemas/agreement";
+import { usePatientDetailQuery } from "@src/hooks/account-hook";
+import type { AgreementData, AgreementResponse } from "@src/schemas/agreement";
+import { AgreementDataSchema } from "@src/schemas/agreement";
 import { useAppLoadingStore } from "@src/stores/app-loading";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import { cn } from "@utils/cn";
 import { alertCircleOutline, checkmarkCircleOutline } from "ionicons/icons";
 import { ShieldQuestionMark } from "lucide-react";
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import * as v from "valibot";
 import { useShallow } from "zustand/react/shallow";
+import { useForm } from "react-hook-form";
+import { valibotResolver } from "@hookform/resolvers/valibot";
+import AgreementForm from "@src/components/treatment-detail-segments/AgreementForm";
+import type { PatientApiResponse } from "@src/schemas/account";
 
 interface AgreementDialogProps {
   isOpen: boolean;
@@ -54,6 +60,36 @@ export default function AgreementDialog(props: AgreementDialogProps) {
 
   const requestSignAgreementMutation = useRequestSignAgreementMutation();
   const verifySignAgreementMutation = useVerifySignAgreementMutation();
+
+  const patientQuery = usePatientDetailQuery(props.agreement?.patientId ?? "", true);
+  const formDefaults = useMemo<AgreementData>(() => {
+    const account = patientQuery.data?.data.accountInfo;
+    return {
+      patient: {
+        name: account ? `${account.firstName} ${account.lastName}`.trim() : "",
+        dob: account?.birthDate ?? "",
+        nationalId: patientQuery.data?.data.nationalId ?? "",
+        address: account?.address ?? "",
+        phone: account?.phone ?? "",
+      },
+      spouse: undefined,
+    };
+  }, [patientQuery.data]);
+
+  const agreementForm = useForm<AgreementData>({
+    defaultValues: formDefaults,
+    resolver: valibotResolver(AgreementDataSchema),
+    reValidateMode: "onSubmit",
+  });
+
+  const didPrefillRef = useRef(false);
+  useEffect(() => {
+    if (patientQuery.isSuccess && !didPrefillRef.current) {
+      agreementForm.reset(formDefaults);
+      didPrefillRef.current = true;
+    }
+  }, [patientQuery.isSuccess, formDefaults, agreementForm]);
+
 
   useEffect(() => {
     if (requestSignAgreementMutation.isPending) {
@@ -157,15 +193,30 @@ export default function AgreementDialog(props: AgreementDialogProps) {
           </IonToolbar>
         </IonHeader>
         <IonContent>
-          <p className="text-center text-[70px] bg-neutral-200">
-            SẼ CÓ MỘT BẢN AGREEMENT SAU Ở ĐÂY
-          </p>
+          {!patientQuery.isSuccess ? (
+            <div className="w-full flex justify-center items-center py-10">
+              <IonSpinner name="crescent" />
+            </div>
+          ) : (
+            <>
+              {isViewable ? (
+                <></>
+              ) : (
+                <AgreementForm form={agreementForm} />
+              )}
+            </>
+          )}
         </IonContent>
 
         {!isViewable && (
           <IonFooter>
             <IonToolbar className="ion-px-[0.5rem]">
-              <IonButton onClick={handleAgree} fill="solid" className="w-full">
+              <IonButton
+                onClick={handleAgree}
+                fill="solid"
+                className="w-full"
+                disabled={!patientQuery.isSuccess}
+              >
                 I Agree
               </IonButton>
             </IonToolbar>

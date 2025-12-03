@@ -28,11 +28,6 @@ function getStatusColor(status: AgreementStatusType) {
   }
 }
 
-function formatDate(date: string | null | undefined) {
-  if (!date) return "N/A";
-  return format(date, "MMM DD, YYYY");
-}
-
 export default function TreatmentDetailAgreements({
   treatment,
   onAgreementSigned,
@@ -99,14 +94,14 @@ export default function TreatmentDetailAgreements({
                 <div className="flex justify-between items-center text-sm">
                   <span className="font-semibold">Start Date:</span>
                   <span className="font-normal text-xs text-black">
-                    {formatDate(agreement.startDate)}
+                    {!agreement.startDate ? "N/A" : format(agreement.startDate, "MMM DD, YYYY")}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center text-sm">
                   <span className="font-semibold">End Date:</span>
                   <span className="font-normal text-xs text-black">
-                    {formatDate(agreement.endDate)}
+                    {!agreement.endDate ? "N/A" : format(agreement.endDate, "MMM DD, YYYY")}
                   </span>
                 </div>
 
@@ -130,7 +125,7 @@ export default function TreatmentDetailAgreements({
                   <div className="flex justify-between items-center text-sm">
                     <span className="font-semibold">Signed Date:</span>
                     <span className="font-normal text-xs text-black">
-                      {formatDate(agreement.signedDate)}
+                      {!agreement.signedDate ? "N/A" : format(agreement.signedDate, "MMM DD, YYYY")}
                     </span>
                   </div>
                 )}
@@ -139,11 +134,16 @@ export default function TreatmentDetailAgreements({
               <div className="mt-2">
                 <IonButton
                   size="small"
-                  color="primary"
+                  color={agreement.signedByDoctor ? "primary" : "medium"}
+                  disabled={!agreement.signedByDoctor}
                   onClick={() => handleButtonClick(agreement)}
                   className="w-full"
                 >
-                  {isViewable ? "View Detail" : "Sign Agreement"}
+                  {!agreement.signedByDoctor
+                    ? "Waiting for doctor to sign"
+                    : isViewable
+                    ? "View Detail"
+                    : "Sign Agreement"}
                 </IonButton>
               </div>
             </div>

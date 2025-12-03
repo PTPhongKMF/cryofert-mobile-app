@@ -41,13 +41,13 @@ function getPrioritizedPaymentTransaction(
 function getStatusColorClass(status: string): string {
   switch (status) {
     case "Pending":
-      return "text-amber-600 font-semibold";
+      return "text-amber-600";
     case "Failed":
-      return "text-red-600 font-semibold";
+      return "text-red-600";
     case "Completed":
-      return "text-green-600 font-semibold";
+      return "text-green-600";
     case "Cancelled":
-      return "text-gray-600 font-semibold";
+      return "text-gray-600";
     default:
       return "text-gray-600";
   }
@@ -115,7 +115,7 @@ export default function AppointmentHistory() {
                   }
                   className="ion-bg-transparent"
                 >
-                  <div className="grid grid-cols-2 grid-rows-2 auto-rows-min items-center w-full py-2">
+                  <div className="grid grid-cols-2 grid-rows-[1fr_1fr_min-content] items-center w-full py-2">
                     <div className="font-semibold text-gray-900 justify-self-start">
                       <p>
                         {format(new Date(appointment.appointmentDate), "dddd,")}
@@ -129,21 +129,21 @@ export default function AppointmentHistory() {
                       </p>
                     </div>
 
-                    <p className="text-sm font-semibold text-gray-900 pe-2 justify-self-end">
-                      {appointment.typeName}
-                    </p>
+                    <div className="text-xs text-gray-500 px-2 py-1 rounded bg-gray-100 justify-self-end ">
+                      {appointment.statusName}
+                    </div>
 
-                    <p className="text-sm text-gray-900 justify-self-start">
+                    <p className="text-sm text-gray-900 justify-self-start col-span-2">
                       Slot: {appointment.slot?.startTime} -{" "}
                       {appointment.slot?.endTime}
                     </p>
 
-                    <div className="text-xs text-gray-500 px-2 py-1 rounded bg-gray-100 justify-self-end">
-                      {appointment.statusName}
-                    </div>
+                    <p className="text-sm font-semibold text-gray-900 pe-2 justify-self-end row-start-3 col-start-2">
+                      {appointment.typeName}
+                    </p>
 
                     {paymentTransaction && (
-                      <div className="text-xs col-span-2">
+                      <div className="text-xs">
                         Payment:{" "}
                         <span
                           className={getStatusColorClass(

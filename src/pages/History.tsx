@@ -66,6 +66,7 @@ export default function History() {
   return (
     <IonContent scrollY={false} className="relative">
       <BlueToGrayGradientBg />
+
       <SafeAreaView
         withFixedHeader={true}
         className="relative flex flex-col h-full"

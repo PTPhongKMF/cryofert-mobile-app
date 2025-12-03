@@ -11,11 +11,19 @@ export async function transactionHistoryQueryFn(params: {
   patientId: string;
   pageSize: number;
   pageParam: number;
+  status?: string;
+  relatedEntityType?: string;
+  fromDate?: string;
+  toDate?: string;
 }): Promise<TransactionHistoryApiResponse> {
   const res = await httpClient
     .get("api/transaction", {
       searchParams: {
         patientId: params.patientId,
+        status: params.status,
+        relatedEntityType: params.relatedEntityType,
+        fromDate: params.fromDate,
+        toDate: params.toDate,
         page: params.pageParam,
         size: params.pageSize,
         sort: "transactionDate",
