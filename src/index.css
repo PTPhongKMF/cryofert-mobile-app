@@ -349,3 +349,12 @@
 .ion-content-scroll-host::after {
   top: -1px;
 }
+
+.transparent-dt-button::part(native) {
+  background: transparent;
+
+  height: 1.5rem;
+  font-size: 0.75rem;
+
+  color: gray;
+}

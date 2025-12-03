@@ -1,81 +1,19 @@
+import { createApiResponseSchema } from "@src/schemas/api-response";
 import * as v from "valibot";
 
 export const UpdatePatientRequestSchema = v.object({
-  patientCode: v.optional(
-    v.pipe(
-      v.string(),
-      v.maxLength(50, "Patient code cannot exceed 50 characters.")
-    )
-  ),
-  nationalId: v.optional(
-    v.pipe(
-      v.string(),
-      v.maxLength(20, "National ID cannot exceed 20 characters.")
-    )
-  ),
-  emergencyContact: v.optional(
-    v.pipe(
-      v.string(),
-      v.maxLength(100, "Emergency contact cannot exceed 100 characters.")
-    )
-  ),
-  emergencyPhone: v.optional(
-    v.pipe(
-      v.string(),
-      v.maxLength(20, "Emergency phone cannot exceed 20 characters."),
-      v.regex(/^\+?[0-9\s\-()]{7,20}$/, "Invalid phone number format.")
-    )
-  ),
-  insurance: v.optional(
-    v.pipe(
-      v.string(),
-      v.maxLength(100, "Insurance cannot exceed 100 characters.")
-    )
-  ),
-  occupation: v.optional(
-    v.pipe(
-      v.string(),
-      v.maxLength(100, "Occupation cannot exceed 100 characters.")
-    )
-  ),
-  medicalHistory: v.optional(
-    v.pipe(
-      v.string(),
-      v.maxLength(2000, "Medical history cannot exceed 2000 characters.")
-    )
-  ),
-  allergies: v.optional(
-    v.pipe(
-      v.string(),
-      v.maxLength(1000, "Allergies cannot exceed 1000 characters.")
-    )
-  ),
-  bloodType: v.optional(
-    v.pipe(
-      v.string(),
-      v.maxLength(10, "Blood type cannot exceed 10 characters.")
-    )
-  ),
-  height: v.optional(
-    v.pipe(
-      v.number(),
-      v.minValue(0, "Height must be between 0 and 300 cm."),
-      v.maxValue(300, "Height must be between 0 and 300 cm.")
-    )
-  ),
-  weight: v.optional(
-    v.pipe(
-      v.number(),
-      v.minValue(0, "Weight must be between 0 and 500 kg."),
-      v.maxValue(500, "Weight must be between 0 and 500 kg.")
-    )
-  ),
-  notes: v.optional(
-    v.pipe(
-      v.string(),
-      v.maxLength(1000, "Notes cannot exceed 1000 characters.")
-    )
-  ),
+  patientCode: v.optional(v.string()),
+  nationalId: v.optional(v.string()),
+  emergencyContact: v.optional(v.string()),
+  emergencyPhone: v.optional(v.string()),
+  insurance: v.optional(v.string()),
+  occupation: v.optional(v.string()),
+  medicalHistory: v.optional(v.string()),
+  allergies: v.optional(v.string()),
+  bloodType: v.optional(v.string()),
+  height: v.optional(v.number()),
+  weight: v.optional(v.number()),
+  notes: v.optional(v.string()),
   isActive: v.optional(v.boolean()),
 });
 
@@ -84,3 +22,58 @@ export const UpdatePatientRequestSchema = v.object({
 export type UpdatePatientRequest = v.InferOutput<
   typeof UpdatePatientRequestSchema
 >;
+
+///////////////////////////////////////////////////////////////////////////
+// Patient details schemas
+
+export const AccountInfoResponseSchema = v.object({
+  id: v.string(),
+  firstName: v.string(),
+  lastName: v.string(),
+  birthDate: v.nullable(v.string()),
+  age: v.number(),
+  gender: v.boolean(),
+  username: v.string(),
+  email: v.string(),
+  phone: v.string(),
+  address: v.nullable(v.string()),
+  avatarId: v.nullable(v.string()),
+  lastLogin: v.nullable(v.string()),
+  roleId: v.string(),
+  isVerified: v.boolean(),
+  isActive: v.boolean(),
+  createdAt: v.string(),
+  updatedAt: v.nullable(v.string()),
+});
+
+export const PatientResponseSchema = v.object({
+  id: v.string(),
+  patientCode: v.string(),
+  nationalId: v.nullable(v.string()),
+  emergencyContact: v.nullable(v.string()),
+  emergencyPhone: v.nullable(v.string()),
+  insurance: v.nullable(v.string()),
+  occupation: v.nullable(v.string()),
+  medicalHistory: v.nullable(v.string()),
+  allergies: v.nullable(v.string()),
+  bloodType: v.nullable(v.string()),
+  height: v.nullable(v.number()),
+  weight: v.nullable(v.number()),
+  bmi: v.nullable(v.number()),
+  isActive: v.boolean(),
+  notes: v.nullable(v.string()),
+  accountId: v.string(),
+  createdAt: v.string(),
+  updatedAt: v.nullable(v.string()),
+  accountInfo: AccountInfoResponseSchema,
+});
+
+export const PatientApiResponseSchema = createApiResponseSchema(
+  PatientResponseSchema
+);
+
+export type AccountInfoResponse = v.InferOutput<
+  typeof AccountInfoResponseSchema
+>;
+export type PatientResponse = v.InferOutput<typeof PatientResponseSchema>;
+export type PatientApiResponse = v.InferOutput<typeof PatientApiResponseSchema>;

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IUI / IVF Agreement</title>
+    <style>
+        /* PDF Printing Optimization: A4 Page Settings */
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+        body {
+            font-family: "Arial", "Helvetica", sans-serif;
+            font-size: 12pt;
+            line-height: 1.5;
+            color: #000;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+        }
+        .container {
+            width: 100%;
+            max-width: 210mm; /* A4 Width */
+            margin: 0 auto;
+            position: relative; /* For absolute positioning if needed */
+        }
+        /* Header Styling */
+        h1 {
+            text-align: center;
+            font-size: 18pt;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+        /* Section Styling */
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-header {
+            font-weight: bold;
+            font-size: 13pt;
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            border-left: 5px solid #333;
+            margin-bottom: 10px;
+        }
+        /* Data Fields */
+        .row {
+            margin-bottom: 8px;
+            display: block;
+        }
+        .label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .value {
+            border-bottom: 1px dotted #333;
+            padding: 0 5px;
+            display: inline-block;
+            min-width: 50px;
+        }
+        /* Checkbox Styling */
+        .checkbox-item {
+            margin: 5px 0 5px 20px;
+        }
+        .check-box {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 1px solid #000;
+            text-align: center;
+            line-height: 14px;
+            margin-right: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        /* Lists */
+        ul {
+            list-style-type: disc;
+            margin: 5px 0 10px 40px;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+            text-align: justify;
+        }
+        /* Signatures Grid */
+        .signature-section {
+            margin-top: 40px;
+            width: 100%;
+            display: table;
+            page-break-inside: avoid;
+        }
+        .sig-col {
+            display: table-cell;
+            width: 33%;
+            vertical-align: top;
+            text-align: center;
+            padding: 0 10px;
+        }
+        .sig-title {
+            font-weight: bold;
+            margin-bottom: 40px;
+        }
+        .sig-status {
+            font-family: "Courier New", monospace;
+            font-weight: bold;
+            font-size: 14pt;
+            color: #333;
+            text-transform: uppercase;
+            height: 30px;
+            letter-spacing: 2px;
+        }
+        .sig-line {
+            border-top: 1px solid #000;
+            margin-top: 5px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Bottom Right Date Styling */
+        .footer-date {
+            text-align: right;
+            margin-top: 40px;
+            font-style: italic;
+            font-size: 12pt;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Agreement IUI / IVF</h1>
+
+        <div class="section">
+            <div class="section-header">1. Patient Information</div>
+            <div class="row">
+                <span class="label">Full Name:</span>
+                <span class="value"><%= it.patient.name %></span>
+            </div> 
+            <div class="row">
+                <span class="label">Date of Birth:</span>
+                <span class="value"><%= it.patient.dob %></span>
+            </div> 
+            <div class="row">
+                <span class="label">ID / National ID:</span>
+                <span class="value"><%= it.patient.nationalId %></span>
+            </div> 
+            <div class="row">
+                <span class="label">Address:</span>
+                <span class="value"><%= it.patient.address %></span>
+            </div> 
+            <div class="row">
+                <span class="label">Phone Number:</span>
+                <span class="value"><%= it.patient.phone %></span>
+            </div> 
+        </div>
+
+        <div class="section">
+            <div class="section-header">2. Spouse Information (if applicable)</div>
+            <div class="row">
+                <span class="label">Full Name:</span>
+                <span class="value"><%= it.spouse ? it.spouse.name : "N/A" %></span>
+            </div> 
+            <div class="row">
+                <span class="label">Date of Birth:</span>
+                <span class="value"><%= it.spouse ? it.spouse.dob : "N/A" %></span>
+            </div> 
+            <div class="row">
+                <span class="label">ID / National ID:</span>
+                <span class="value"><%= it.spouse ? it.spouse.nationalId : "N/A" %></span>
+            </div> 
+        </div>
+
+        <div class="section">
+            <div class="section-header">3. Service Type</div>
+            <div class="checkbox-item">
+                <span class="check-box"><% if (it.serviceType === 'IUI') { %>X<% } %></span>
+                <strong>IUI</strong> – Intrauterine Insemination
+            </div>
+            <div class="checkbox-item">
+                <span class="check-box"><% if (it.serviceType === 'IVF') { %>X<% } %></span>
+                <strong>IVF</strong> – In Vitro Fertilization
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">4. Patient Commitment</div>
+            <ul>
+                <li>I confirm that I have been fully consulted regarding the procedure, risks, and costs.</li>
+                <li>I agree to allow the center to perform the IUI/IVF service according to regulations.</li>
+                <li>All information provided is accurate.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-header">5. Medical Facility Commitment</div>
+            <ul>
+                <li>Perform the procedure according to professional guidelines.</li>
+                <li>Maintain confidentiality of patient records.</li>
+                <li>Provide clear and complete information throughout the treatment process.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-header">6. Payment Regulations</div>
+            <ul>
+                <li>Service costs include: examination, testing, medication, and procedures.</li>
+                <li>Patients shall pay in stages.</li>
+                <li>Non-refundable for treatments that have already been conducted.</li>
+            </ul>
+        </div>
+
+        <div class="signature-section">
+            <div class="sig-col">
+                <div class="sig-title">Patient</div>
+                <div class="sig-status">
+                    <% if (it.signatures.patient) { %>SIGNED<% } %>
+                </div>
+                <div class="sig-line"></div>
+            </div>
+
+            <div class="sig-col">
+                <div class="sig-title">Spouse</div>
+                <div class="sig-status">
+                    <% if (it.signatures.spouse) { %>SIGNED<% } %>
+                </div>
+                <div class="sig-line"></div>
+            </div>
+
+            <div class="sig-col">
+                <div class="sig-title">Facility Representative</div>
+                <div class="sig-status">
+                    <% if (it.signatures.facility) { %>SIGNED<% } %>
+                </div>
+                <div class="sig-line"></div>
+            </div>
+        </div>
+
+        <div class="footer-date">
+            Date: <%= it.date %>
+        </div>
+
+    </div>
+</body>
+</html>

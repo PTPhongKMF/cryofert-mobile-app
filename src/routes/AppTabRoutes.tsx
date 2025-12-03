@@ -36,7 +36,7 @@ import { ClipboardPlus, Dna, Snowflake, Stethoscope } from "lucide-react";
 import Dev from "@src/pages/devs/Dev";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import Home from "@src/pages/Home";
-import Samples from "@src/pages/Samples";
+import LabSamples from "@src/pages/LabSamples";
 import AppTabHeader from "@src/components/AppTabHeader";
 
 export default function AppTabRoutes() {
@@ -85,7 +85,7 @@ export default function AppTabRoutes() {
         <IonContent>
           <Route exact path={ROUTES.T_HOME} component={Home} />
           <Route exact path={ROUTES.T_HISTORY} component={History} />
-          <Route exact path={ROUTES.T_SAMPLES} component={Samples} />
+          <Route exact path={ROUTES.T_SAMPLES} component={LabSamples} />
           <Route exact path={ROUTES.T_ACCOUNT} component={Account} />
           <Route exact path={"/tabs/dev"} component={Dev} />
         </IonContent>

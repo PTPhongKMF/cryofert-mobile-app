@@ -1,14 +1,21 @@
 import { IonSelect, IonSelectOption } from "@ionic/react";
+import {
+  LabSampleStatuses,
+  LabSampleTypes,
+  type LabSampleSortType,
+} from "@src/schemas/lab-sample";
+import {
+  type LabSampleFilterOptions,
+  useLabSampleFilterStore,
+} from "@src/stores/lab-sample";
 import { titleCase } from "text-case";
-import { AppointmentStatus, AppointmentTypes } from "@src/schemas/appointment";
-import { useAppointmentHistoryFilterStore } from "@src/stores/appointment";
 import { useShallow } from "zustand/react/shallow";
 
-export default function AppointmentHistoryFilter() {
-  const { filterOptions, setFilterOptions } = useAppointmentHistoryFilterStore(
-    useShallow((s) => ({
-      filterOptions: s.filterOptions,
-      setFilterOptions: s.setFilterOptions,
+export default function LabSampleFilter() {
+  const { filterOptions, setFilterOptions } = useLabSampleFilterStore(
+    useShallow((state) => ({
+      filterOptions: state.filterOptions,
+      setFilterOptions: state.setFilterOptions,
     }))
   );
 
@@ -21,13 +28,13 @@ export default function AppointmentHistoryFilter() {
         value={filterOptions.type ?? undefined}
         onIonChange={(e) =>
           setFilterOptions({
-            type: e.detail.value || null,
+            type: (e.detail.value as LabSampleFilterOptions["type"]) || null,
           })
         }
         className="border border-blue-400 rounded-2xl px-2 min-h-0! h-6!"
       >
         <IonSelectOption value="">All</IonSelectOption>
-        {AppointmentTypes.map((type, i) => (
+        {LabSampleTypes.map((type, i) => (
           <IonSelectOption key={i} value={type}>
             {type === type.toUpperCase() ? type : titleCase(type)}
           </IonSelectOption>
@@ -41,13 +48,14 @@ export default function AppointmentHistoryFilter() {
         value={filterOptions.status ?? undefined}
         onIonChange={(e) =>
           setFilterOptions({
-            status: e.detail.value || null,
+            status:
+              (e.detail.value as LabSampleFilterOptions["status"]) || null,
           })
         }
         className="border border-blue-400 rounded-2xl px-2 min-h-0! h-6!"
       >
         <IonSelectOption value="">All</IonSelectOption>
-        {AppointmentStatus.map((status, i) => (
+        {LabSampleStatuses.map((status, i) => (
           <IonSelectOption key={i} value={status}>
             {status === status.toUpperCase() ? status : titleCase(status)}
           </IonSelectOption>
@@ -60,13 +68,13 @@ export default function AppointmentHistoryFilter() {
         value={filterOptions.sortType}
         onIonChange={(e) =>
           setFilterOptions({
-            sortType: e.detail.value,
+            sortType: e.detail.value as LabSampleSortType,
           })
         }
         className="border border-blue-400 rounded-2xl px-2 min-h-0! h-6!"
       >
-        <IonSelectOption value="Lastest">Latest</IonSelectOption>
-        <IonSelectOption value="Upcomming">Upcoming</IonSelectOption>
+        <IonSelectOption value="LatestCollection">Latest</IonSelectOption>
+        <IonSelectOption value="ExpirySoon">Expiring Soon</IonSelectOption>
       </IonSelect>
     </div>
   );

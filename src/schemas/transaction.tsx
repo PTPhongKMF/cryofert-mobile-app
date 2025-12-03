@@ -1,13 +1,23 @@
 import { createApiResponseSchema } from "@src/schemas/api-response";
 import * as v from "valibot";
 
-const transactionType = v.picklist(["Payment", "Refund", "Adjustment"]);
-const transactionStatus = v.picklist([
+export const TransactionTypes = ["Payment", "Refund", "Adjustment"] as const;
+const transactionType = v.picklist(TransactionTypes);
+
+export const TransactionStatuses = [
   "Pending",
   "Completed",
   "Failed",
   "Cancelled",
-]);
+] as const;
+const transactionStatus = v.picklist(TransactionStatuses);
+
+export const relatedEntityType = [
+  "ServiceRequest",
+  "Appointment",
+  "CryoStorageContract",
+] as const;
+const relatedEntityTypeSchema = v.picklist(relatedEntityType);
 
 export const CreateTransactionRequestSchema = v.object({
   relatedEntityType: v.union([
@@ -64,3 +74,7 @@ export type TransactionHistoryApiResponse = v.InferOutput<
 export type TransactionApiResponse = v.InferOutput<
   typeof TransactionApiResponseSchema
 >;
+
+export type TransactionType = v.InferOutput<typeof transactionType>;
+export type TransactionStatus = v.InferOutput<typeof transactionStatus>;
+export type relatedEntityType = v.InferOutput<typeof relatedEntityTypeSchema>;

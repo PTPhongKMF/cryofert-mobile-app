@@ -1,7 +1,9 @@
+import type { relatedEntityType } from "@src/schemas/transaction";
 import {
   type CreateTransactionRequest,
   type TransactionApiResponse,
   type TransactionHistoryApiResponse,
+  type TransactionStatus,
 } from "@src/schemas/transaction";
 import type { InfiniteData } from "@tanstack/react-query";
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
@@ -11,8 +13,16 @@ import {
   transactionHistoryQueryFn,
 } from "@src/services/api-services/transaction-service";
 
+export interface TransactionHistoryFilters {
+  status: TransactionStatus | null;
+  relatedEntityType: relatedEntityType | null;
+  fromDate: string | null;
+  toDate: string | null;
+}
+
 export function useTransactionHistoryInfiniteQuery(
   patientId: string,
+  filters?: TransactionHistoryFilters,
   pageSize: number = 20
 ) {
   return useInfiniteQuery<
@@ -22,12 +32,24 @@ export function useTransactionHistoryInfiniteQuery(
     unknown[],
     number
   >({
-    queryKey: ["api/transaction", patientId, pageSize],
+    queryKey: [
+      "api/transaction",
+      patientId,
+      pageSize,
+      filters?.status,
+      filters?.relatedEntityType,
+      filters?.fromDate,
+      filters?.toDate,
+    ],
     queryFn: (queryParams) =>
       transactionHistoryQueryFn({
         patientId,
         pageSize,
         pageParam: queryParams.pageParam,
+        status: filters?.status ?? undefined,
+        relatedEntityType: filters?.relatedEntityType ?? undefined,
+        fromDate: filters?.fromDate ?? undefined,
+        toDate: filters?.toDate ?? undefined,
       }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
