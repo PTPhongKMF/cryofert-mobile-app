@@ -7,7 +7,6 @@ const AgreementStatus = v.picklist([
   "Canceled",
 ]);
 
-
 export const AgreementResponseSchema = v.object({
   id: v.string(),
   agreementCode: v.string(),
@@ -33,22 +32,3 @@ export const AgreementResponseSchema = v.object({
 
 export type AgreementStatusType = v.InferInput<typeof AgreementStatus>;
 export type AgreementResponse = v.InferOutput<typeof AgreementResponseSchema>;
-
-export const AgreementDataSchema = v.object({
-  patient: v.object({
-    name: v.string(),
-    dob: v.string(),
-    nationalId: v.string(),
-    address: v.string(),
-    phone: v.string(),
-  }),
-  spouse: v.optional(
-    v.object({
-      name: v.string(),
-      dob: v.string(),
-      nationalId: v.string(),
-    })
-  ),
-});
-
-export type AgreementData = v.InferOutput<typeof AgreementDataSchema>;

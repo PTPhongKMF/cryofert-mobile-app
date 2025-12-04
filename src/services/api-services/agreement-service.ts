@@ -7,11 +7,14 @@ export async function requestSignAgreementMutationFn(id: string) {
 export async function verifySignAgreementMutationFn(params: {
   id: string;
   otpCode: string;
+  signedAgreementFile: File;
 }) {
+  const form = new FormData();
+  form.append("otpCode", params.otpCode);
+  form.append("signedAgreementFile", params.signedAgreementFile);
+
   await httpClient.post(`api/agreement/${params.id}/verify-signature`, {
-    json: {
-      otpCode: params.otpCode,
-    },
+    body: form,
   });
 }
 

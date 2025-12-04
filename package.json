@@ -36,6 +36,7 @@
     "@types/react-router-dom": "^5.3.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "eta": "^4.4.1",
     "ionicons": "^7.4.0",
     "ky": "^1.14.0",
     "lucide-react": "^0.552.0",
