@@ -30,10 +30,7 @@ export function useMediaTemplateQuery(
   });
 }
 
-export function useMediaQuery(
-  req?: MediaQueryParams,
-  enabled: boolean = true
-) {
+export function useMediaQuery(req?: MediaQueryParams, enabled: boolean = true) {
   return useQuery<MediaListApiResponse, HTTPError>({
     queryKey: ["api/media", req],
     queryFn: () => mediaQueryFn(req),

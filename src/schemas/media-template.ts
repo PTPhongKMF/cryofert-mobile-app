@@ -8,11 +8,13 @@ export const AgreementFormSchema = v.object({
     address: v.pipe(v.string(), v.nonEmpty("Require")),
     phone: v.pipe(v.string(), v.nonEmpty("Require")),
   }),
-  spouse: v.optional(v.object({
+  spouse: v.optional(
+    v.object({
       name: v.pipe(v.string(), v.nonEmpty("Require")),
       dob: v.pipe(v.string(), v.nonEmpty("Require")),
       nationalId: v.pipe(v.string(), v.nonEmpty("Require")),
-    })),
+    })
+  ),
 });
 
 export type AgreementFormData = v.InferOutput<typeof AgreementFormSchema>;
