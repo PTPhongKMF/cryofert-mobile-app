@@ -2,7 +2,7 @@ import { createApiResponseSchema } from "@src/schemas/api-response";
 import * as v from "valibot";
 
 export const LabSampleTypes = ["Oocyte", "Sperm", "Embryo"] as const;
-const LabSampleTypeSchema = v.picklist(LabSampleTypes);
+export const LabSampleTypeSchema = v.picklist(LabSampleTypes);
 
 export const LabSampleStatuses = [
   "Stored",

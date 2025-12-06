@@ -99,6 +99,7 @@
             padding: 0 10px;
         }
         .sig-title {
+            height: 120px;
             font-weight: bold;
             margin-bottom: 40px;
         }

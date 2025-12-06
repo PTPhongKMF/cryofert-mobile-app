@@ -5,12 +5,14 @@ import {
   IonSegmentButton,
 } from "@ionic/react";
 import BlueToGrayGradientBg from "@src/components/backgrounds/BlueToGrayGradientBg";
-import LabSampleFilter from "@src/components/LabSampleFilter";
-import LabSampleHistory from "@src/components/LabSampleHistory";
+import ContractHistory from "@src/components/lab-sample-tab/ContractHistory";
+import ContractHistoryFilter from "@src/components/lab-sample-tab/ContractHistoryFilter";
+import LabSampleFilter from "@src/components/lab-sample-tab/LabSampleFilter";
+import LabSampleHistory from "@src/components/lab-sample-tab/LabSampleHistory";
 import SafeAreaView from "@src/components/SafeAreaView";
 import { useState } from "react";
 
-type LabSampleSegment = "samples" | "tbd";
+type LabSampleSegment = "samples" | "contracts";
 
 export default function LabSamples() {
   const [segment, setSegment] = useState<LabSampleSegment>("samples");
@@ -34,21 +36,15 @@ export default function LabSamples() {
           <IonSegmentButton value="samples">
             <IonLabel>Samples</IonLabel>
           </IonSegmentButton>
-          <IonSegmentButton value="tbd">
-            <IonLabel>TBD</IonLabel>
+          <IonSegmentButton value="contracts">
+            <IonLabel>Contracts</IonLabel>
           </IonSegmentButton>
         </IonSegment>
 
-        {segment === "samples" && <LabSampleFilter />}
+        {segment === "samples" ? <LabSampleFilter /> : <ContractHistoryFilter />}
 
-        <div className="flex-1 min-h-0 overflow-y-auto px-4 ion-content-scroll-host">
-          {segment === "samples" ? (
-            <LabSampleHistory />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center pb-6">
-              <p className="text-sm text-gray-600 italic">TBD</p>
-            </div>
-          )}
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 ion-content-scroll-host relative">
+          {segment === "samples" ? <LabSampleHistory /> : <ContractHistory />}
         </div>
       </SafeAreaView>
     </IonContent>

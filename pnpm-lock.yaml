@@ -71,6 +71,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      eta:
+        specifier: ^4.4.1
+        version: 4.4.1
       ionicons:
         specifier: ^7.4.0
         version: 7.4.0
@@ -1489,6 +1492,10 @@ packages:
   esutils@2.0.3:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
+
+  eta@4.4.1:
+    resolution: {integrity: sha512-4o6fYxhRmFmO9SJcU9PxBLYPGapvJ/Qha0ZE+Y6UE9QIUd0Wk1qaLISQ6J1bM7nOcWHhs1YmY3mfrfwkJRBTWQ==}
+    engines: {node: '>=20'}
 
   event-target-shim@5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
@@ -3744,6 +3751,8 @@ snapshots:
   escalade@3.2.0: {}
 
   esutils@2.0.3: {}
+
+  eta@4.4.1: {}
 
   event-target-shim@5.0.1: {}
 

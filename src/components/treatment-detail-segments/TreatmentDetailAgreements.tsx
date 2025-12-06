@@ -6,7 +6,7 @@ import type {
   AgreementStatusType,
 } from "@src/schemas/agreement";
 import { useState } from "react";
-import AgreementDialog from "@src/components/dialogs/AgreementDialog";
+import AgreementDialog from "@src/components/treatment-detail-segments/AgreementDialog";
 
 interface TreatmentDetailAgreementsProps {
   treatment: TreatmentDetail;
@@ -94,14 +94,18 @@ export default function TreatmentDetailAgreements({
                 <div className="flex justify-between items-center text-sm">
                   <span className="font-semibold">Start Date:</span>
                   <span className="font-normal text-xs text-black">
-                    {!agreement.startDate ? "N/A" : format(agreement.startDate, "MMM DD, YYYY")}
+                    {!agreement.startDate
+                      ? "N/A"
+                      : format(agreement.startDate, "MMM DD, YYYY")}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center text-sm">
                   <span className="font-semibold">End Date:</span>
                   <span className="font-normal text-xs text-black">
-                    {!agreement.endDate ? "N/A" : format(agreement.endDate, "MMM DD, YYYY")}
+                    {!agreement.endDate
+                      ? "N/A"
+                      : format(agreement.endDate, "MMM DD, YYYY")}
                   </span>
                 </div>
 
@@ -125,7 +129,9 @@ export default function TreatmentDetailAgreements({
                   <div className="flex justify-between items-center text-sm">
                     <span className="font-semibold">Signed Date:</span>
                     <span className="font-normal text-xs text-black">
-                      {!agreement.signedDate ? "N/A" : format(agreement.signedDate, "MMM DD, YYYY")}
+                      {!agreement.signedDate
+                        ? "N/A"
+                        : format(agreement.signedDate, "MMM DD, YYYY")}
                     </span>
                   </div>
                 )}
@@ -155,6 +161,7 @@ export default function TreatmentDetailAgreements({
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
         agreement={selectAgreement}
+        treatment={treatment}
         onAgreementSigned={onAgreementSigned}
       />
     </>

@@ -8,16 +8,6 @@ import {
 import { httpClient } from "@src/services/api-services/http-service";
 import * as v from "valibot";
 
-function getSortConfig(sortType: LabSampleSortType) {
-  switch (sortType) {
-    case "ExpirySoon":
-      return { sortField: "expiryDate", sortOrder: "asc" as const };
-    case "LatestCollection":
-    default:
-      return { sortField: "collectionDate", sortOrder: "desc" as const };
-  }
-}
-
 export async function labSampleInfiniteQueryFn(params: {
   patientId: string;
   pageSize: number;
@@ -25,18 +15,24 @@ export async function labSampleInfiniteQueryFn(params: {
   type?: LabSampleType;
   status?: LabSampleStatus;
   sortType: LabSampleSortType;
+  isAvailable?: boolean;
+  isStoraged?: boolean;
 }): Promise<LabSampleListApiResponse> {
-  const { sortField, sortOrder } = getSortConfig(params.sortType);
+  const isExpirySort = params.sortType === "ExpirySoon";
+  const sortField = isExpirySort ? "expiryDate" : "collectionDate";
+  const sortOrder = isExpirySort ? "asc" : "desc";
 
   const res = await httpClient
     .get("api/labsample", {
       searchParams: {
         patientId: params.patientId,
+        isAvailable: params.isAvailable,
+        isStoraged: params.isStoraged,
         page: params.pageParam,
         size: params.pageSize,
         sort: sortField,
         order: sortOrder,
-        ...(params.type && { type: params.type }),
+        ...(params.type && { sampleType: params.type }),
         ...(params.status && { status: params.status }),
       },
     })

@@ -1,16 +1,27 @@
-import type { LabSampleListApiResponse } from "@src/schemas/lab-sample";
+import type {
+  LabSampleListApiResponse,
+  LabSampleSortType,
+  LabSampleStatus,
+  LabSampleType,
+} from "@src/schemas/lab-sample";
 import type { InfiniteData } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import type { HTTPError } from "ky";
 import { labSampleInfiniteQueryFn } from "@src/services/api-services/lab-sample-service";
-import { useLabSampleFilterStore } from "@src/stores/lab-sample";
+
+type LabSampleFilterOptions = {
+  type: LabSampleType | null;
+  status: LabSampleStatus | null;
+  sortType: LabSampleSortType;
+  isAvailable?: boolean;
+  isStoraged?: boolean;
+};
 
 export function useLabSampleInfiniteQuery(
   patientId: string,
-  pageSize: number = 20
+  pageSize: number = 20,
+  filterOptions?: LabSampleFilterOptions  
 ) {
-  const filterOptions = useLabSampleFilterStore((s) => s.filterOptions);
-
   return useInfiniteQuery<
     LabSampleListApiResponse,
     HTTPError,
@@ -22,18 +33,22 @@ export function useLabSampleInfiniteQuery(
       "api/labsample",
       patientId,
       pageSize,
-      filterOptions.type,
-      filterOptions.status,
-      filterOptions.sortType,
+      filterOptions?.type,
+      filterOptions?.status,
+      filterOptions?.sortType,
+      filterOptions?.isAvailable,
+      filterOptions?.isStoraged,
     ],
     queryFn: ({ pageParam }) =>
       labSampleInfiniteQueryFn({
         patientId,
         pageSize,
         pageParam,
-        type: filterOptions.type ?? undefined,
-        status: filterOptions.status ?? undefined,
-        sortType: filterOptions.sortType,
+        type: filterOptions?.type ?? undefined,
+        status: filterOptions?.status ?? undefined,
+        sortType: filterOptions?.sortType ?? "LatestCollection",
+        isAvailable: filterOptions?.isAvailable,
+        isStoraged: filterOptions?.isStoraged,
       }),
     enabled: !!patientId,
     initialPageParam: 1,
