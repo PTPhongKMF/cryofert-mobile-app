@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.6.0...v0.7.0) (2025-12-06)
+
+
+### Features
+
+* agreement form, lab samples and contract ([#18](https://github.com/PTPhongKMF/cryofert-mobile-app/issues/18)) ([6c7f89c](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/6c7f89ca054245ef02c0ff97ce1c2f1f9fe995ba))
+* update agreement signing and labsamples ([#16](https://github.com/PTPhongKMF/cryofert-mobile-app/issues/16)) ([8e34a0c](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/8e34a0cff8c1441bace7ae456c1ea8d332aa76a7))
+
 ## [0.6.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.5.0...v0.6.0) (2025-12-02)
 
 
