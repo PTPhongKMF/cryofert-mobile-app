@@ -1,540 +1,443 @@
 import {
   IonButton,
-  IonButtons,
   IonContent,
   IonDatetime,
   IonDatetimeButton,
-  IonFooter,
-  IonHeader,
   IonIcon,
   IonInput,
   IonModal,
   IonNote,
-  IonTitle,
-  IonToolbar,
 } from "@ionic/react";
-import type { AgreementTemplatePayload } from "@src/hooks/media-template-hook";
+import type {
+  Control,
+  UseFormClearErrors,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
+import { Controller } from "react-hook-form";
+import type { AgreementFormData } from "@src/schemas/media-template";
 import { cn } from "@src/utils/cn";
+import type { AgreementTemplatePayload } from "@src/hooks/media-template-hook";
 import {
-  close,
-  personOutline,
+  calendarOutline,
+  cardOutline,
   callOutline,
   homeOutline,
-  cardOutline,
-  calendarOutline,
   peopleOutline,
+  personOutline,
 } from "ionicons/icons";
-import {
-  useEffect,
-  useRef,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import { useMemo, useRef } from "react";
+import { getDateOnly } from "@src/utils/date";
 
 interface AgreementFormEditProps {
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-  templatePayload: AgreementTemplatePayload | null;
-  onConfirm: (updatedPayload: AgreementTemplatePayload) => void;
+  control: Control<AgreementFormData>;
+  setValue: UseFormSetValue<AgreementFormData>;
+  watch: UseFormWatch<AgreementFormData>;
+  clearErrors: UseFormClearErrors<AgreementFormData>;
 }
-
-interface PatientFormData {
-  name: string;
-  dob: string;
-  nationalId: string;
-  address: string;
-  phone: string;
-}
-
-interface SpouseFormData {
-  name: string;
-  dob: string;
-  nationalId: string;
-}
-
-interface FormErrors {
-  patient: Partial<Record<keyof PatientFormData, string>>;
-  spouse: Partial<Record<keyof SpouseFormData, string>>;
-}
-
-const inputClassName =
-  "ion-bg-white! ion-b-r-[7px]! min-h-[1px]! ion-py-[0.45rem]!";
 
 export default function AgreementFormEdit(props: AgreementFormEditProps) {
-  const [shouldConfirm, setShouldConfirm] = useState(false);
-
-  const [patient, setPatient] = useState<PatientFormData>({
-    name: "",
-    dob: new Date().toISOString(),
-    nationalId: "",
-    address: "",
-    phone: "",
-  });
-
-  const [spouse, setSpouse] = useState<SpouseFormData | null>(null);
-
-  const [errors, setErrors] = useState<FormErrors>({
-    patient: {},
-    spouse: {},
-  });
-
+  const todayDateOnly = useMemo(
+    () => getDateOnly(new Date().toISOString()),
+    []
+  );
   const patientDobModalRef = useRef<HTMLIonModalElement>(null);
   const spouseDobModalRef = useRef<HTMLIonModalElement>(null);
 
-  // Prefill state when modal opens or templatePayload changes
-  useEffect(() => {
-    if (props.isOpen && props.templatePayload) {
-      const { variables } = props.templatePayload;
+  const hasSpouse = Boolean(props.watch("spouse"));
 
-      setPatient({
-        name: variables.patient.name,
-        dob: variables.patient.dob || new Date().toISOString(),
-        nationalId: variables.patient.nationalId,
-        address: variables.patient.address,
-        phone: variables.patient.phone,
-      });
-
-      if (variables.spouse) {
-        setSpouse({
-          name: variables.spouse.name,
-          dob: variables.spouse.dob || new Date().toISOString(),
-          nationalId: variables.spouse.nationalId,
-        });
-      } else {
-        setSpouse(null);
-      }
-
-      setShouldConfirm(false);
-      setErrors({ patient: {}, spouse: {} });
-    }
-  }, [props.isOpen, props.templatePayload]);
-
-  function validateForm(): boolean {
-    const newErrors: FormErrors = { patient: {}, spouse: {} };
-    let isValid = true;
-
-    // Validate patient fields
-    if (!patient.name.trim()) {
-      newErrors.patient.name = "Name is required";
-      isValid = false;
-    }
-    if (!patient.dob) {
-      newErrors.patient.dob = "Date of birth is required";
-      isValid = false;
-    }
-    if (!patient.nationalId.trim()) {
-      newErrors.patient.nationalId = "National ID is required";
-      isValid = false;
-    }
-    if (!patient.address.trim()) {
-      newErrors.patient.address = "Address is required";
-      isValid = false;
-    }
-    if (!patient.phone.trim()) {
-      newErrors.patient.phone = "Phone is required";
-      isValid = false;
+  function toggleSpouse() {
+    if (hasSpouse) {
+      props.setValue("spouse", undefined);
+      props.clearErrors("spouse");
+      return;
     }
 
-    // Validate spouse fields if spouse exists
-    if (spouse) {
-      if (!spouse.name.trim()) {
-        newErrors.spouse.name = "Spouse name is required";
-        isValid = false;
-      }
-      if (!spouse.dob) {
-        newErrors.spouse.dob = "Spouse date of birth is required";
-        isValid = false;
-      }
-      if (!spouse.nationalId.trim()) {
-        newErrors.spouse.nationalId = "Spouse national ID is required";
-        isValid = false;
-      }
-    }
-
-    setErrors(newErrors);
-    return isValid;
-  }
-
-  function handleConfirm() {
-    if (validateForm()) {
-      setShouldConfirm(true);
-      props.setIsOpen(false);
-    }
-  }
-
-  function handleClose() {
-    setShouldConfirm(false);
-    props.setIsOpen(false);
-  }
-
-  function handleWillDismiss() {
-    if (shouldConfirm && props.templatePayload) {
-      const updatedPayload: AgreementTemplatePayload = {
-        ...props.templatePayload,
-        variables: {
-          ...props.templatePayload.variables,
-          patient: { ...patient },
-          spouse: spouse ? { ...spouse } : undefined,
-        },
-      };
-      props.onConfirm(updatedPayload);
-    }
-    setShouldConfirm(false);
-  }
-
-  function updatePatient<K extends keyof PatientFormData>(
-    field: K,
-    value: PatientFormData[K]
-  ) {
-    setPatient((prev) => ({ ...prev, [field]: value }));
-    // Clear error when user starts typing
-    if (errors.patient[field]) {
-      setErrors((prev) => ({
-        ...prev,
-        patient: { ...prev.patient, [field]: undefined },
-      }));
-    }
-  }
-
-  function updateSpouse<K extends keyof SpouseFormData>(
-    field: K,
-    value: SpouseFormData[K]
-  ) {
-    setSpouse((prev) => (prev ? { ...prev, [field]: value } : null));
-    // Clear error when user starts typing
-    if (errors.spouse[field]) {
-      setErrors((prev) => ({
-        ...prev,
-        spouse: { ...prev.spouse, [field]: undefined },
-      }));
-    }
-  }
-
-  function addSpouse() {
-    setSpouse({ name: "", dob: new Date().toISOString(), nationalId: "" });
-  }
-
-  function removeSpouse() {
-    setSpouse(null);
-    setErrors((prev) => ({ ...prev, spouse: {} }));
+    props.setValue("spouse", {
+      name: "",
+      dob: todayDateOnly,
+      nationalId: "",
+    });
   }
 
   return (
-    <IonModal
-      isOpen={props.isOpen}
-      onWillDismiss={handleWillDismiss}
-      onDidDismiss={() => props.setIsOpen(false)}
-    >
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton onClick={handleClose}>
-              <IonIcon icon={close} slot="icon-only" />
-            </IonButton>
-          </IonButtons>
-          <IonTitle className="ms-4">Edit Agreement Info</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+    <IonContent className="size-full!">
+      <div className="flex flex-col gap-4 bg-slate-200 p-6 min-h-full">
+        <div className="flex flex-col gap-3">
+          <h2 className="text-lg font-semibold text-slate-700 flex items-center gap-2">
+            <IonIcon icon={personOutline} className="text-blue-600" />
+            Patient Information
+          </h2>
 
-      <IonContent className="ion-padding">
-        <div className="flex flex-col gap-4">
-          {/* Patient Section */}
-          <div className="flex flex-col gap-3">
-            <h2 className="text-lg font-semibold text-slate-700 flex items-center gap-2">
-              <IonIcon icon={personOutline} className="text-blue-600" />
-              Patient Information
-            </h2>
-
-            <IonInput
-              mode="md"
-              fill="outline"
-              label="Full Name"
-              labelPlacement="floating"
-              value={patient.name}
-              onIonInput={(e) =>
-                updatePatient("name", (e.detail.value as string) ?? "")
-              }
-              className={cn(
-                inputClassName,
-                errors.patient.name && "ion-invalid ion-touched"
-              )}
-              errorText={errors.patient.name}
-            >
-              <IonIcon
-                icon={personOutline}
-                slot="start"
-                className="text-slate-500 me-2"
-              />
-            </IonInput>
-
-            {/* Patient Date of Birth */}
-            <div className="w-full h-fit flex flex-col justify-center items-start gap-1">
-              <div
-                onClick={() => patientDobModalRef.current?.present()}
+          <Controller
+            name="patient.name"
+            control={props.control}
+            render={({ field, fieldState }) => (
+              <IonInput
+                mode="md"
+                fill="outline"
+                placeholder="Full Name"
+                value={field.value ?? ""}
+                clearInput={true}
+                onIonInput={(e) =>
+                  field.onChange((e.detail.value as string) ?? "")
+                }
+                onIonBlur={field.onBlur}
+                ref={field.ref}
                 className={cn(
-                  "flex justify-between items-center w-full",
-                  "bg-white border-1 rounded-[7px] h-12 py-[0.45rem] px-2",
-                  errors.patient.dob && "border-red-400"
+                  "ion-bg-white! ion-b-r-[7px]! ",
+                  fieldState.error && "ion-invalid ion-touched"
                 )}
+                errorText={fieldState.error?.message}
               >
-                <div className="flex items-center gap-2">
-                  <IonIcon icon={calendarOutline} className="text-slate-500" />
-                  <label>Date of Birth</label>
-                </div>
-
-                <IonDatetimeButton
-                  datetime="patient-dob"
-                  className="self-center"
+                <IonIcon
+                  icon={personOutline}
+                  slot="start"
+                  className="text-slate-500 me-2"
                 />
-              </div>
+              </IonInput>
+            )}
+          />
 
-              {errors.patient.dob && (
-                <IonNote className="ps-4 text-xs text-red-700!">
-                  {errors.patient.dob}
-                </IonNote>
-              )}
-
-              <IonModal
-                keepContentsMounted
-                initialBreakpoint={1}
-                breakpoints={[0, 1]}
-                ref={patientDobModalRef}
-                className="ion-w-[100%]! ion-bg-gray-100"
-              >
-                <IonDatetime
-                  id="patient-dob"
-                  presentation="date"
-                  preferWheel
-                  showAdjacentDays
-                  value={patient.dob}
-                  onIonChange={(e) => {
-                    const value = e.detail.value;
-                    if (typeof value === "string") {
-                      updatePatient("dob", value);
-                    }
-                  }}
-                  max={new Date().toISOString()}
-                  className="mx-auto h-full"
-                />
-              </IonModal>
-            </div>
-
-            <IonInput
-              mode="md"
-              fill="outline"
-              label="National ID"
-              labelPlacement="floating"
-              value={patient.nationalId}
-              onIonInput={(e) =>
-                updatePatient("nationalId", (e.detail.value as string) ?? "")
-              }
-              className={cn(
-                inputClassName,
-                errors.patient.nationalId && "ion-invalid ion-touched"
-              )}
-              errorText={errors.patient.nationalId}
-            >
-              <IonIcon
-                icon={cardOutline}
-                slot="start"
-                className="text-slate-500 me-2"
-              />
-            </IonInput>
-
-            <IonInput
-              mode="md"
-              fill="outline"
-              label="Address"
-              labelPlacement="floating"
-              value={patient.address}
-              onIonInput={(e) =>
-                updatePatient("address", (e.detail.value as string) ?? "")
-              }
-              className={cn(
-                inputClassName,
-                errors.patient.address && "ion-invalid ion-touched"
-              )}
-              errorText={errors.patient.address}
-            >
-              <IonIcon
-                icon={homeOutline}
-                slot="start"
-                className="text-slate-500 me-2"
-              />
-            </IonInput>
-
-            <IonInput
-              mode="md"
-              fill="outline"
-              label="Phone"
-              labelPlacement="floating"
-              type="tel"
-              value={patient.phone}
-              onIonInput={(e) =>
-                updatePatient("phone", (e.detail.value as string) ?? "")
-              }
-              className={cn(
-                inputClassName,
-                errors.patient.phone && "ion-invalid ion-touched"
-              )}
-              errorText={errors.patient.phone}
-            >
-              <IonIcon
-                icon={callOutline}
-                slot="start"
-                className="text-slate-500 me-2"
-              />
-            </IonInput>
-          </div>
-
-          {/* Spouse Section */}
-          <div className="flex flex-col gap-3 mt-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-slate-700 flex items-center gap-2">
-                <IonIcon icon={peopleOutline} className="text-blue-600" />
-                Spouse Information
-              </h2>
-              {spouse ? (
-                <IonButton
-                  fill="clear"
-                  size="small"
-                  color="danger"
-                  onClick={removeSpouse}
-                >
-                  Remove
-                </IonButton>
-              ) : (
-                <IonButton fill="clear" size="small" onClick={addSpouse}>
-                  Add Spouse
-                </IonButton>
-              )}
-            </div>
-
-            {spouse && (
-              <>
-                <IonInput
-                  mode="md"
-                  fill="outline"
-                  label="Full Name"
-                  labelPlacement="floating"
-                  value={spouse.name}
-                  onIonInput={(e) =>
-                    updateSpouse("name", (e.detail.value as string) ?? "")
-                  }
+          <Controller
+            name="patient.dob"
+            control={props.control}
+            render={({ field, fieldState }) => (
+              <div className="w-full h-fit flex flex-col justify-center items-start gap-1">
+                <div
+                  onClick={() => patientDobModalRef.current?.present()}
                   className={cn(
-                    inputClassName,
-                    errors.spouse.name && "ion-invalid ion-touched"
+                    "flex justify-between items-center w-full bg-white border-1 rounded-[7px] h-14 py-[0.45rem] px-2 ps-4",
+                    fieldState.error && "border-red-400"
                   )}
-                  errorText={errors.spouse.name}
                 >
-                  <IonIcon
-                    icon={personOutline}
-                    slot="start"
-                    className="text-slate-500 me-2"
-                  />
-                </IonInput>
-
-                {/* Spouse Date of Birth */}
-                <div className="w-full h-fit flex flex-col justify-center items-start gap-1">
-                  <div
-                    onClick={() => spouseDobModalRef.current?.present()}
-                    className={cn(
-                      "flex justify-between items-center w-full",
-                      "bg-white border-1 rounded-[7px] h-12 py-[0.45rem] px-2",
-                      errors.spouse.dob && "border-red-400"
-                    )}
-                  >
-                    <div className="flex items-center gap-2">
-                      <IonIcon
-                        icon={calendarOutline}
-                        className="text-slate-500"
-                      />
-                      <label>Date of Birth</label>
-                    </div>
-
-                    <IonDatetimeButton
-                      datetime="spouse-dob"
-                      className="self-center"
+                  <div className="flex items-center gap-2">
+                    <IonIcon
+                      icon={calendarOutline}
+                      className="text-slate-500"
                     />
+                    <label>Date of Birth</label>
                   </div>
 
-                  {errors.spouse.dob && (
-                    <IonNote className="ps-4 text-xs text-red-700!">
-                      {errors.spouse.dob}
-                    </IonNote>
-                  )}
-
-                  <IonModal
-                    keepContentsMounted
-                    initialBreakpoint={1}
-                    breakpoints={[0, 1]}
-                    ref={spouseDobModalRef}
-                    className="ion-w-[100%]! ion-bg-gray-100"
-                  >
-                    <IonDatetime
-                      id="spouse-dob"
-                      presentation="date"
-                      preferWheel
-                      showAdjacentDays
-                      value={spouse.dob}
-                      onIonChange={(e) => {
-                        const value = e.detail.value;
-                        if (typeof value === "string") {
-                          updateSpouse("dob", value);
-                        }
-                      }}
-                      max={new Date().toISOString()}
-                      className="mx-auto h-full"
-                    />
-                  </IonModal>
+                  <IonDatetimeButton
+                    datetime="patient-dob"
+                    className="self-center"
+                  />
                 </div>
 
-                <IonInput
-                  mode="md"
-                  fill="outline"
-                  label="National ID"
-                  labelPlacement="floating"
-                  value={spouse.nationalId}
-                  onIonInput={(e) =>
-                    updateSpouse("nationalId", (e.detail.value as string) ?? "")
+                {fieldState.error && (
+                  <IonNote className="ps-4 text-xs text-red-700!">
+                    {fieldState.error.message}
+                  </IonNote>
+                )}
+
+                <IonModal
+                  keepContentsMounted
+                  initialBreakpoint={1}
+                  breakpoints={[0, 1]}
+                  ref={patientDobModalRef}
+                  className="ion-w-[100%]! ion-bg-gray-100"
+                >
+                  <IonDatetime
+                    id="patient-dob"
+                    presentation="date"
+                    preferWheel
+                    showAdjacentDays
+                    value={field.value || todayDateOnly}
+                    onIonChange={field.onChange}
+                    onIonBlur={field.onBlur}
+                    ref={field.ref}
+                    max={todayDateOnly}
+                    className="mx-auto h-full"
+                  />
+                </IonModal>
+              </div>
+            )}
+          />
+
+          <Controller
+            name="patient.nationalId"
+            control={props.control}
+            render={({ field, fieldState }) => (
+              <IonInput
+                mode="md"
+                fill="outline"
+                placeholder="National ID"
+                value={field.value ?? ""}
+                clearInput={true}
+                onIonInput={(e) =>
+                  field.onChange((e.detail.value as string) ?? "")
+                }
+                onIonBlur={field.onBlur}
+                ref={field.ref}
+                className={cn(
+                  "ion-bg-white! ion-b-r-[7px]! ",
+                  fieldState.error && "ion-invalid ion-touched"
+                )}
+                errorText={fieldState.error?.message}
+              >
+                <IonIcon
+                  icon={cardOutline}
+                  slot="start"
+                  className="text-slate-500 me-2"
+                />
+              </IonInput>
+            )}
+          />
+
+          <Controller
+            name="patient.address"
+            control={props.control}
+            render={({ field, fieldState }) => (
+              <IonInput
+                mode="md"
+                fill="outline"
+                placeholder="Address"
+                value={field.value ?? ""}
+                clearInput={true}
+                onIonInput={(e) =>
+                  field.onChange((e.detail.value as string) ?? "")
+                }
+                onIonBlur={field.onBlur}
+                ref={field.ref}
+                className={cn(
+                  "ion-bg-white! ion-b-r-[7px]! ",
+                  fieldState.error && "ion-invalid ion-touched"
+                )}
+                errorText={fieldState.error?.message}
+              >
+                <IonIcon
+                  icon={homeOutline}
+                  slot="start"
+                  className="text-slate-500 me-2"
+                />
+              </IonInput>
+            )}
+          />
+
+          <Controller
+            name="patient.phone"
+            control={props.control}
+            render={({ field, fieldState }) => (
+              <IonInput
+                mode="md"
+                fill="outline"
+                placeholder="Phone"
+                type="tel"
+                value={field.value ?? ""}
+                clearInput={true}
+                onIonInput={(e) =>
+                  field.onChange((e.detail.value as string) ?? "")
+                }
+                onIonBlur={field.onBlur}
+                ref={field.ref}
+                className={cn(
+                  "ion-bg-white! ion-b-r-[7px]! ",
+                  fieldState.error && "ion-invalid ion-touched"
+                )}
+                errorText={fieldState.error?.message}
+              >
+                <IonIcon
+                  icon={callOutline}
+                  slot="start"
+                  className="text-slate-500 me-2"
+                />
+              </IonInput>
+            )}
+          />
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <div className="flex items-baseline justify-between">
+            <h2 className="text-lg font-semibold text-slate-700 flex items-center gap-2">
+              <IonIcon icon={peopleOutline} className="text-blue-600" />
+              Spouse Information
+            </h2>
+            <IonButton
+              fill="clear"
+              size="small"
+              color={hasSpouse ? "danger" : "primary"}
+              onClick={toggleSpouse}
+            >
+              {hasSpouse ? "Remove" : "Add"}
+            </IonButton>
+          </div>
+
+          <Controller
+            name="spouse.name"
+            control={props.control}
+            render={({ field, fieldState }) => (
+              <IonInput
+                mode="md"
+                fill="outline"
+                placeholder="Full Name"
+                disabled={!hasSpouse}
+                value={field.value ?? ""}
+                clearInput={true}
+                onIonInput={(e) =>
+                  field.onChange((e.detail.value as string) ?? "")
+                }
+                onIonBlur={field.onBlur}
+                ref={field.ref}
+                className={cn(
+                  "ion-bg-white! ion-b-r-[7px]!",
+                  fieldState.error && "ion-invalid ion-touched"
+                )}
+                errorText={fieldState.error?.message}
+              >
+                <IonIcon
+                  icon={personOutline}
+                  slot="start"
+                  className="text-slate-500 me-2"
+                />
+              </IonInput>
+            )}
+          />
+
+          <Controller
+            name="spouse.dob"
+            control={props.control}
+            render={({ field, fieldState }) => (
+              <div className="w-full h-fit flex flex-col justify-center items-start gap-1">
+                <div
+                  onClick={() =>
+                    hasSpouse && spouseDobModalRef.current?.present()
                   }
                   className={cn(
-                    inputClassName,
-                    errors.spouse.nationalId && "ion-invalid ion-touched"
+                    "flex justify-between items-center w-full bg-white border-1 rounded-[7px]  h-14 py-[0.45rem] px-2 ps-4",
+                    fieldState.error && "border-red-400",
+                    !hasSpouse && "opacity-50 pointer-events-none"
                   )}
-                  errorText={errors.spouse.nationalId}
                 >
-                  <IonIcon
-                    icon={cardOutline}
-                    slot="start"
-                    className="text-slate-500 me-2"
+                  <div className="flex items-center gap-2">
+                    <IonIcon
+                      icon={calendarOutline}
+                      className="text-slate-500"
+                    />
+                    <label className={cn(!hasSpouse && "opacity-50")}>
+                      Date of Birth
+                    </label>
+                  </div>
+
+                  <IonDatetimeButton
+                    datetime="spouse-dob"
+                    disabled={!hasSpouse}
+                    className="self-center"
                   />
-                </IonInput>
-              </>
-            )}
+                </div>
 
-            {!spouse && (
-              <p className="text-sm text-slate-400 italic ps-2">
-                No spouse information added
-              </p>
+                {fieldState.error && (
+                  <IonNote className="ps-4 text-xs text-red-700!">
+                    {fieldState.error.message}
+                  </IonNote>
+                )}
+
+                <IonModal
+                  keepContentsMounted
+                  initialBreakpoint={1}
+                  breakpoints={[0, 1]}
+                  ref={spouseDobModalRef}
+                  className="ion-w-[100%]! ion-bg-gray-100"
+                >
+                  <IonDatetime
+                    id="spouse-dob"
+                    presentation="date"
+                    preferWheel
+                    showAdjacentDays
+                    value={field.value || todayDateOnly}
+                    onIonChange={field.onChange}
+                    onIonBlur={field.onBlur}
+                    ref={field.ref}
+                    max={todayDateOnly}
+                    className="mx-auto h-full"
+                  />
+                </IonModal>
+              </div>
             )}
-          </div>
+          />
+
+          <Controller
+            name="spouse.nationalId"
+            control={props.control}
+            render={({ field, fieldState }) => (
+              <IonInput
+                mode="md"
+                fill="outline"
+                placeholder="National ID"
+                disabled={!hasSpouse}
+                value={field.value ?? ""}
+                clearInput={true}
+                onIonInput={(e) =>
+                  field.onChange((e.detail.value as string) ?? "")
+                }
+                onIonBlur={field.onBlur}
+                ref={field.ref}
+                className={cn(
+                  "ion-bg-white! ion-b-r-[7px]! ",
+                  fieldState.error && "ion-invalid ion-touched"
+                )}
+                errorText={fieldState.error?.message}
+              >
+                <IonIcon
+                  icon={cardOutline}
+                  slot="start"
+                  className="text-slate-500 me-2"
+                />
+              </IonInput>
+            )}
+          />
         </div>
-      </IonContent>
-
-      <IonFooter>
-        <IonToolbar className="ion-px-[0.5rem]">
-          <div className="flex gap-2">
-            <IonButton fill="outline" className="flex-1" onClick={handleClose}>
-              Cancel
-            </IonButton>
-            <IonButton fill="solid" className="flex-1" onClick={handleConfirm}>
-              Confirm
-            </IonButton>
-          </div>
-        </IonToolbar>
-      </IonFooter>
-    </IonModal>
+      </div>
+    </IonContent>
   );
+}
+
+function normalizeToDate(value: string | undefined, fallback: string) {
+  return value ? getDateOnly(value) : fallback;
+}
+
+export function getAgreementFormDefaults(): AgreementFormData {
+  const todayDateOnly = getDateOnly(new Date().toISOString());
+
+  return {
+    patient: {
+      name: "",
+      dob: todayDateOnly,
+      nationalId: "",
+      address: "",
+      phone: "",
+    },
+    spouse: {
+      name: "",
+      dob: "",
+      nationalId: "",
+    },
+  };
+}
+
+export function mapTemplateToFormValues(
+  templatePayload: AgreementTemplatePayload | null
+): AgreementFormData {
+  const defaults = getAgreementFormDefaults();
+  if (!templatePayload) return defaults;
+
+  const { variables } = templatePayload;
+
+  return {
+    patient: {
+      name: variables.patient.name,
+      dob: normalizeToDate(variables.patient.dob, defaults.patient.dob),
+      nationalId: variables.patient.nationalId ?? "",
+      address: variables.patient.address ?? "",
+      phone: variables.patient.phone ?? "",
+    },
+    spouse: {
+      name: variables.spouse?.name ?? "",
+      dob:
+        variables.spouse?.dob && variables.spouse?.dob !== ""
+          ? normalizeToDate(variables.spouse.dob, defaults.patient.dob)
+          : "",
+      nationalId: variables.spouse?.nationalId ?? "",
+    },
+  };
 }

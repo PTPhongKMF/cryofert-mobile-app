@@ -1,7 +1,7 @@
 import { createApiResponseSchema } from "@src/schemas/api-response";
 import * as v from "valibot";
 
-export const MediaTemplateTypes = [
+export const MediaTypes = [
   "MedicalRecord",
   "TreatmentCycle",
   "Account",
@@ -9,7 +9,7 @@ export const MediaTemplateTypes = [
   "CryoStorageContract",
 ] as const;
 
-export const MediaTemplateTypeSchema = v.picklist(MediaTemplateTypes);
+export const MediaTypeSchema = v.picklist(MediaTypes);
 
 export const MediaResponseSchema = v.object({
   id: v.string(),
@@ -38,9 +38,16 @@ export const MediaTemplateApiResponseSchema = createApiResponseSchema(
   MediaResponseSchema
 );
 
-export type MediaTemplateType = v.InferOutput<typeof MediaTemplateTypeSchema>;
+export const MediaListApiResponseSchema = createApiResponseSchema(
+  v.array(MediaResponseSchema)
+);
+
+export type MediaType = v.InferOutput<typeof MediaTypeSchema>;
 export type MediaResponse = v.InferOutput<typeof MediaResponseSchema>;
 export type MediaTemplateApiResponse = v.InferOutput<
   typeof MediaTemplateApiResponseSchema
+>;
+export type MediaListApiResponse = v.InferOutput<
+  typeof MediaListApiResponseSchema
 >;
 

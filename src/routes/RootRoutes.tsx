@@ -16,6 +16,7 @@ import { setGlobalPush } from "@src/services/navigation-service";
 import AppointmentDetail from "@src/pages/AppointmentDetail";
 import TreatmentCycleDetail from "@src/pages/TreatmentCycleDetail";
 import Relationship from "@src/pages/account-center/Relationship";
+import StartCryoContract from "@src/pages/StartCryoContract";
 
 export default function RootRoutes() {
   const router = useIonRouter();
@@ -32,7 +33,10 @@ export default function RootRoutes() {
       <Route path={ROUTES.TABS} component={AppTabRoutes} />
 
       <Route path={ROUTES.BOOK_TREATMENT} component={TreatmentBooking} />
+      <Route path={ROUTES.START_CONTRACT} component={StartCryoContract} />
+
       <Route path={ROUTES.PAYMENT_PORTAL} component={PaymentPortal} />
+
       <Route
         path={`${ROUTES.TREATMENT}/:treatmentId`}
         component={TreatmentDetail}

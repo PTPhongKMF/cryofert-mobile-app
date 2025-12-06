@@ -13,6 +13,8 @@ import type { TransactionResponse } from "@src/schemas/transaction";
 import { format } from "@formkit/tempo";
 import { useLocalUserStore } from "@src/stores/user";
 import { useAppointmentHistoryInfiniteQuery } from "@src/hooks/appointment-hook";
+import { useAppointmentHistoryFilterStore } from "@src/stores/appointment";
+import { useShallow } from "zustand/react/shallow";
 import { ROUTES } from "@src/routes/routes";
 
 function getPrioritizedPaymentTransaction(
@@ -56,9 +58,14 @@ function getStatusColorClass(status: string): string {
 export default function AppointmentHistory() {
   const router = useIonRouter();
   const localUser = useLocalUserStore((s) => s.localUser);
+  const filterOptions = useAppointmentHistoryFilterStore(
+    useShallow((s) => s.filterOptions)
+  );
 
   const bookingHistoryQuery = useAppointmentHistoryInfiniteQuery(
-    localUser?.id || ""
+    localUser?.id || "",
+    20,
+    filterOptions
   );
 
   const appointments =

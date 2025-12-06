@@ -1,6 +1,7 @@
 import type {
   AppointmentApiResponse,
   AppointmentHistoryApiResponse,
+  AppointmentResponse,
 } from "@src/schemas/appointment";
 import type { BookAppointmentRequest } from "@src/schemas/appointment";
 import type { InfiniteData } from "@tanstack/react-query";
@@ -12,7 +13,6 @@ import {
   appointmentDetailQueryFn,
 } from "@src/services/api-services/appointment-service";
 import { useLocalUserStore } from "@src/stores/user";
-import { useAppointmentHistoryFilterStore } from "@src/stores/appointment";
 
 export function useCreateBookingAppointmentMutation() {
   return useMutation<AppointmentApiResponse, HTTPError, BookAppointmentRequest>(
@@ -22,11 +22,17 @@ export function useCreateBookingAppointmentMutation() {
   );
 }
 
+type AppointmentHistoryFilterOptions = {
+  type: AppointmentResponse["type"] | null;
+  status: AppointmentResponse["status"] | null;
+  sortType: "Lastest" | "Upcomming";
+};
+
 export function useAppointmentHistoryInfiniteQuery(
   patientId: string,
-  pageSize: number = 20
+  pageSize: number = 20,
+  filterOptions?: AppointmentHistoryFilterOptions
 ) {
-  const filterOptions = useAppointmentHistoryFilterStore((s) => s.filterOptions);
 
   return useInfiniteQuery<
     AppointmentHistoryApiResponse,
@@ -39,18 +45,18 @@ export function useAppointmentHistoryInfiniteQuery(
       "PatientBookingHistoryInfinite",
       patientId,
       pageSize,
-      filterOptions.type,
-      filterOptions.status,
-      filterOptions.sortType,
+      filterOptions?.type,
+      filterOptions?.status,
+      filterOptions?.sortType,
     ],
     queryFn: (queryParams) =>
       appointmentHistoryQueryFn({
         patientId,
         pageSize,
         pageParam: queryParams.pageParam,
-        type: filterOptions.type ?? undefined,
-        status: filterOptions.status ?? undefined,
-        sortType: filterOptions.sortType,
+        type: filterOptions?.type ?? undefined,
+        status: filterOptions?.status ?? undefined,
+        sortType: filterOptions?.sortType ?? "Lastest",
       }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>

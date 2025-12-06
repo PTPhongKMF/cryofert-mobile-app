@@ -1,20 +1,18 @@
 import * as v from "valibot";
 
-export const AgreementDataSchema = v.object({
+export const AgreementFormSchema = v.object({
   patient: v.object({
-    name: v.string(),
-    dob: v.string(),
-    nationalId: v.string(),
-    address: v.string(),
-    phone: v.string(),
+    name: v.pipe(v.string(), v.nonEmpty("Require")),
+    dob: v.pipe(v.string(), v.nonEmpty("Require")),
+    nationalId: v.pipe(v.string(), v.nonEmpty("Require")),
+    address: v.pipe(v.string(), v.nonEmpty("Require")),
+    phone: v.pipe(v.string(), v.nonEmpty("Require")),
   }),
-  spouse: v.optional(
-    v.object({
-      name: v.string(),
-      dob: v.string(),
-      nationalId: v.string(),
-    })
-  ),
+  spouse: v.optional(v.object({
+      name: v.pipe(v.string(), v.nonEmpty("Require")),
+      dob: v.pipe(v.string(), v.nonEmpty("Require")),
+      nationalId: v.pipe(v.string(), v.nonEmpty("Require")),
+    })),
 });
 
-export type AgreementData = v.InferOutput<typeof AgreementDataSchema>;
+export type AgreementFormData = v.InferOutput<typeof AgreementFormSchema>;

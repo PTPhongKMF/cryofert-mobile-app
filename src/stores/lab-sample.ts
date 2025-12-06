@@ -16,16 +16,12 @@ interface LabSampleFilterStore {
   setFilterOptions: (options: Partial<LabSampleFilterOptions>) => void;
 }
 
-function createDefaultFilterOptions(): LabSampleFilterOptions {
-  return {
+export const useLabSampleFilterStore = create<LabSampleFilterStore>((set) => ({
+  filterOptions: {
     type: null,
     status: null,
     sortType: "LatestCollection",
-  };
-}
-
-export const useLabSampleFilterStore = create<LabSampleFilterStore>((set) => ({
-  filterOptions: createDefaultFilterOptions(),
+  },
   setFilterOptions: (options) =>
     set((state) => ({
       filterOptions: { ...state.filterOptions, ...options },

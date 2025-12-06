@@ -1,4 +1,5 @@
-import { useMutation } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Eta } from "eta/core";
 
 export interface AgreementTemplateVariables {
@@ -28,12 +29,52 @@ export interface AgreementTemplatePayload {
   variables: AgreementTemplateVariables;
 }
 
-export function useBuildAgreementTemplateMutation() {
-  return useMutation<string, Error, AgreementTemplatePayload>({
-    mutationFn: async ({ template, variables }) => {
+export interface AgreementTemplateRenderResult {
+  value: string;
+  objectUrl: string;
+}
+
+export function useBuildAgreementTemplateQuery(
+  payload: AgreementTemplatePayload | null
+) {
+  const previousUrlRef = useRef<string | null>(null);
+
+  const query = useQuery<AgreementTemplateRenderResult, Error>({
+    queryKey: ["agreement-template", payload],
+    queryFn: async () => {
+      if (!payload) throw new Error("No payload");
+
       const eta = new Eta();
-      return await eta.renderStringAsync(template, variables);
+      const value = await eta.renderStringAsync(
+        payload.template,
+        payload.variables
+      );
+      const blob = new Blob([value], { type: "text/html" });
+      const objectUrl = URL.createObjectURL(blob);
+      return { value, objectUrl };
     },
-    onError: (e) => console.log(e),
+    enabled: Boolean(payload),
+    staleTime: Infinity,
+    gcTime: 0,
   });
+
+  useEffect(() => {
+    const currentUrl = query.data?.objectUrl ?? null;
+    const previousUrl = previousUrlRef.current;
+
+    if (previousUrl && previousUrl !== currentUrl) {
+      URL.revokeObjectURL(previousUrl);
+    }
+
+    previousUrlRef.current = currentUrl;
+
+    return () => {
+      if (previousUrlRef.current) {
+        URL.revokeObjectURL(previousUrlRef.current);
+        previousUrlRef.current = null;
+      }
+    };
+  }, [query.data]);
+
+  return query;
 }

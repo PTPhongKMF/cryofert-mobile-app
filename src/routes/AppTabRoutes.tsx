@@ -140,7 +140,7 @@ export default function AppTabRoutes() {
           </IonFabButton>
 
           <IonFabButton
-            onClick={() => router.push(ROUTES.BOOK_TREATMENT)}
+            onClick={() => router.push(ROUTES.START_CONTRACT)}
             className="ion-b-r-[6px] w-[8rem] h-14 ion-bg-blue-500"
           >
             <Snowflake className="me-4 text-gray-50" />

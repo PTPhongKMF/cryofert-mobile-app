@@ -2,7 +2,9 @@ const BASE = {
   ROOT: "/",
   LANDING: "/landing",
   TABS: "/tabs",
+
   BOOK_TREATMENT: `/book-treatment`,
+  START_CONTRACT: `/start-contract`,
 
   PAYMENT_PORTAL: `/payment-portal`,
 
