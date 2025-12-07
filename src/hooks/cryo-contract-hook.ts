@@ -1,10 +1,17 @@
 import type {
   CryoContractListApiResponse,
   CryoContractStatus,
+  CryoContractTemplateApiResponse,
+  CryoContractApiResponse,
 } from "@src/schemas/cryo-contract";
-import { cryoContractInfiniteQueryFn } from "@src/services/api-services/cryo-contract-service";
+import {
+  createCryoContractMutationFn,
+  cryoContractInfiniteQueryFn,
+  getContractTemplate,
+  type CreateCryoContractRequest,
+} from "@src/services/api-services/cryo-contract-service";
 import type { InfiniteData } from "@tanstack/react-query";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import type { HTTPError } from "ky";
 
 export type CryoContractFilterOptions = {
@@ -12,6 +19,16 @@ export type CryoContractFilterOptions = {
   fromDate?: string;
   toDate?: string;
 };
+
+export function useCreateCryoContractMutation() {
+  return useMutation<
+    CryoContractApiResponse,
+    HTTPError,
+    CreateCryoContractRequest
+  >({
+    mutationFn: createCryoContractMutationFn,
+  });
+}
 
 export function useCryoContractInfiniteQuery(
   patientId: string,
@@ -46,6 +63,22 @@ export function useCryoContractInfiniteQuery(
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
       lastPage.metaData?.hasNext ? lastPage.metaData.page + 1 : undefined,
+  });
+}
+
+export function useCryoContractTemplateQuery(
+  contractId: string,
+  enabled: boolean = true
+) {
+  return useQuery<CryoContractTemplateApiResponse, HTTPError>({
+    queryKey: [
+      "api/cryostoragecontracts",
+      contractId,
+      "contract-html",
+      enabled,
+    ],
+    queryFn: () => getContractTemplate(contractId),
+    enabled: enabled && !!contractId,
   });
 }
 

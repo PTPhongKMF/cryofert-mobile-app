@@ -20,7 +20,7 @@ export const CryoContractResponseSchema = v.object({
   status: CryoContractStatusSchema,
   totalAmount: v.number(),
   paidAmount: v.number(),
-  isAutoRenew: v.boolean(),
+  // isAutoRenew: v.boolean(),
   signedDate: v.string(),
   signedBy: v.string(),
   notes: v.nullable(v.string()),
@@ -32,8 +32,19 @@ export const CryoContractResponseSchema = v.object({
   updatedAt: v.nullable(v.string()),
 });
 
+export const CryoContractApiResponseSchema = createApiResponseSchema(
+  CryoContractResponseSchema
+);
 export const CryoContractListApiResponseSchema = createApiResponseSchema(
   v.array(CryoContractResponseSchema)
+);
+
+export const CryoContractTemplateSchema = v.object({
+  contract: v.string(),
+});
+
+export const CryoContractTemplateApiResponseSchema = createApiResponseSchema(
+  CryoContractTemplateSchema
 );
 
 ///////////////////////////////////////////////////////////////////////
@@ -88,5 +99,12 @@ export type CryoContractListApiResponse = v.InferOutput<
   typeof CryoContractListApiResponseSchema
 >;
 export type CryoContractStatus = v.InferOutput<typeof CryoContractStatusSchema>;
+export type CryoContractTemplate = v.InferOutput<typeof CryoContractTemplateSchema>;
+export type CryoContractApiResponse = v.InferOutput<
+  typeof CryoContractApiResponseSchema
+>;
+export type CryoContractTemplateApiResponse = v.InferOutput<
+  typeof CryoContractTemplateApiResponseSchema
+>;
 
 export type StartContractForm = v.InferOutput<typeof StartContractFormSchema>;

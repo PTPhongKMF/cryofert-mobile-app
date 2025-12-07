@@ -68,12 +68,22 @@ export const PatientResponseSchema = v.object({
   accountInfo: AccountInfoResponseSchema,
 });
 
+export const UserResponseSchema = v.object({
+  ...PatientResponseSchema.entries,
+  accountInfo: v.unknown(),
+});
+
 export const PatientApiResponseSchema = createApiResponseSchema(
   PatientResponseSchema
 );
+export const AccountInfoApiResponseSchema =
+  createApiResponseSchema(AccountInfoResponseSchema);
 
 export type AccountInfoResponse = v.InferOutput<
   typeof AccountInfoResponseSchema
 >;
+
 export type PatientResponse = v.InferOutput<typeof PatientResponseSchema>;
+
 export type PatientApiResponse = v.InferOutput<typeof PatientApiResponseSchema>;
+export type AccountInfoApiResponse = v.InferOutput<typeof AccountInfoApiResponseSchema>;

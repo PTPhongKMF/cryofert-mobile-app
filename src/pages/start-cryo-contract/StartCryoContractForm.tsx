@@ -27,14 +27,18 @@ import type { CryoPackageResponse } from "@src/schemas/cryo-package";
 import type { LabSampleResponse } from "@src/schemas/lab-sample";
 import { useCryoPackageInfiniteQuery } from "@src/hooks/cryo-package-hook";
 import { useLabSampleInfiniteQuery } from "@src/hooks/lab-sample-hook";
+import { useCreateCryoContractMutation } from "@src/hooks/cryo-contract-hook";
 import { useForm, useWatch } from "react-hook-form";
 import { useLocalUserStore } from "@src/stores/user";
 import { useGenericDialogStore } from "@src/stores/dialog";
+import { usePatientHasRequiredInfo } from "@src/hooks/account-hook";
 import { cn } from "@utils/cn";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PackageDetailModal from "@src/components/start-cryo-contract/PackageDetailModal";
+import { alertCircleOutline } from "ionicons/icons";
+import { ROUTES } from "@src/routes/routes";
 
-export default function StartCryoContract() {
+export default function StartCryoContractForm() {
   const [selectedPackage, setSelectedPackage] =
     useState<CryoPackageResponse | null>(null);
   const [viewingPackage, setViewingPackage] =
@@ -54,6 +58,11 @@ export default function StartCryoContract() {
 
   const router = useIonRouter();
 
+  const patientRequiredInfoQuery = usePatientHasRequiredInfo(
+    localUser?.id ?? "",
+    !!localUser?.id
+  );
+
   const startContractForm = useForm<StartContractForm>({
     defaultValues: {
       formSampleType: "Oocyte",
@@ -69,19 +78,46 @@ export default function StartCryoContract() {
     name: "formSampleType",
   });
 
+  useEffect(() => {
+    if (!patientRequiredInfoQuery.isError) return;
+
+    const missingInfoMessage =
+      patientRequiredInfoQuery.error?.message ?? "information";
+
+    openGenericDialog({
+      content: `Please provide more information to use our service, missing: ${missingInfoMessage}`,
+      svgIcon: alertCircleOutline,
+      svgIconColor: "warning",
+      backdropDismiss: false,
+      buttons: {
+        text: "Go to update",
+        color: "warning",
+        closeFn: () => router.push(ROUTES.UPDATE_ACCOUNT, "forward", "replace"),
+      },
+    });
+  }, [
+    openGenericDialog,
+    patientRequiredInfoQuery.error?.message,
+    patientRequiredInfoQuery.isError,
+    router,
+  ]);
+
   const cryoPackageQuery = useCryoPackageInfiniteQuery(currentSampleType);
   const packages =
     cryoPackageQuery.data?.pages.flatMap((page) => page.data) ?? [];
 
   const labSampleQuery = useLabSampleInfiniteQuery(localUser?.id || "", 20, {
     type: currentSampleType,
-    status: null,
+    status: "QualityChecked",
     sortType: "LatestCollection",
     isAvailable: true,
     isStoraged: false,
   });
   const labSamples =
     labSampleQuery.data?.pages.flatMap((page) => page.data) ?? [];
+
+  const createCryoContractMutation = useCreateCryoContractMutation();
+  const isSubmittingContract = createCryoContractMutation.isPending;
 
   async function handleLoadMorePackage(
     ev: InfiniteScrollCustomEvent
@@ -149,8 +185,43 @@ export default function StartCryoContract() {
   }
 
   function handleStartContract(data: StartContractForm) {
-    console.log(data);
+    if (!localUser?.id) {
+      openGenericDialog({
+        content: "Missing patient information. Please re-login and try again.",
+        backdropDismiss: false,
+      });
+      return;
+    }
+
+    createCryoContractMutation.mutate(
+      {
+        patientId: localUser.id,
+        cryoPackageId: data.cryoPackageId,
+        samples: data.samples.map((sample) => ({
+          labSampleId: sample.labSampleId,
+        })),
+      },
+      {
+        onSuccess: (data) => {
+          router.push(
+            `${ROUTES.START_CONTRACT_PAPER}?contractId=${data.data.id}`,
+            "forward",
+            "replace"
+          );
+        },
+        onError: (error) => {
+          openGenericDialog({
+            svgIcon: alertCircleOutline,
+            svgIconColor: "danger",
+            content: String(error),
+          });
+        },
+      }
+    );
   }
+
+  const showBlockingOverlay =
+    patientRequiredInfoQuery.isLoading || isSubmittingContract;
 
   return (
     <IonPage>
@@ -165,6 +236,12 @@ export default function StartCryoContract() {
 
       <IonContent className="ion-bg-blue-100">
         <div className="relative h-full">
+          {showBlockingOverlay && (
+            <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/50">
+              <IonSpinner name="circular" className="text-blue-500 size-8" />
+            </div>
+          )}
+
           <div className="flex flex-col justify-center items-center gap-14 px-2 py-4">
             <div className="w-full px-6 flex flex-col items-center text-center gap-3">
               <div className="flex items-center gap-3">
@@ -277,6 +354,12 @@ export default function StartCryoContract() {
                   </div>
                 </div>
 
+                {startContractForm.formState.errors.cryoPackageId?.message && (
+                  <p className="text-xs text-red-600 px-1">
+                    {startContractForm.formState.errors.cryoPackageId.message.toString()}
+                  </p>
+                )}
+
                 <div className="w-full flex items-start justify-between px-1">
                   <IonNote>Select a Package.</IonNote>
                   {selectedPackage && (
@@ -365,6 +448,7 @@ export default function StartCryoContract() {
                     </IonList>
                   </IonContent>
                 </IonModal>
+
                 <PackageDetailModal
                   pkg={viewingPackage}
                   isOpen={!!viewingPackage}
@@ -392,6 +476,12 @@ export default function StartCryoContract() {
                       </IonButton>
                     </div>
                   </div>
+
+                  {startContractForm.formState.errors.samples?.message && (
+                    <p className="text-xs text-red-600 px-1">
+                      {startContractForm.formState.errors.samples.message.toString()}
+                    </p>
+                  )}
 
                   <div className="w-full flex items-start justify-between px-1">
                     <IonNote>Select samples.</IonNote>
@@ -524,6 +614,7 @@ export default function StartCryoContract() {
               fill="solid"
               color="medium"
               className="w-30"
+              disabled={showBlockingOverlay}
             >
               Clear
             </IonButton>
@@ -532,6 +623,7 @@ export default function StartCryoContract() {
               form="contract-form"
               fill="solid"
               className="grow"
+              disabled={showBlockingOverlay}
             >
               Continue
             </IonButton>
