@@ -34,9 +34,8 @@ export const MediaResponseSchema = v.object({
   notes: v.string(),
 });
 
-export const MediaTemplateApiResponseSchema = createApiResponseSchema(
-  MediaResponseSchema
-);
+export const MediaTemplateApiResponseSchema =
+  createApiResponseSchema(MediaResponseSchema);
 
 export const MediaListApiResponseSchema = createApiResponseSchema(
   v.array(MediaResponseSchema)
@@ -50,4 +49,3 @@ export type MediaTemplateApiResponse = v.InferOutput<
 export type MediaListApiResponse = v.InferOutput<
   typeof MediaListApiResponseSchema
 >;
-
