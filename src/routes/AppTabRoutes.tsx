@@ -16,8 +16,8 @@ import {
 } from "@ionic/react";
 import { Route } from "react-router-dom";
 import { ROUTES } from "@src/routes/routes";
-import History from "@src/pages/History";
-import Account from "@src/pages/account-center/Account";
+import TreatmentTab from "@src/pages/treatment-tab/TreatmentTab";
+import Account from "@src/pages/account-center-tab/Account";
 import {
   alertCircleOutline,
   codeWorking,
@@ -37,7 +37,7 @@ import Dev from "@src/pages/devs/Dev";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import Home from "@src/pages/Home";
 import LabSamples from "@src/pages/LabSamples";
-import AppTabHeader from "@src/components/AppTabHeader";
+import AppTabHeader from "@src/components/layout/AppTabHeader";
 
 export default function AppTabRoutes() {
   const router = useIonRouter();
@@ -84,7 +84,7 @@ export default function AppTabRoutes() {
       <IonRouterOutlet>
         <IonContent>
           <Route exact path={ROUTES.T_HOME} component={Home} />
-          <Route exact path={ROUTES.T_HISTORY} component={History} />
+          <Route exact path={ROUTES.T_TREATMENT} component={TreatmentTab} />
           <Route exact path={ROUTES.T_SAMPLES} component={LabSamples} />
           <Route exact path={ROUTES.T_ACCOUNT} component={Account} />
           <Route exact path={"/tabs/dev"} component={Dev} />
@@ -101,13 +101,13 @@ export default function AppTabRoutes() {
           <IonLabel className="text-xs">Home</IonLabel>
         </IonTabButton>
 
-        <IonTabButton tab="history" href={ROUTES.T_HISTORY}>
+        <IonTabButton tab="history" href={ROUTES.T_TREATMENT}>
           <IonIcon icon={fileTrayFull} className="size-6" />
-          <IonLabel className="text-xs">History</IonLabel>
+          <IonLabel className="text-xs">Treatment</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="cryo" href={ROUTES.T_SAMPLES}>
-          <IonIcon icon={serverOutline} className="size-6" />
+          <IonIcon icon={server} className="size-6" />
           <Dna className="size-5 absolute bottom-[46%] right-[10%]" />
           <IonLabel className="text-xs">Samples</IonLabel>
         </IonTabButton>

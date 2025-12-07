@@ -1,6 +1,6 @@
 import { IonContent } from "@ionic/react";
 import BlueToGrayGradientBg from "@src/components/backgrounds/BlueToGrayGradientBg";
-import SafeAreaView from "@src/components/SafeAreaView";
+import SafeAreaView from "@src/components/layout/SafeAreaView";
 import {
   HeartPulse,
   Calendar,
@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { useIonRouter } from "@ionic/react";
 import { ROUTES } from "@src/routes/routes";
-import AppTabHeader from "@src/components/AppTabHeader";
+import AppTabHeader from "@src/components/layout/AppTabHeader";
 
 export default function Home() {
   const router = useIonRouter();
@@ -102,7 +102,7 @@ export default function Home() {
                 icon={<FileText className="h-6 w-6" />}
                 title="View History"
                 subtitle="Past appointments"
-                onClick={() => router.push(ROUTES.T_HISTORY)}
+                onClick={() => router.push(ROUTES.T_TREATMENT)}
                 color="bg-teal-500"
               />
               <QuickActionCard
@@ -129,7 +129,7 @@ export default function Home() {
                 Upcoming Appointments
               </h2>
               <button
-                onClick={() => router.push(ROUTES.T_HISTORY)}
+                onClick={() => router.push(ROUTES.T_TREATMENT)}
                 className="text-sm text-blue-600 flex items-center gap-1"
               >
                 View all

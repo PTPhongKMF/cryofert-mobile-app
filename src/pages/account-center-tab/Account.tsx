@@ -7,7 +7,7 @@ import {
   IonToast,
   useIonRouter,
 } from "@ionic/react";
-import SafeAreaView from "@src/components/SafeAreaView";
+import SafeAreaView from "@src/components/layout/SafeAreaView";
 import { useLocalUserStore } from "@src/stores/user";
 import EditProfile from "@assets/images/lucide/user-pen.svg";
 import { ROUTES } from "@src/routes/routes";
@@ -24,7 +24,7 @@ import { Clipboard } from "@capacitor/clipboard";
 import { useState } from "react";
 import { clearAllSecuredTokens } from "@src/services/token-service";
 import { cn } from "@utils/cn";
-import AppTabHeader from "@src/components/AppTabHeader";
+import AppTabHeader from "@src/components/layout/AppTabHeader";
 
 export default function Account() {
   const [isOpenToastCopy, setIsOpenToastCopy] = useState(false);

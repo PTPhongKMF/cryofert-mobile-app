@@ -1,5 +1,5 @@
 import { IonButton, IonContent, useIonRouter } from "@ionic/react";
-import SafeAreaView from "@src/components/SafeAreaView";
+import SafeAreaView from "@src/components/layout/SafeAreaView";
 import {
   DefaultSystemBrowserOptions,
   DefaultWebViewOptions,

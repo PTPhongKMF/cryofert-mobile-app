@@ -2,7 +2,7 @@ import { IonContent } from "@ionic/react";
 import BgImgMedical from "@assets/images/bg-login.jpg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
-import SafeAreaView from "@src/components/SafeAreaView";
+import SafeAreaView from "@src/components/layout/SafeAreaView";
 import LoginForm from "@src/components/landing-auth-tabs/LoginForm";
 import RegisterForm from "@src/components/landing-auth-tabs/RegisterForm";
 import { useLocation } from "react-router";
@@ -12,7 +12,9 @@ export default function LandingAuth() {
   const location = useLocation();
   const authPage = new URLSearchParams(location.search).get("authPage");
   const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
-  const currentSlideRef = useRef(Number.isNaN(Number(authPage)) ? 0 : Number(authPage));
+  const currentSlideRef = useRef(
+    Number.isNaN(Number(authPage)) ? 0 : Number(authPage)
+  );
 
   useEffect(() => {
     const targetSlide = Number.isNaN(Number(authPage)) ? 0 : Number(authPage);
@@ -32,12 +34,12 @@ export default function LandingAuth() {
     } else {
       params.set("authPage", newIndex.toString());
     }
-    
+
     const newSearch = params.toString();
     const newUrl = `${location.pathname}${newSearch ? `?${newSearch}` : ""}`;
 
     window.history.replaceState({}, "", newUrl);
-  };
+  }
 
   return (
     <IonContent fullscreen>

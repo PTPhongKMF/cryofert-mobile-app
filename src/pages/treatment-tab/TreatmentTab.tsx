@@ -1,22 +1,19 @@
 import {
   IonContent,
-  IonHeader,
   IonLabel,
   IonSegment,
   IonSegmentButton,
-  IonToolbar,
   useIonRouter,
 } from "@ionic/react";
-import AppTabHeader from "@src/components/AppTabHeader";
-import SafeAreaView from "@src/components/SafeAreaView";
+import SafeAreaView from "@src/components/layout/SafeAreaView";
 import BlueToGrayGradientBg from "@src/components/backgrounds/BlueToGrayGradientBg";
-import AppointmentHistory from "@src/components/history-tab/AppointmentHistory";
-import AppointmentHistoryFilter from "@src/components/history-tab/AppointmentHistoryFilter";
-import TreatmentHistory from "@src/components/history-tab/TreatmentHistory";
+import AppointmentHistory from "@src/components/treatment-tab/AppointmentHistory";
+import AppointmentHistoryFilter from "@src/components/treatment-tab/AppointmentHistoryFilter";
+import TreatmentHistory from "@src/components/treatment-tab/TreatmentHistory";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 
-export default function History() {
+export default function TreatmentTab() {
   const location = useLocation();
   const router = useIonRouter();
 
