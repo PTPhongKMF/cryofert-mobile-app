@@ -9,6 +9,8 @@ import {
   cryoContractInfiniteQueryFn,
   getContractTemplate,
   type CreateCryoContractRequest,
+  requestSignCryoContractMutationFn,
+  verifySignCryoContractMutationFn,
 } from "@src/services/api-services/cryo-contract-service";
 import type { InfiniteData } from "@tanstack/react-query";
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
@@ -27,6 +29,22 @@ export function useCreateCryoContractMutation() {
     CreateCryoContractRequest
   >({
     mutationFn: createCryoContractMutationFn,
+  });
+}
+
+export function useRequestSignCryoContractMutation() {
+  return useMutation<void, HTTPError, string>({
+    mutationFn: requestSignCryoContractMutationFn,
+  });
+}
+
+export function useVerifySignCryoContractMutation() {
+  return useMutation<
+    CryoContractApiResponse,
+    HTTPError,
+    { id: string; otpCode: string }
+  >({
+    mutationFn: verifySignCryoContractMutationFn,
   });
 }
 

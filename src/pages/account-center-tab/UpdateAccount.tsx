@@ -3,7 +3,6 @@ import {
   IonButton,
   IonButtons,
   IonContent,
-  IonFooter,
   IonHeader,
   IonInput,
   IonModal,
@@ -13,7 +12,14 @@ import {
   IonToolbar,
   useIonRouter,
 } from "@ionic/react";
+import { valibotResolver } from "@hookform/resolvers/valibot";
+import { Controller, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { MapPin, ShieldCheck, Stethoscope, Phone } from "lucide-react";
+import {
+  UpdatePatientRequestSchema,
+  type UpdatePatientRequest,
+} from "@src/schemas/account";
 import {
   usePatientDetailQuery,
   useUpdateFullAccountInfoMutation,
@@ -21,24 +27,33 @@ import {
 import { useLocalUserStore } from "@src/stores/user";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import { cn } from "@src/utils/cn";
-import { MapPin, ShieldCheck, Stethoscope, Phone } from "lucide-react";
 
-type AccountEditableFields = {
-  phone: string;
-  emergencyContact: string;
-  emergencyPhone: string;
-  firstName: string;
-  lastName: string;
-  country: string;
-  location: string;
-  nationalId: string;
-  insurance: string;
-  occupation: string;
-  medicalHistory: string;
-  allergies: string;
-  bloodType: string;
-  height: string;
-  weight: string;
+function stripVietnamPrefix(value: string | null | undefined) {
+  const normalized = (value ?? "").trim();
+
+  if (normalized.startsWith("+84")) return normalized.slice(3);
+  if (normalized.startsWith("84")) return normalized.slice(2);
+  if (normalized.startsWith("+")) return normalized.slice(1);
+
+  return normalized;
+}
+
+const defaultValues: UpdatePatientRequest = {
+  phone: "",
+  emergencyContact: "",
+  emergencyPhone: "",
+  firstName: "",
+  lastName: "",
+  country: "",
+  location: "",
+  nationalId: "",
+  insurance: "",
+  occupation: "",
+  medicalHistory: "",
+  allergies: "",
+  bloodType: "",
+  height: "",
+  weight: "",
 };
 
 export default function UpdateAccount() {
@@ -46,30 +61,25 @@ export default function UpdateAccount() {
   const localUser = useLocalUserStore((s) => s.localUser);
   const setLocalUser = useLocalUserStore((s) => s.setLocalUser);
   const openGenericDialog = useGenericDialogStore((s) => s.openGenericDialog);
-  const [hasPrefilled, setHasPrefilled] = useState(false);
   const updateAccountMutation = useUpdateFullAccountInfoMutation();
+  const [hasPrefilled, setHasPrefilled] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const patientQuery = usePatientDetailQuery(localUser?.id ?? "", !isEditing);
-  const [formValues, setFormValues] = useState<AccountEditableFields>({
-    phone: "",
-    emergencyContact: "",
-    emergencyPhone: "",
-    firstName: "",
-    lastName: "",
-    country: "",
-    location: "",
-    nationalId: "",
-    insurance: "",
-    occupation: "",
-    medicalHistory: "",
-    allergies: "",
-    bloodType: "",
-    height: "",
-    weight: "",
-  });
   const [initialValues, setInitialValues] =
-    useState<AccountEditableFields>(formValues);
+    useState<UpdatePatientRequest>(defaultValues);
+  const [pendingValues, setPendingValues] =
+    useState<UpdatePatientRequest | null>(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<UpdatePatientRequest>({
+    resolver: valibotResolver(UpdatePatientRequestSchema),
+    defaultValues,
+  });
 
   useEffect(() => {
     if (!patientQuery.isSuccess || hasPrefilled || !patientQuery.data?.data) {
@@ -77,12 +87,11 @@ export default function UpdateAccount() {
     }
 
     const patient = patientQuery.data.data;
-    const stripPlus = (value: string | null) =>
-      value && value.startsWith("+") ? value.slice(1) : value ?? "";
-    const nextValues: AccountEditableFields = {
-      phone: stripPlus(patient.accountInfo.phone),
+
+    const nextValues: UpdatePatientRequest = {
+      phone: stripVietnamPrefix(patient.accountInfo.phone),
       emergencyContact: patient.emergencyContact ?? "",
-      emergencyPhone: stripPlus(patient.emergencyPhone),
+      emergencyPhone: stripVietnamPrefix(patient.emergencyPhone),
       firstName: patient.accountInfo.firstName ?? "",
       lastName: patient.accountInfo.lastName ?? "",
       country: patient.accountInfo.address ?? "",
@@ -97,54 +106,62 @@ export default function UpdateAccount() {
       weight: patient.weight ? String(patient.weight) : "",
     };
 
-    setFormValues(nextValues);
+    reset(nextValues);
     setInitialValues(nextValues);
     setHasPrefilled(true);
-  }, [hasPrefilled, patientQuery.data?.data, patientQuery.isSuccess]);
+  }, [hasPrefilled, patientQuery.data?.data, patientQuery.isSuccess, reset]);
 
   const isSaving = updateAccountMutation.isPending;
   const showOverlay = patientQuery.isLoading || updateAccountMutation.isPending;
 
-  function handleChange(
-    key: keyof AccountEditableFields,
-    value: string | null | undefined
-  ) {
-    setFormValues((prev) => ({
-      ...prev,
-      [key]: value ?? "",
-    }));
+  function handleCancelEdit() {
+    reset(initialValues);
+    setPendingValues(null);
+    setIsConfirmOpen(false);
+    setIsEditing(false);
+  }
+
+  function handleStartEdit() {
+    setIsEditing(true);
+  }
+
+  function handleSaveClick() {
+    handleSubmit((values) => {
+      setPendingValues(values);
+      setIsConfirmOpen(true);
+    })();
   }
 
   async function handleConfirmSave() {
+    if (!pendingValues) return;
+
     const patientId = patientQuery.data?.data.id ?? localUser?.id ?? "";
     if (!patientId) return;
 
     const payload = {
       patientId,
-      firstName: formValues.firstName.trim(),
-      lastName: formValues.lastName.trim(),
-      location: formValues.location.trim(),
-      country: formValues.country.trim(),
-      nationalId: formValues.nationalId.trim(),
-      emergencyContact: formValues.emergencyContact.trim(),
-      insurance: formValues.insurance.trim(),
-      occupation: formValues.occupation.trim(),
-      medicalHistory: formValues.medicalHistory.trim(),
-      allergies: formValues.allergies.trim(),
-      bloodType: formValues.bloodType.trim(),
+      firstName: pendingValues.firstName.trim(),
+      lastName: pendingValues.lastName.trim(),
+      location: pendingValues.location.trim(),
+      country: pendingValues.country.trim(),
+      nationalId: pendingValues.nationalId.trim(),
+      emergencyContact: pendingValues.emergencyContact.trim(),
+      insurance: pendingValues.insurance.trim(),
+      occupation: pendingValues.occupation.trim(),
+      medicalHistory: pendingValues.medicalHistory.trim(),
+      allergies: pendingValues.allergies.trim(),
+      bloodType: pendingValues.bloodType.trim(),
       height:
-        formValues.height.trim() === ""
+        pendingValues.height.trim() === ""
           ? undefined
-          : Number.parseFloat(formValues.height),
+          : Number.parseFloat(pendingValues.height),
       weight:
-        formValues.weight.trim() === ""
+        pendingValues.weight.trim() === ""
           ? undefined
-          : Number.parseFloat(formValues.weight),
-      ...(formValues.phone.trim()
-        ? { phone: "+" + formValues.phone.trim() }
-        : {}),
-      ...(formValues.emergencyPhone.trim()
-        ? { emergencyPhone: "+" + formValues.emergencyPhone.trim() }
+          : Number.parseFloat(pendingValues.weight),
+      ...(pendingValues.phone !== "" ? { phone: pendingValues.phone } : {}),
+      ...(pendingValues.emergencyPhone !== ""
+        ? { emergencyPhone: pendingValues.emergencyPhone }
         : {}),
     };
 
@@ -168,6 +185,14 @@ export default function UpdateAccount() {
             color: "primary",
             closeFn: () => {
               const account = data.data.accountInfo;
+              const resetValues: UpdatePatientRequest = {
+                ...pendingValues,
+                phone: stripVietnamPrefix(pendingValues.phone),
+                emergencyPhone: stripVietnamPrefix(
+                  pendingValues.emergencyPhone
+                ),
+              };
+
               setLocalUser({
                 id: account.id,
                 userName: account.username,
@@ -178,7 +203,8 @@ export default function UpdateAccount() {
                 roleName: localUser?.roleName ?? "",
                 gender: account.gender,
               });
-              setInitialValues(formValues);
+              setInitialValues(resetValues);
+              reset(resetValues);
               setIsEditing(false);
               router.goBack();
             },
@@ -186,15 +212,6 @@ export default function UpdateAccount() {
         });
       },
     });
-  }
-
-  function handleCancelEdit() {
-    setFormValues(initialValues);
-    setIsEditing(false);
-  }
-
-  function handleStartEdit() {
-    setIsEditing(true);
   }
 
   return (
@@ -229,7 +246,7 @@ export default function UpdateAccount() {
               <IonButtons slot="primary">
                 <IonButton
                   color="primary"
-                  onClick={() => setIsConfirmOpen(true)}
+                  onClick={handleSaveClick}
                   disabled={isSaving || patientQuery.isLoading}
                 >
                   Save
@@ -255,82 +272,168 @@ export default function UpdateAccount() {
                 <p className="text-lg font-semibold">Contact & Identity</p>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <IonInput
-                  mode="md"
-                  fill="outline"
-                  label="First Name"
-                  labelPlacement="stacked"
-                  value={formValues.firstName}
-                  onIonInput={(e) => handleChange("firstName", e.detail.value)}
-                  className={cn("ion-bg-white! ion-b-r-[7px]!")}
-                  clearInput={true}
-                  disabled={!isEditing || patientQuery.isLoading}
+                <Controller
+                  name="firstName"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <IonInput
+                      mode="md"
+                      fill="outline"
+                      label="First Name"
+                      labelPlacement="stacked"
+                      value={field.value}
+                      onIonInput={(e) =>
+                        field.onChange((e.detail.value as string) ?? "")
+                      }
+                      onIonBlur={field.onBlur}
+                      ref={field.ref}
+                      className={cn(
+                        "ion-bg-white! ion-b-r-[7px]! ",
+                        fieldState.error && "ion-invalid ion-touched"
+                      )}
+                      clearInput={true}
+                      disabled={!isEditing || patientQuery.isLoading}
+                      errorText={errors.firstName?.message}
+                    />
+                  )}
                 />
-                <IonInput
-                  mode="md"
-                  fill="outline"
-                  label="Last Name"
-                  labelPlacement="stacked"
-                  value={formValues.lastName}
-                  onIonInput={(e) => handleChange("lastName", e.detail.value)}
-                  className={cn("ion-bg-white! ion-b-r-[7px]!")}
-                  clearInput={true}
-                  disabled={!isEditing || patientQuery.isLoading}
+                <Controller
+                  name="lastName"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <IonInput
+                      mode="md"
+                      fill="outline"
+                      label="Last Name"
+                      labelPlacement="stacked"
+                      value={field.value}
+                      onIonInput={(e) =>
+                        field.onChange((e.detail.value as string) ?? "")
+                      }
+                      onIonBlur={field.onBlur}
+                      ref={field.ref}
+                      className={cn(
+                        "ion-bg-white! ion-b-r-[7px]! ",
+                        fieldState.error && "ion-invalid ion-touched"
+                      )}
+                      clearInput={true}
+                      disabled={!isEditing || patientQuery.isLoading}
+                      errorText={errors.lastName?.message}
+                    />
+                  )}
                 />
               </div>
-              <IonInput
-                mode="md"
-                type="tel"
-                fill="outline"
-                label="Phone"
-                labelPlacement="stacked"
-                value={formValues.phone}
-                onIonInput={(e) => handleChange("phone", e.detail.value)}
-                className={cn("ion-bg-white! ion-b-r-[7px]!")}
-                clearInput={true}
-                disabled={!isEditing || patientQuery.isLoading}
-              >
-                <p slot="start">+</p>
-              </IonInput>
-              <IonInput
-                mode="md"
-                fill="outline"
-                label="Emergency Contact"
-                labelPlacement="stacked"
-                value={formValues.emergencyContact}
-                onIonInput={(e) =>
-                  handleChange("emergencyContact", e.detail.value)
-                }
-                className={cn("ion-bg-white! ion-b-r-[7px]!")}
-                clearInput={true}
-                disabled={!isEditing || patientQuery.isLoading}
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <IonInput
+                    mode="md"
+                    type="tel"
+                    inputmode="tel"
+                    fill="outline"
+                    label="Phone"
+                    labelPlacement="stacked"
+                    value={field.value}
+                    onIonInput={(e) =>
+                      field.onChange((e.detail.value as string) ?? "")
+                    }
+                    onIonBlur={field.onBlur}
+                    ref={field.ref}
+                    className={cn(
+                      "ion-bg-white! ion-b-r-[7px]! ",
+                      fieldState.error && "ion-invalid ion-touched"
+                    )}
+                    clearInput={true}
+                    disabled={!isEditing || patientQuery.isLoading}
+                    helperText="9 digits, numbers only. Phone number without the leading 0."
+                    errorText={errors.phone?.message}
+                  >
+                    <p slot="start">+84</p>
+                  </IonInput>
+                )}
               />
-              <IonInput
-                mode="md"
-                type="tel"
-                fill="outline"
-                label="Emergency Phone"
-                labelPlacement="stacked"
-                value={formValues.emergencyPhone}
-                onIonInput={(e) =>
-                  handleChange("emergencyPhone", e.detail.value)
-                }
-                className={cn("ion-bg-white! ion-b-r-[7px]!")}
-                clearInput={true}
-                disabled={!isEditing || patientQuery.isLoading}
-              >
-                <p slot="start">+</p>
-              </IonInput>
-              <IonInput
-                mode="md"
-                fill="outline"
-                label="National ID"
-                labelPlacement="stacked"
-                value={formValues.nationalId}
-                onIonInput={(e) => handleChange("nationalId", e.detail.value)}
-                className={cn("ion-bg-white! ion-b-r-[7px]!")}
-                clearInput={true}
-                disabled={!isEditing || patientQuery.isLoading}
+              <Controller
+                name="emergencyContact"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <IonInput
+                    mode="md"
+                    fill="outline"
+                    label="Emergency Contact"
+                    labelPlacement="stacked"
+                    value={field.value}
+                    onIonInput={(e) =>
+                      field.onChange((e.detail.value as string) ?? "")
+                    }
+                    onIonBlur={field.onBlur}
+                    ref={field.ref}
+                    className={cn(
+                      "ion-bg-white! ion-b-r-[7px]! ",
+                      fieldState.error && "ion-invalid ion-touched"
+                    )}
+                    clearInput={true}
+                    disabled={!isEditing || patientQuery.isLoading}
+                    errorText={errors.emergencyContact?.message}
+                  />
+                )}
+              />
+              <Controller
+                name="emergencyPhone"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <IonInput
+                    mode="md"
+                    type="tel"
+                    inputmode="tel"
+                    fill="outline"
+                    label="Emergency Phone"
+                    labelPlacement="stacked"
+                    value={field.value}
+                    onIonInput={(e) =>
+                      field.onChange((e.detail.value as string) ?? "")
+                    }
+                    onIonBlur={field.onBlur}
+                    ref={field.ref}
+                    className={cn(
+                      "ion-bg-white! ion-b-r-[7px]! ",
+                      fieldState.error && "ion-invalid ion-touched"
+                    )}
+                    clearInput={true}
+                    disabled={!isEditing || patientQuery.isLoading}
+                    helperText="9 digits, numbers only. Phone number without the leading 0."
+                    errorText={errors.emergencyPhone?.message}
+                  >
+                    <p slot="start">+84</p>
+                  </IonInput>
+                )}
+              />
+              <Controller
+                name="nationalId"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <IonInput
+                    mode="md"
+                    inputmode="numeric"
+                    fill="outline"
+                    label="Citizen ID Card"
+                    labelPlacement="stacked"
+                    value={field.value}
+                    onIonInput={(e) =>
+                      field.onChange((e.detail.value as string) ?? "")
+                    }
+                    onIonBlur={field.onBlur}
+                    ref={field.ref}
+                    className={cn(
+                      "ion-bg-white! ion-b-r-[7px]! ",
+                      fieldState.error && "ion-invalid ion-touched"
+                    )}
+                    clearInput={true}
+                    disabled={!isEditing || patientQuery.isLoading}
+                    helperText="12 digits, numbers only."
+                    errorText={errors.nationalId?.message}
+                  />
+                )}
               />
             </div>
 
@@ -339,27 +442,55 @@ export default function UpdateAccount() {
                 <MapPin className="size-5" />
                 <p className="text-lg font-semibold">Address</p>
               </div>
-              <IonInput
-                mode="md"
-                fill="outline"
-                label="Country"
-                labelPlacement="stacked"
-                value={formValues.country}
-                onIonInput={(e) => handleChange("country", e.detail.value)}
-                className={cn("ion-bg-white! ion-b-r-[7px]!")}
-                clearInput={true}
-                disabled={!isEditing || patientQuery.isLoading}
+              <Controller
+                name="country"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <IonInput
+                    mode="md"
+                    fill="outline"
+                    label="Country"
+                    labelPlacement="stacked"
+                    value={field.value}
+                    onIonInput={(e) =>
+                      field.onChange((e.detail.value as string) ?? "")
+                    }
+                    onIonBlur={field.onBlur}
+                    ref={field.ref}
+                    className={cn(
+                      "ion-bg-white! ion-b-r-[7px]! ",
+                      fieldState.error && "ion-invalid ion-touched"
+                    )}
+                    clearInput={true}
+                    disabled={!isEditing || patientQuery.isLoading}
+                    errorText={errors.country?.message}
+                  />
+                )}
               />
-              <IonInput
-                mode="md"
-                fill="outline"
-                label="Location"
-                labelPlacement="stacked"
-                value={formValues.location}
-                onIonInput={(e) => handleChange("location", e.detail.value)}
-                className={cn("ion-bg-white! ion-b-r-[7px]!")}
-                clearInput={true}
-                disabled={!isEditing || patientQuery.isLoading}
+              <Controller
+                name="location"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <IonInput
+                    mode="md"
+                    fill="outline"
+                    label="Location"
+                    labelPlacement="stacked"
+                    value={field.value}
+                    onIonInput={(e) =>
+                      field.onChange((e.detail.value as string) ?? "")
+                    }
+                    onIonBlur={field.onBlur}
+                    ref={field.ref}
+                    className={cn(
+                      "ion-bg-white! ion-b-r-[7px]! ",
+                      fieldState.error && "ion-invalid ion-touched"
+                    )}
+                    clearInput={true}
+                    disabled={!isEditing || patientQuery.isLoading}
+                    errorText={errors.location?.message}
+                  />
+                )}
               />
             </div>
 
@@ -368,27 +499,55 @@ export default function UpdateAccount() {
                 <ShieldCheck className="size-5" />
                 <p className="text-lg font-semibold">Coverage & Work</p>
               </div>
-              <IonInput
-                mode="md"
-                fill="outline"
-                label="Insurance"
-                labelPlacement="stacked"
-                value={formValues.insurance}
-                onIonInput={(e) => handleChange("insurance", e.detail.value)}
-                className={cn("ion-bg-white! ion-b-r-[7px]!")}
-                clearInput={true}
-                disabled={!isEditing || patientQuery.isLoading}
+              <Controller
+                name="insurance"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <IonInput
+                    mode="md"
+                    fill="outline"
+                    label="Insurance"
+                    labelPlacement="stacked"
+                    value={field.value}
+                    onIonInput={(e) =>
+                      field.onChange((e.detail.value as string) ?? "")
+                    }
+                    onIonBlur={field.onBlur}
+                    ref={field.ref}
+                    className={cn(
+                      "ion-bg-white! ion-b-r-[7px]! ",
+                      fieldState.error && "ion-invalid ion-touched"
+                    )}
+                    clearInput={true}
+                    disabled={!isEditing || patientQuery.isLoading}
+                    errorText={errors.insurance?.message}
+                  />
+                )}
               />
-              <IonInput
-                mode="md"
-                fill="outline"
-                label="Occupation"
-                labelPlacement="stacked"
-                value={formValues.occupation}
-                onIonInput={(e) => handleChange("occupation", e.detail.value)}
-                className={cn("ion-bg-white! ion-b-r-[7px]!")}
-                clearInput={true}
-                disabled={!isEditing || patientQuery.isLoading}
+              <Controller
+                name="occupation"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <IonInput
+                    mode="md"
+                    fill="outline"
+                    label="Occupation"
+                    labelPlacement="stacked"
+                    value={field.value}
+                    onIonInput={(e) =>
+                      field.onChange((e.detail.value as string) ?? "")
+                    }
+                    onIonBlur={field.onBlur}
+                    ref={field.ref}
+                    className={cn(
+                      "ion-bg-white! ion-b-r-[7px]! ",
+                      fieldState.error && "ion-invalid ion-touched"
+                    )}
+                    clearInput={true}
+                    disabled={!isEditing || patientQuery.isLoading}
+                    errorText={errors.occupation?.message}
+                  />
+                )}
               />
             </div>
 
@@ -397,68 +556,136 @@ export default function UpdateAccount() {
                 <Stethoscope className="size-5" />
                 <p className="text-lg font-semibold">Medical Details</p>
               </div>
-              <IonInput
-                mode="md"
-                fill="outline"
-                label="Medical History"
-                labelPlacement="stacked"
-                value={formValues.medicalHistory}
-                onIonInput={(e) =>
-                  handleChange("medicalHistory", e.detail.value)
-                }
-                className={cn("ion-bg-white! ion-b-r-[7px]!")}
-                clearInput={true}
-                disabled={!isEditing || patientQuery.isLoading}
+              <Controller
+                name="medicalHistory"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <IonInput
+                    mode="md"
+                    fill="outline"
+                    label="Medical History"
+                    labelPlacement="stacked"
+                    value={field.value}
+                    onIonInput={(e) =>
+                      field.onChange((e.detail.value as string) ?? "")
+                    }
+                    onIonBlur={field.onBlur}
+                    ref={field.ref}
+                    className={cn(
+                      "ion-bg-white! ion-b-r-[7px]! ",
+                      fieldState.error && "ion-invalid ion-touched"
+                    )}
+                    clearInput={true}
+                    disabled={!isEditing || patientQuery.isLoading}
+                    errorText={errors.medicalHistory?.message}
+                  />
+                )}
               />
-              <IonInput
-                mode="md"
-                fill="outline"
-                label="Allergies"
-                labelPlacement="stacked"
-                value={formValues.allergies}
-                onIonInput={(e) => handleChange("allergies", e.detail.value)}
-                className={cn("ion-bg-white! ion-b-r-[7px]!")}
-                clearInput={true}
-                disabled={!isEditing || patientQuery.isLoading}
+              <Controller
+                name="allergies"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <IonInput
+                    mode="md"
+                    fill="outline"
+                    label="Allergies"
+                    labelPlacement="stacked"
+                    value={field.value}
+                    onIonInput={(e) =>
+                      field.onChange((e.detail.value as string) ?? "")
+                    }
+                    onIonBlur={field.onBlur}
+                    ref={field.ref}
+                    className={cn(
+                      "ion-bg-white! ion-b-r-[7px]! ",
+                      fieldState.error && "ion-invalid ion-touched"
+                    )}
+                    clearInput={true}
+                    disabled={!isEditing || patientQuery.isLoading}
+                    errorText={errors.allergies?.message}
+                  />
+                )}
               />
-              <IonInput
-                mode="md"
-                fill="outline"
-                label="Blood Type"
-                labelPlacement="stacked"
-                value={formValues.bloodType}
-                onIonInput={(e) => handleChange("bloodType", e.detail.value)}
-                className={cn("ion-bg-white! ion-b-r-[7px]!")}
-                clearInput={true}
-                disabled={!isEditing || patientQuery.isLoading}
+              <Controller
+                name="bloodType"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <IonInput
+                    mode="md"
+                    fill="outline"
+                    label="Blood Type"
+                    labelPlacement="stacked"
+                    value={field.value}
+                    onIonInput={(e) =>
+                      field.onChange((e.detail.value as string) ?? "")
+                    }
+                    onIonBlur={field.onBlur}
+                    ref={field.ref}
+                    className={cn(
+                      "ion-bg-white! ion-b-r-[7px]! ",
+                      fieldState.error && "ion-invalid ion-touched"
+                    )}
+                    clearInput={true}
+                    disabled={!isEditing || patientQuery.isLoading}
+                    errorText={errors.bloodType?.message}
+                  />
+                )}
               />
               <div className="grid grid-cols-2 gap-3">
-                <IonInput
-                  mode="md"
-                  type="number"
-                  fill="outline"
-                  label="Height"
-                  labelPlacement="stacked"
-                  value={formValues.height}
-                  onIonInput={(e) => handleChange("height", e.detail.value)}
-                  className={cn("ion-bg-white! ion-b-r-[7px]!")}
-                  disabled={!isEditing || patientQuery.isLoading}
-                >
-                  <p slot="end">cm</p>
-                </IonInput>
-                <IonInput
-                  mode="md"
-                  type="number"
-                  fill="outline"
-                  label="Weight"
-                  labelPlacement="stacked"
-                  value={formValues.weight}
-                  onIonInput={(e) => handleChange("weight", e.detail.value)}
-                  className={cn("ion-bg-white! ion-b-r-[7px]!")}
-                  disabled={!isEditing || patientQuery.isLoading}
-                >
-                  <p slot="end">kg</p>
-                </IonInput>
+                <Controller
+                  name="height"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <IonInput
+                      mode="md"
+                      type="number"
+                      fill="outline"
+                      label="Height"
+                      labelPlacement="stacked"
+                      value={field.value}
+                      onIonInput={(e) =>
+                        field.onChange((e.detail.value as string) ?? "")
+                      }
+                      onIonBlur={field.onBlur}
+                      ref={field.ref}
+                      className={cn(
+                        "ion-bg-white! ion-b-r-[7px]! ",
+                        fieldState.error && "ion-invalid ion-touched"
+                      )}
+                      disabled={!isEditing || patientQuery.isLoading}
+                      errorText={errors.height?.message}
+                    >
+                      <p slot="end">cm</p>
+                    </IonInput>
+                  )}
+                />
+                <Controller
+                  name="weight"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <IonInput
+                      mode="md"
+                      type="number"
+                      fill="outline"
+                      label="Weight"
+                      labelPlacement="stacked"
+                      value={field.value}
+                      onIonInput={(e) =>
+                        field.onChange((e.detail.value as string) ?? "")
+                      }
+                      onIonBlur={field.onBlur}
+                      ref={field.ref}
+                      className={cn(
+                        "ion-bg-white! ion-b-r-[7px]! ",
+                        fieldState.error && "ion-invalid ion-touched"
+                      )}
+                      disabled={!isEditing || patientQuery.isLoading}
+                      errorText={errors.weight?.message}
+                    >
+                      <p slot="end">kg</p>
+                    </IonInput>
+                  )}
+                />
               </div>
             </div>
           </div>

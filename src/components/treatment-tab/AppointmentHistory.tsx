@@ -55,6 +55,10 @@ function getStatusColorClass(status: string): string {
   }
 }
 
+function reduceTime(time?: string): string {
+  return time ? time.replace(/:\d{2}$/, "") : "TBD";
+}
+
 export default function AppointmentHistory() {
   const router = useIonRouter();
   const localUser = useLocalUserStore((s) => s.localUser);
@@ -122,30 +126,25 @@ export default function AppointmentHistory() {
                   }
                   className="ion-bg-transparent"
                 >
-                  <div className="grid grid-cols-2 grid-rows-[1fr_1fr_min-content] items-center w-full py-2">
-                    <div className="font-semibold text-gray-900 justify-self-start">
-                      <p>
-                        {format(new Date(appointment.appointmentDate), "dddd,")}
-                      </p>
-                      <p>
-                        {format(
-                          new Date(appointment.appointmentDate),
-                          "long",
-                          "en"
-                        )}
-                      </p>
-                    </div>
+                  <div className="grid grid-cols-[1fr_auto] grid-rows-[1fr_1fr_min-content] gap-1 items-center w-full py-2">
+                    <p className="font-semibold text-gray-900 justify-self-start mb-2">
+                      {format(new Date(appointment.appointmentDate), "dddd,")}{" "}
+                      {format(
+                        new Date(appointment.appointmentDate),
+                        "DD / MM / YYYY"
+                      )}
+                    </p>
 
                     <div className="text-xs text-gray-500 px-2 py-1 rounded bg-gray-100 justify-self-end ">
                       {appointment.statusName}
                     </div>
 
                     <p className="text-sm text-gray-900 justify-self-start col-span-2">
-                      Slot: {appointment.slot?.startTime} -{" "}
-                      {appointment.slot?.endTime}
+                      Slot: {reduceTime(appointment.slot?.startTime)} -{" "}
+                      {reduceTime(appointment.slot?.endTime)}
                     </p>
 
-                    <p className="text-sm font-semibold text-gray-900 pe-2 justify-self-end row-start-3 col-start-2">
+                    <p className="text-xs text-gray-900 pe-2 justify-self-end row-start-3 col-start-2">
                       {appointment.typeName}
                     </p>
 

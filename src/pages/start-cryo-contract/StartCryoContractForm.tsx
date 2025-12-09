@@ -243,7 +243,7 @@ export default function StartCryoContractForm() {
           )}
 
           <div className="flex flex-col justify-center items-center gap-14 px-2 py-4">
-            <div className="w-full px-6 flex flex-col items-center text-center gap-3">
+            <div className="w-full px-6 flex flex-col items-center text-center gap-2">
               <div className="flex items-center gap-3">
                 <IonImg src={CryoIcon} className="size-30" />
 

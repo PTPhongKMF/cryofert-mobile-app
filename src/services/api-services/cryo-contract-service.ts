@@ -68,3 +68,24 @@ export async function getContractTemplate(
   return v.parse(CryoContractTemplateApiResponseSchema, res);
 }
 
+export async function requestSignCryoContractMutationFn(
+  id: string
+): Promise<void> {
+  await httpClient.post("api/cryostoragecontracts/send-otp", {
+    searchParams: { ContractId: id },
+  });
+}
+
+export async function verifySignCryoContractMutationFn(params: {
+  id: string;
+  otpCode: string;
+}): Promise<CryoContractApiResponse> {
+  const res = await httpClient
+    .post("api/cryostoragecontracts/verify-otp", {
+      searchParams: { ContractId: params.id, Otp: params.otpCode },
+    })
+    .json();
+
+  return v.parse(CryoContractApiResponseSchema, res);
+}
+
