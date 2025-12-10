@@ -31,7 +31,6 @@ export default function PaymentPortal() {
   const relatedEntityType = searchParams.get("relatedEntityType");
   const relatedEntityId = searchParams.get("relatedEntityId");
 
-  const localUser = useLocalUserStore((s) => s.localUser);
   const openGenericDialog = useGenericDialogStore(
     useShallow((s) => s.openGenericDialog)
   );

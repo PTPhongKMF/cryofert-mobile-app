@@ -6,7 +6,7 @@ import type {
   AgreementStatusType,
 } from "@src/schemas/agreement";
 import { useState } from "react";
-import AgreementDialog from "@src/components/treatment-detail-segments/AgreementDialog";
+import AgreementPaperDialog from "@src/components/treatment-detail-segments/AgreementPaperDialog";
 
 interface TreatmentDetailAgreementsProps {
   treatment: TreatmentDetail;
@@ -157,7 +157,7 @@ export default function TreatmentDetailAgreements({
         })}
       </div>
 
-      <AgreementDialog
+      <AgreementPaperDialog
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
         agreement={selectAgreement}

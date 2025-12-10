@@ -97,7 +97,7 @@ export const httpClient = ky.extend({
               buttons: {
                 text: "Back to Log In",
                 color: "danger",
-                closeFn: () => globalPush(ROUTES.L_AUTH, "back"),
+                closeFn: () => globalPush(ROUTES.L_AUTH_LOGIN, "back"),
               },
               backdropDismiss: false,
             });

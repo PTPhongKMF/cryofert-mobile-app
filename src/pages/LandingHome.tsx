@@ -63,7 +63,7 @@ export default function LandingHome() {
             </p>
             <div className="flex w-full flex-col sm:flex-row gap-3">
               <PrimaryButton className="w-full py-1! rounded-md!">
-                <Link to={ROUTES.L_AUTH}>
+                <Link to={ROUTES.L_AUTH_LOGIN}>
                   <span className="inline-flex items-center justify-center text-white">
                     Start Your Journey
                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -306,7 +306,7 @@ export default function LandingHome() {
             </p>
             <div className="flex w-full flex-col sm:flex-row gap-3">
               <PrimaryButton className="w-full py-1! rounded-sm!">
-                <Link to={ROUTES.L_AUTH}>
+                <Link to={ROUTES.L_AUTH_LOGIN}>
                   <span className="inline-flex items-center justify-center text-white">
                     Schedule Free Consultation
                     <ArrowRight className="ml-2 h-4 w-4" />

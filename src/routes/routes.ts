@@ -25,6 +25,8 @@ export const ROUTES = {
 
   L_HOME: `${BASE.LANDING}/home`,
   L_AUTH: `${BASE.LANDING}/auth`,
+  L_AUTH_LOGIN: `${BASE.LANDING}/auth/login`,
+  L_AUTH_REGISTER: `${BASE.LANDING}/auth/register`,
 
   T_HOME: `${BASE.TABS}/home`,
   T_SERVICE: `${BASE.TABS}/service`,

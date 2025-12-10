@@ -1,19 +1,17 @@
 import type {
   CryoContractListApiResponse,
   CryoContractStatus,
-  CryoContractTemplateApiResponse,
   CryoContractApiResponse,
 } from "@src/schemas/cryo-contract";
 import {
   createCryoContractMutationFn,
   cryoContractInfiniteQueryFn,
-  getContractTemplate,
   type CreateCryoContractRequest,
   requestSignCryoContractMutationFn,
   verifySignCryoContractMutationFn,
 } from "@src/services/api-services/cryo-contract-service";
 import type { InfiniteData } from "@tanstack/react-query";
-import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import type { HTTPError } from "ky";
 
 export type CryoContractFilterOptions = {
@@ -83,20 +81,3 @@ export function useCryoContractInfiniteQuery(
       lastPage.metaData?.hasNext ? lastPage.metaData.page + 1 : undefined,
   });
 }
-
-export function useCryoContractTemplateQuery(
-  contractId: string,
-  enabled: boolean = true
-) {
-  return useQuery<CryoContractTemplateApiResponse, HTTPError>({
-    queryKey: [
-      "api/cryostoragecontracts",
-      contractId,
-      "contract-html",
-      enabled,
-    ],
-    queryFn: () => getContractTemplate(contractId),
-    enabled: enabled && !!contractId,
-  });
-}
-

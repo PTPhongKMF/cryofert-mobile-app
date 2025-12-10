@@ -37,6 +37,7 @@ import { useEffect, useRef, useState } from "react";
 import PackageDetailModal from "@src/components/start-cryo-contract/PackageDetailModal";
 import { alertCircleOutline } from "ionicons/icons";
 import { ROUTES } from "@src/routes/routes";
+import ContentSpinnerOverlay from "@src/components/layout/ContentSpinnerOverlay";
 
 export default function StartCryoContractForm() {
   const [selectedPackage, setSelectedPackage] =
@@ -236,11 +237,7 @@ export default function StartCryoContractForm() {
 
       <IonContent className="ion-bg-blue-100">
         <div className="relative h-full">
-          {showBlockingOverlay && (
-            <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/50">
-              <IonSpinner name="circular" className="text-blue-500 size-8" />
-            </div>
-          )}
+          {showBlockingOverlay && <ContentSpinnerOverlay />}
 
           <div className="flex flex-col justify-center items-center gap-14 px-2 py-4">
             <div className="w-full px-6 flex flex-col items-center text-center gap-2">

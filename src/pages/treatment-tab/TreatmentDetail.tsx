@@ -7,8 +7,6 @@ import {
   IonTitle,
   IonContent,
   IonSpinner,
-  IonNote,
-  IonItem,
   IonLabel,
   IonSegment,
   IonSegmentButton,
@@ -23,6 +21,7 @@ import TreatmentDetailInfo from "@src/components/treatment-detail-segments/Treat
 import TreatmentDetailAgreements from "@src/components/treatment-detail-segments/TreatmentDetailAgreements";
 import TreatmentDetailCycles from "@src/components/treatment-detail-segments/TreatmentDetailCycles";
 import { reload } from "ionicons/icons";
+import ContentSpinnerOverlay from "@src/components/layout/ContentSpinnerOverlay";
 
 export default function TreatmentDetail() {
   const [segment, setSegment] = useState("info");
@@ -92,9 +91,7 @@ export default function TreatmentDetail() {
       <IonContent scrollY={false}>
         <div className="bg-blue-100 flex flex-col h-full">
           {isLoading ? (
-            <div className="flex justify-center items-center py-8">
-              <IonSpinner name="crescent" />
-            </div>
+            <ContentSpinnerOverlay />
           ) : treatmentQuery.isError || !treatment ? (
             <div className="flex justify-center items-center py-8 italic text-red-500">
               Error loading treatment details.
@@ -137,11 +134,7 @@ export default function TreatmentDetail() {
                   />
                 ) : null}
               </div>
-              {isManualRefetching && (
-                <div className="absolute inset-0 bg-white/60 flex items-center justify-center z-10">
-                  <IonSpinner name="crescent" />
-                </div>
-              )}
+              {isManualRefetching && <ContentSpinnerOverlay />}
             </div>
           )}
         </div>

@@ -14,11 +14,16 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import { useLocation } from "react-router";
-import { useCryoContractTemplateQuery } from "@src/hooks/cryo-contract-hook";
+import {
+  useRequestSignCryoContractMutation,
+} from "@src/hooks/cryo-contract-hook";
 import { useGenericDialogStore } from "@src/stores/dialog";
+import ContractOtpDialog from "@src/components/start-cryo-contract/ContractOtpDialog";
+import { useHtmlPaperQuery } from "@src/hooks/media-hook";
 
 export default function StartCryoContractPaper() {
   const [isAgree, setIsAgree] = useState(false);
+  const [isOtpOpen, setIsOtpOpen] = useState(false);
 
   const location = useLocation();
   const router = useIonRouter();
@@ -28,15 +33,20 @@ export default function StartCryoContractPaper() {
   const contractId = searchParams.get("contractId") ?? "";
   const hasContractId = !!contractId;
 
-  const contractTemplateQuery = useCryoContractTemplateQuery(
-    contractId,
-    hasContractId
-  );
+  const contractTemplateQuery = useHtmlPaperQuery({
+    relatedEntityType: "CryoStorageContract",
+    relatedEntityId: contractId,
+    enabled: hasContractId,
+  });
+
+  const requestSignCryoContractMutation = useRequestSignCryoContractMutation();
 
   const isLoading =
-    contractTemplateQuery.isLoading || contractTemplateQuery.isFetching;
+    contractTemplateQuery.isLoading ||
+    contractTemplateQuery.isFetching ||
+    requestSignCryoContractMutation.isPending;
   const shouldShowError = !hasContractId || contractTemplateQuery.isError;
-  const contractHtml = contractTemplateQuery.data?.data.contract ?? "";
+  const contractHtml = contractTemplateQuery.data?.html ?? "";
 
   function handleCancel() {
     openGenericDialog({
@@ -56,7 +66,18 @@ export default function StartCryoContractPaper() {
   }
 
   function handleContinue() {
-    console.log("Continue after agreeing to contract", { contractId });
+    requestSignCryoContractMutation.mutate(contractId, {
+      onError: (error) => {
+        openGenericDialog({
+          title: error.name,
+          content: error.message,
+          svgIconColor: "danger",
+        });
+      },
+      onSuccess: () => {
+        setIsOtpOpen(true);
+      },
+    });
   }
 
   if (shouldShowError) {
@@ -155,6 +176,15 @@ export default function StartCryoContractPaper() {
           </div>
         </IonToolbar>
       </IonFooter>
+
+      <ContractOtpDialog
+        isOpen={isOtpOpen}
+        setIsOpen={setIsOtpOpen}
+        contractId={contractId}
+        onContractSigned={() => {
+          setIsAgree(false);
+        }}
+      />
     </IonPage>
   );
 }

@@ -26,28 +26,36 @@ export const MediaResponseSchema = v.object({
   category: v.string(),
   tags: v.string(),
   uploadDate: v.string(),
-  uploadedBy: v.string(),
-  uploadedByUserId: v.string(),
+  uploadedBy: v.nullable(v.string()),
+  uploadedByUserId: v.nullable(v.string()),
   isPublic: v.boolean(),
   thumbnailPath: v.nullable(v.string()),
   storageLocation: v.nullable(v.string()),
   notes: v.string(),
 });
 
-export const MediaTemplateApiResponseSchema = createApiResponseSchema(
-  MediaResponseSchema
-);
+export const MediaHtmlSchema = v.object({
+  html: v.string(),
+});
+
+export const MediaHtmlApiResponseSchema =
+  createApiResponseSchema(MediaHtmlSchema);
+
+///////////////////////////////////////////////////////////////////////
 
 export const MediaListApiResponseSchema = createApiResponseSchema(
   v.array(MediaResponseSchema)
 );
 
+///////////////////////////////////////////////////////////////////////
+
 export type MediaType = v.InferOutput<typeof MediaTypeSchema>;
 export type MediaResponse = v.InferOutput<typeof MediaResponseSchema>;
-export type MediaTemplateApiResponse = v.InferOutput<
-  typeof MediaTemplateApiResponseSchema
->;
+
 export type MediaListApiResponse = v.InferOutput<
   typeof MediaListApiResponseSchema
 >;
-
+export type MediaHtml = v.InferOutput<typeof MediaHtmlSchema>;
+export type MediaHtmlApiResponse = v.InferOutput<
+  typeof MediaHtmlApiResponseSchema
+>;

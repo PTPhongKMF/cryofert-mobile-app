@@ -18,7 +18,7 @@ export function useVerifySignAgreementMutation() {
   return useMutation<
     void,
     HTTPError,
-    { id: string; otpCode: string; signedAgreementFile: File }
+    { id: string; otpCode: string }
   >({
     mutationFn: verifySignAgreementMutationFn,
     onError: (error) => {

@@ -356,5 +356,15 @@
   height: 1.5rem;
   font-size: 0.75rem;
 
+  padding: 0 0.5rem;
+
   color: gray;
+}
+
+@utility scrollbar-hidden {
+  scrollbar-width: none; /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
 }

@@ -68,7 +68,7 @@ export default function TransactionHistoryFilter({
           ))}
         </IonSelect>
 
-        <div className="flex justify-between items-center gap-2 border border-blue-400 rounded-2xl px-2">
+        <div className="flex justify-between items-baseline gap-2 border border-blue-400 rounded-2xl px-2">
           <p>From</p>
 
           <IonDatetimeButton
@@ -77,7 +77,7 @@ export default function TransactionHistoryFilter({
           />
         </div>
 
-        <div className="flex justify-between items-center gap-2 border border-blue-400 rounded-2xl px-2">
+        <div className="flex justify-between items-baseline gap-2 border border-blue-400 rounded-2xl px-2">
           <p>To</p>
 
           <IonDatetimeButton

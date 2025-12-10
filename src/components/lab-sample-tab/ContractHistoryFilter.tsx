@@ -1,4 +1,10 @@
-import { IonSelect, IonSelectOption } from "@ionic/react";
+import {
+  IonDatetime,
+  IonDatetimeButton,
+  IonModal,
+  IonSelect,
+  IonSelectOption,
+} from "@ionic/react";
 import {
   CryoContractStatuses,
   type CryoContractStatus,
@@ -19,38 +25,104 @@ export default function ContractHistoryFilter() {
   );
 
   return (
-    <div className="w-full px-2 pt-2 grid grid-cols-3 items-center gap-4 h-fit text-xs">
-      <IonSelect
-        interface="popover"
-        label="Status"
-        placeholder="All"
-        value={filterOptions.status}
-        onIonChange={(e) =>
-          setFilterOptions({
-            status:
-              (e.detail.value as CryoContractStatus | "") === ""
-                ? undefined
-                : (e.detail.value as CryoContractStatus),
-          })
-        }
-        className="border border-blue-400 rounded-2xl px-2 min-h-0! h-6!"
+    <>
+      <div className="w-full px-2 pt-2 grid grid-cols-3 items-center gap-3 h-fit text-xs">
+        <IonSelect
+          interface="popover"
+          label="Status"
+          placeholder="All"
+          value={filterOptions.status}
+          onIonChange={(e) =>
+            setFilterOptions({
+              status:
+                (e.detail.value as CryoContractStatus | "") === ""
+                  ? undefined
+                  : (e.detail.value as CryoContractStatus),
+            })
+          }
+          className="border border-blue-400 rounded-2xl px-2 min-h-0! h-6!"
+        >
+          <IonSelectOption value="">All</IonSelectOption>
+          {CryoContractStatuses.map((status, i) => (
+            <IonSelectOption key={i} value={status}>
+              {titleCase(status)}
+            </IonSelectOption>
+          ))}
+        </IonSelect>
+
+        <div className="flex justify-between items-baseline gap-1 border border-blue-400 rounded-2xl ps-2">
+          <p>From</p>
+
+          <IonDatetimeButton
+            datetime="from-date"
+            className="transparent-dt-button"
+          />
+        </div>
+
+        <div className="flex justify-between items-baseline gap-1 border border-blue-400 rounded-2xl ps-2">
+          <p>To</p>
+
+          <IonDatetimeButton
+            datetime="to-date"
+            className="transparent-dt-button"
+          />
+        </div>
+      </div>
+
+      <IonModal
+        keepContentsMounted
+        initialBreakpoint={1}
+        breakpoints={[0, 0.5, 1]}
+        className="ion-w-[100%]!"
       >
-        <IonSelectOption value="">All</IonSelectOption>
-        {CryoContractStatuses.map((status, i) => (
-          <IonSelectOption key={i} value={status}>
-            {titleCase(status)}
-          </IonSelectOption>
-        ))}
-      </IonSelect>
+        <IonDatetime
+          id="from-date"
+          presentation="date"
+          showAdjacentDays
+          value={filterOptions.fromDate}
+          onIonChange={(e) =>
+            setFilterOptions({
+              fromDate: (e.detail.value as string | null) || undefined,
+            })
+          }
+          formatOptions={{
+            date: {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+            },
+          }}
+          className="bg-transparent! ion-wheel-fade-bg-rgb-white mx-auto w-full my-8"
+        />
+      </IonModal>
 
-      <div className="h-full w-full border border-dashed border-gray-300 rounded-2xl px-2 flex items-center text-gray-400 text-[11px]">
-        {/* to do: add second filter */}
-      </div>
-
-      <div className="h-full w-full border border-dashed border-gray-300 rounded-2xl px-2 flex items-center text-gray-400 text-[11px]">
-        {/* to do: add third filter */}
-      </div>
-    </div>
+      <IonModal
+        keepContentsMounted
+        initialBreakpoint={1}
+        breakpoints={[0, 0.5, 1]}
+        className="ion-w-[100%]!"
+      >
+        <IonDatetime
+          id="to-date"
+          presentation="date"
+          showAdjacentDays
+          value={filterOptions.toDate}
+          onIonChange={(e) =>
+            setFilterOptions({
+              toDate: (e.detail.value as string | null) || undefined,
+            })
+          }
+          formatOptions={{
+            date: {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+            },
+          }}
+          className="bg-transparent! ion-wheel-fade-bg-rgb-white mx-auto w-full my-8"
+        />
+      </IonModal>
+    </>
   );
 }
 

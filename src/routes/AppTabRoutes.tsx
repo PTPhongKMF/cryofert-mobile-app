@@ -21,9 +21,13 @@ import Account from "@src/pages/account-center-tab/Account";
 import {
   alertCircleOutline,
   codeWorking,
+  codeWorkingOutline,
   fileTrayFull,
+  fileTrayFullOutline,
   home,
+  homeOutline,
   personCircle,
+  personCircleOutline,
   server,
   serverOutline,
   snow,
@@ -45,6 +49,9 @@ export default function AppTabRoutes() {
   const hasHydrated = useLocalUserStore((s) => s.hasHydrated);
   const openGenericDialog = useGenericDialogStore((s) => s.openGenericDialog);
 
+  const matchCurrentTab = (path: string) =>
+    router.routeInfo.pathname?.startsWith(path) ?? false;
+
   useEffect(() => {
     if (!hasHydrated) {
       return;
@@ -62,7 +69,7 @@ export default function AppTabRoutes() {
             buttons: {
               text: "Back to Log In",
               color: "danger",
-              closeFn: () => router.push(ROUTES.L_AUTH, "back"),
+              closeFn: () => router.push(ROUTES.L_AUTH_LOGIN, "back"),
             },
             backdropDismiss: false,
           });
@@ -97,28 +104,53 @@ export default function AppTabRoutes() {
         className="ion-bg-violet-100 pb-1"
       >
         <IonTabButton tab="home" href={ROUTES.T_HOME}>
-          <IonIcon icon={home} className="size-6" />
+          <IonIcon
+            icon={matchCurrentTab(ROUTES.T_HOME) ? home : homeOutline}
+            className="size-6"
+          />
           <IonLabel className="text-xs">Home</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="history" href={ROUTES.T_TREATMENT}>
-          <IonIcon icon={fileTrayFull} className="size-6" />
+          <IonIcon
+            icon={
+              matchCurrentTab(ROUTES.T_TREATMENT)
+                ? fileTrayFull
+                : fileTrayFullOutline
+            }
+            className="size-6"
+          />
           <IonLabel className="text-xs">Treatment</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="cryo" href={ROUTES.T_SAMPLES}>
-          <IonIcon icon={server} className="size-6" />
+          <IonIcon
+            icon={matchCurrentTab(ROUTES.T_SAMPLES) ? server : serverOutline}
+            className="size-6"
+          />
           <Dna className="size-5 absolute bottom-[46%] right-[10%]" />
           <IonLabel className="text-xs">Samples</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="account" href={ROUTES.T_ACCOUNT}>
-          <IonIcon icon={personCircle} className="size-6" />
+          <IonIcon
+            icon={
+              matchCurrentTab(ROUTES.T_ACCOUNT)
+                ? personCircle
+                : personCircleOutline
+            }
+            className="size-6"
+          />
           <IonLabel className="text-xs">Account</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="dev" href={"/tabs/dev"}>
-          <IonIcon icon={codeWorking} className="size-6" />
+          <IonIcon
+            icon={
+              matchCurrentTab("/tabs/dev") ? codeWorking : codeWorkingOutline
+            }
+            className="size-6"
+          />
           <IonLabel className="text-xs">Dev</IonLabel>
         </IonTabButton>
       </IonTabBar>

@@ -39,14 +39,6 @@ export const CryoContractListApiResponseSchema = createApiResponseSchema(
   v.array(CryoContractResponseSchema)
 );
 
-export const CryoContractTemplateSchema = v.object({
-  contract: v.string(),
-});
-
-export const CryoContractTemplateApiResponseSchema = createApiResponseSchema(
-  CryoContractTemplateSchema
-);
-
 ///////////////////////////////////////////////////////////////////////
 // Start contract form (existing)
 
@@ -99,12 +91,8 @@ export type CryoContractListApiResponse = v.InferOutput<
   typeof CryoContractListApiResponseSchema
 >;
 export type CryoContractStatus = v.InferOutput<typeof CryoContractStatusSchema>;
-export type CryoContractTemplate = v.InferOutput<typeof CryoContractTemplateSchema>;
 export type CryoContractApiResponse = v.InferOutput<
   typeof CryoContractApiResponseSchema
->;
-export type CryoContractTemplateApiResponse = v.InferOutput<
-  typeof CryoContractTemplateApiResponseSchema
 >;
 
 export type StartContractForm = v.InferOutput<typeof StartContractFormSchema>;

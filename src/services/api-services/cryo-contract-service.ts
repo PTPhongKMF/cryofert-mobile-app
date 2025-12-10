@@ -4,8 +4,6 @@ import {
   CryoContractListApiResponseSchema,
   type CryoContractListApiResponse,
   type CryoContractStatus,
-  CryoContractTemplateApiResponseSchema,
-  type CryoContractTemplateApiResponse,
 } from "@src/schemas/cryo-contract";
 import { httpClient } from "@src/services/api-services/http-service";
 import * as v from "valibot";
@@ -56,16 +54,6 @@ export async function cryoContractInfiniteQueryFn(params: {
     .json();
 
   return v.parse(CryoContractListApiResponseSchema, res);
-}
-
-export async function getContractTemplate(
-  id: string
-): Promise<CryoContractTemplateApiResponse> {
-  const res = await httpClient
-    .get(`api/cryostoragecontracts/${id}/contract-html`)
-    .json();
-
-  return v.parse(CryoContractTemplateApiResponseSchema, res);
 }
 
 export async function requestSignCryoContractMutationFn(

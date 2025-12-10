@@ -118,7 +118,7 @@ export default function Account() {
                     closeFn: async () => {
                       await clearAllSecuredTokens();
                       clearLocalUser();
-                      router.push(ROUTES.L_AUTH);
+                      router.push(ROUTES.L_AUTH_LOGIN);
                     },
                   },
                 ],
