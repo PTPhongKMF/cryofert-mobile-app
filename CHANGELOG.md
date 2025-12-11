@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.7.0...v0.8.0) (2025-12-11)
+
+
+### Features
+
+* refactor home page, update account, appointment and treatment detail ([#22](https://github.com/PTPhongKMF/cryofert-mobile-app/issues/22)) ([8db8e28](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/8db8e28aaaf7d63e35071b0d85f1e14d9c768ac6))
+
 ## [0.7.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.6.0...v0.7.0) (2025-12-06)
 
 
