@@ -42,6 +42,7 @@ import { useGenericDialogStore } from "@src/stores/dialog";
 import Home from "@src/pages/Home";
 import LabSamples from "@src/pages/LabSamples";
 import AppTabHeader from "@src/components/layout/AppTabHeader";
+import HomeCopy from "@src/pages/HomeCopy";
 
 export default function AppTabRoutes() {
   const router = useIonRouter();
@@ -94,7 +95,8 @@ export default function AppTabRoutes() {
           <Route exact path={ROUTES.T_TREATMENT} component={TreatmentTab} />
           <Route exact path={ROUTES.T_SAMPLES} component={LabSamples} />
           <Route exact path={ROUTES.T_ACCOUNT} component={Account} />
-          <Route exact path={"/tabs/dev"} component={Dev} />
+          <Route exact path={"/tabs/dev"} component={HomeCopy} />
+          {/* <Route exact path={"/tabs/dev"} component={Dev} /> */}
         </IonContent>
       </IonRouterOutlet>
 

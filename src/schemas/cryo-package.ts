@@ -1,4 +1,3 @@
-
 import { createApiResponseSchema } from "@src/schemas/api-response";
 import { LabSampleTypeSchema } from "@src/schemas/lab-sample";
 import * as v from "valibot";
@@ -12,9 +11,9 @@ export const CryoPackageResponseSchema = v.object({
   maxSamples: v.number(),
   sampleType: LabSampleTypeSchema,
   includesInsurance: v.boolean(),
-  insuranceAmount: v.number(),
+  insuranceAmount: v.nullable(v.number()),
   isActive: v.boolean(),
-  benefits: v.string(),
+  benefits: v.nullable(v.string()),
   notes: v.string(),
   createdAt: v.string(),
   updatedAt: v.nullable(v.string()),

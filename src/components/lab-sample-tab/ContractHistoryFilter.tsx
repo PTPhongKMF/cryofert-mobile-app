@@ -13,7 +13,7 @@ import {
   type CryoContractFilterOptions,
   useCryoContractFilterStore,
 } from "@src/stores/cryo-contract";
-import { titleCase } from "text-case";
+import { toTitleCase } from "@src/utils/case";
 import { useShallow } from "zustand/react/shallow";
 
 export default function ContractHistoryFilter() {
@@ -45,7 +45,7 @@ export default function ContractHistoryFilter() {
           <IonSelectOption value="">All</IonSelectOption>
           {CryoContractStatuses.map((status, i) => (
             <IonSelectOption key={i} value={status}>
-              {titleCase(status)}
+              {toTitleCase(status)}
             </IonSelectOption>
           ))}
         </IonSelect>

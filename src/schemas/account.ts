@@ -4,38 +4,38 @@ import * as v from "valibot";
 const vietnamPhoneSchema = v.pipe(
   v.string(),
   v.transform((value) => value.trim()),
-  v.check(
-    (value) => value === "" || /^\d+$/.test(value),
-    "Phone must contain only numbers"
-  ),
-  v.check(
-    (value) => value === "" || value.length === 9,
-    "Phone must be 9 digits"
-  ),
-  v.transform((value) => (value === "" ? "" : `+84${value}`))
+  v.check((value) => /^\d+$/.test(value), "Phone must contain only numbers"),
+  v.check((value) => value.length === 9, "Phone must be 9 digits"),
+  v.transform((value) => `+84${value}`)
 );
 
 const nationalIdSchema = v.pipe(
   v.string(),
   v.transform((value) => value.trim()),
-  v.check(
-    (value) => value === "" || /^\d+$/.test(value),
-    "National ID must contain only numbers"
-  ),
-  v.check(
-    (value) => value === "" || value.length === 12,
-    "National ID must be 12 digits"
-  )
+  v.check((value) => /^\d+$/.test(value), "National ID must contain only numbers"),
+  v.check((value) => value.length === 12, "National ID must be 12 digits")
 );
 
 export const UpdatePatientRequestSchema = v.object({
   phone: vietnamPhoneSchema,
   emergencyContact: v.string(),
-  emergencyPhone: vietnamPhoneSchema,
-  firstName: v.string(),
-  lastName: v.string(),
+  emergencyPhone: v.pipe(
+    v.string(),
+    v.transform((value) => value.trim()),
+    v.check(
+      (value) => value === "" || /^\d+$/.test(value),
+      "Emergency phone must contain only numbers"
+    ),
+    v.check(
+      (value) => value === "" || value.length === 9,
+      "Emergency phone must be 9 digits"
+    ),
+    v.transform((value) => (value === "" ? "" : `+84${value}`))
+  ),
+  firstName: v.pipe(v.string(), v.nonEmpty("First name is required")),
+  lastName: v.pipe(v.string(), v.nonEmpty("Last name is required")),
   country: v.string(),
-  location: v.string(),
+  address: v.pipe(v.string(), v.nonEmpty("Address is required")),
   nationalId: nationalIdSchema,
   insurance: v.string(),
   occupation: v.string(),

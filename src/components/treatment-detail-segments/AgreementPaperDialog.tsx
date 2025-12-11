@@ -79,22 +79,6 @@ export default function AgreementPaperDialog(props: AgreementDialogProps) {
     viewAgreementMediaQuery.isError,
   ]);
 
-  const isLoading = useMemo(() => {
-    if (isViewMode) {
-      return viewAgreementMediaQuery.isLoading;
-    }
-
-    return (
-      agreementHtmlPaperQuery.isLoading ||
-      requestSignAgreementMutation.isPending
-    );
-  }, [
-    isViewMode,
-    viewAgreementMediaQuery.isLoading,
-    agreementHtmlPaperQuery.isLoading,
-    requestSignAgreementMutation.isPending,
-  ]);
-
   const latestAgreementMedia = useMemo(() => {
     const list = viewAgreementMediaQuery.data?.data;
     if (!list?.length) return null;
@@ -114,10 +98,48 @@ export default function AgreementPaperDialog(props: AgreementDialogProps) {
     viewAgreementMediaQuery.isSuccess &&
     (latestAgreementMedia ? !isPdfMedia : true);
 
+  const viewAgreementHtmlPaperFallbackQuery = useHtmlPaperQuery({
+    relatedEntityType: "Agreement",
+    relatedEntityId: agreementId,
+    enabled:
+      isViewMode &&
+      props.isOpen &&
+      !!agreementId &&
+      (viewAgreementMediaQuery.isError || nonPdfViewError),
+  }); // temporary use fallback, remove later
+
+  const isLoading = useMemo(() => {
+    if (isViewMode) {
+      return (
+        viewAgreementMediaQuery.isLoading ||
+        viewAgreementHtmlPaperFallbackQuery.isLoading
+      );
+    }
+
+    return (
+      agreementHtmlPaperQuery.isLoading ||
+      requestSignAgreementMutation.isPending
+    );
+  }, [
+    isViewMode,
+    viewAgreementMediaQuery.isLoading,
+    viewAgreementHtmlPaperFallbackQuery.isLoading,
+    agreementHtmlPaperQuery.isLoading,
+    requestSignAgreementMutation.isPending,
+  ]);
+
+  // const shouldShowError =
+  //   !agreementId ||
+  //   (!isViewMode && agreementHtmlPaperQuery.isError) ||
+  //   (isViewMode && (viewAgreementMediaQuery.isError || nonPdfViewError));
+  // temporary disable
+
   const shouldShowError =
     !agreementId ||
     (!isViewMode && agreementHtmlPaperQuery.isError) ||
-    (isViewMode && (viewAgreementMediaQuery.isError || nonPdfViewError));
+    (isViewMode &&
+      (viewAgreementMediaQuery.isError || nonPdfViewError) &&
+      viewAgreementHtmlPaperFallbackQuery.isError);
 
   function handleClose() {
     props.setIsOpen(false);
@@ -185,6 +207,12 @@ export default function AgreementPaperDialog(props: AgreementDialogProps) {
                   <PdfWebViewer
                     fileUrl={latestAgreementMedia.filePath}
                     className="w-full h-full min-h-[70vh]"
+                  />
+                ) : viewAgreementHtmlPaperFallbackQuery.isSuccess ? (
+                  <iframe
+                    title="Agreement"
+                    srcDoc={viewAgreementHtmlPaperFallbackQuery.data?.data.html}
+                    className="w-full h-full min-h-[70vh] border-0 p-2"
                   />
                 ) : null
               ) : agreementHtmlPaperQuery.isSuccess ? (

@@ -142,10 +142,11 @@ export default function Account() {
                 <p className="ps-3">Update Account Information</p>
               </IonItem>
 
-              <IonItem detail button className="ion-bg-transparent text-sm">
+              {/* TODO: wait for backend to complete */}
+              {/* <IonItem detail button className="ion-bg-transparent text-sm">
                 <IonIcon aria-hidden="true" icon={keyOutline} slot="start" />
                 <p className="ps-3">Change Password</p>
-              </IonItem>
+              </IonItem> */}
 
               <IonItem
                 detail

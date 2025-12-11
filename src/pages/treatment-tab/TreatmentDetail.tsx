@@ -134,6 +134,7 @@ export default function TreatmentDetail() {
                   />
                 ) : null}
               </div>
+              
               {isManualRefetching && <ContentSpinnerOverlay />}
             </div>
           )}

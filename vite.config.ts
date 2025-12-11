@@ -12,4 +12,7 @@ export default defineConfig({
   define: {
     __WEB_PREVIEW__: JSON.stringify(isWebPreview),
   },
+  preview: {
+    port: 3000,
+  },
 });

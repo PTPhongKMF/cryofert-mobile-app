@@ -14,9 +14,7 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import { useLocation } from "react-router";
-import {
-  useRequestSignCryoContractMutation,
-} from "@src/hooks/cryo-contract-hook";
+import { useRequestSignCryoContractMutation } from "@src/hooks/cryo-contract-hook";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import ContractOtpDialog from "@src/components/start-cryo-contract/ContractOtpDialog";
 import { useHtmlPaperQuery } from "@src/hooks/media-hook";
@@ -46,7 +44,7 @@ export default function StartCryoContractPaper() {
     contractTemplateQuery.isFetching ||
     requestSignCryoContractMutation.isPending;
   const shouldShowError = !hasContractId || contractTemplateQuery.isError;
-  const contractHtml = contractTemplateQuery.data?.html ?? "";
+  const contractHtml = contractTemplateQuery.data?.data.html ?? "";
 
   function handleCancel() {
     openGenericDialog({

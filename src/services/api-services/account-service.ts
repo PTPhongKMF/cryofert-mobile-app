@@ -1,18 +1,8 @@
 import { httpClient } from "@src/services/api-services/http-service";
 import * as v from "valibot";
-import type {
-  AccountInfoApiResponse,
-  UserApiResponse,
-  UserResponse,
-} from "@src/schemas/account";
 import {
-  PatientResponseSchema,
-  type PatientResponse,
   PatientApiResponseSchema,
   type PatientApiResponse,
-  UserResponseSchema,
-  UserApiResponseSchema,
-  AccountInfoApiResponseSchema,
 } from "@src/schemas/account";
 
 export interface UpdateAccountInfoRequest {
@@ -37,6 +27,7 @@ export interface UpdatePatientInfoRequest {
   bloodType?: string;
   height?: number;
   weight?: number;
+  isActive?: boolean;
 }
 
 export async function patientDetailQueryFn(params: {

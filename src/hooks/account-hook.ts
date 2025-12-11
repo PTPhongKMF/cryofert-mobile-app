@@ -47,14 +47,20 @@ export function usePatientHasRequiredInfo(
         missingFields.push("birthDate");
       }
 
+      if (isEmptyString(patient.nationalId)) {
+        missingFields.push("Citizen ID Card");
+      }
+
       if (accountInfo.gender === null || accountInfo.gender === undefined) {
         missingFields.push("gender");
       }
 
-      const hasPhone = !isEmptyString(accountInfo.phone);
-      const hasEmergencyPhone = !isEmptyString(patient.emergencyPhone);
-      if (!hasPhone && !hasEmergencyPhone) {
-        missingFields.push("phone or emergencyPhone");
+      if (isEmptyString(accountInfo.phone)) {
+        missingFields.push("phone");
+      }
+
+      if (isEmptyString(accountInfo.address)) {
+        missingFields.push("address");
       }
 
       if (missingFields.length > 0) {
@@ -118,6 +124,7 @@ export function useUpdateFullAccountInfoMutation() {
         ...(bloodType !== undefined && { bloodType }),
         ...(height !== undefined && { height }),
         ...(weight !== undefined && { weight }),
+        isActive: true,
       };
 
       const [_, patientRes] = await Promise.all([

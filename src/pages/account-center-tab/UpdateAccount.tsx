@@ -45,7 +45,7 @@ const defaultValues: UpdatePatientRequest = {
   firstName: "",
   lastName: "",
   country: "",
-  location: "",
+  address: "",
   nationalId: "",
   insurance: "",
   occupation: "",
@@ -95,7 +95,7 @@ export default function UpdateAccount() {
       firstName: patient.accountInfo.firstName ?? "",
       lastName: patient.accountInfo.lastName ?? "",
       country: patient.accountInfo.address ?? "",
-      location: patient.accountInfo.address ?? "",
+      address: patient.accountInfo.address ?? "",
       nationalId: patient.nationalId ?? "",
       insurance: patient.insurance ?? "",
       occupation: patient.occupation ?? "",
@@ -142,7 +142,7 @@ export default function UpdateAccount() {
       patientId,
       firstName: pendingValues.firstName.trim(),
       lastName: pendingValues.lastName.trim(),
-      location: pendingValues.location.trim(),
+      address: pendingValues.address.trim(),
       country: pendingValues.country.trim(),
       nationalId: pendingValues.nationalId.trim(),
       emergencyContact: pendingValues.emergencyContact.trim(),
@@ -468,13 +468,13 @@ export default function UpdateAccount() {
                 )}
               />
               <Controller
-                name="location"
+        name="address"
                 control={control}
                 render={({ field, fieldState }) => (
                   <IonInput
                     mode="md"
                     fill="outline"
-                    label="Location"
+            label="Address"
                     labelPlacement="stacked"
                     value={field.value}
                     onIonInput={(e) =>
@@ -488,7 +488,7 @@ export default function UpdateAccount() {
                     )}
                     clearInput={true}
                     disabled={!isEditing || patientQuery.isLoading}
-                    errorText={errors.location?.message}
+            errorText={errors.address?.message}
                   />
                 )}
               />
