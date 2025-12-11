@@ -8,7 +8,7 @@ import {
   type LabSampleFilterOptions,
   useLabSampleFilterStore,
 } from "@src/stores/lab-sample";
-import { titleCase } from "text-case";
+import { toTitleCase } from "@src/utils/case";
 import { useShallow } from "zustand/react/shallow";
 
 export default function LabSampleFilter() {
@@ -36,7 +36,7 @@ export default function LabSampleFilter() {
         <IonSelectOption value="">All</IonSelectOption>
         {LabSampleTypes.map((type, i) => (
           <IonSelectOption key={i} value={type}>
-            {type === type.toUpperCase() ? type : titleCase(type)}
+            {toTitleCase(type)}
           </IonSelectOption>
         ))}
       </IonSelect>
@@ -57,7 +57,7 @@ export default function LabSampleFilter() {
         <IonSelectOption value="">All</IonSelectOption>
         {LabSampleStatuses.map((status, i) => (
           <IonSelectOption key={i} value={status}>
-            {status === status.toUpperCase() ? status : titleCase(status)}
+            {toTitleCase(status)}
           </IonSelectOption>
         ))}
       </IonSelect>

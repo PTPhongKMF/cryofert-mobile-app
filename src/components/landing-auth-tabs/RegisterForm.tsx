@@ -29,6 +29,7 @@ import { useShallow } from "zustand/react/shallow";
 import { useRegisterMutation } from "@src/hooks/auth-hook";
 import { VenusAndMars } from "lucide-react";
 import { ROUTES } from "@src/routes/routes";
+import { slideDirectionRouter } from "@src/animations/slide-directional";
 
 const LOADER_KEY = "RegisterForm";
 
@@ -164,7 +165,7 @@ export default function RegisterForm() {
           render={(repeatPassword) => (
             <IonInput
               type={showRpPassword ? "text" : "password"}
-              placeholder="Password"
+              placeholder="Repeat Password"
               mode="md"
               fill="outline"
               errorText={repeatPassword.fieldState.error?.message}
@@ -291,7 +292,13 @@ export default function RegisterForm() {
         fill="clear"
         color="warning"
         onClick={() =>
-          router.push(`${ROUTES.L_AUTH}?authPage=0`, "none", "replace")
+          router.push(
+            ROUTES.L_AUTH_LOGIN,
+            "back",
+            "replace",
+            undefined,
+            slideDirectionRouter
+          )
         }
         className="text-base font-semibold ion-py-[0.1rem] self-center ion-b-w-[1px] text-amber-900!"
       >

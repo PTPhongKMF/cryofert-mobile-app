@@ -1,13 +1,5 @@
-import {
-  IonButton,
-  IonInputOtp,
-  IonModal,
-  IonSpinner,
-} from "@ionic/react";
-import {
-  alertCircleOutline,
-  checkmarkCircleOutline,
-} from "ionicons/icons";
+import { IonButton, IonInputOtp, IonModal, IonSpinner } from "@ionic/react";
+import { alertCircleOutline, checkmarkCircleOutline } from "ionicons/icons";
 import { useVerifySignAgreementMutation } from "@src/hooks/agreement-hook";
 import { useAppLoadingStore } from "@src/stores/app-loading";
 import { useGenericDialogStore } from "@src/stores/dialog";
@@ -17,18 +9,16 @@ import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import * as v from "valibot";
 
-const LOADER_KEY = "agreement-sign";
+const LOADER_KEY = "agreement-otp";
 
 interface AgreementConfirmOtpProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   agreementId: string;
-  agreementCode?: string;
-  templateHtml?: string;
   onAgreementSigned?: () => void;
 }
 
-export default function AgreementConfirmOtp(props: AgreementConfirmOtpProps) {
+export default function AgreementOtpDialog(props: AgreementConfirmOtpProps) {
   const { startLoading, stopLoading } = useAppLoadingStore(
     useShallow((s) => ({
       startLoading: s.startLoading,
@@ -78,30 +68,10 @@ export default function AgreementConfirmOtp(props: AgreementConfirmOtpProps) {
       return;
     }
 
-    const html = props.templateHtml;
-
-    if (!html) {
-      setOtpError(true);
-      openGenericDialog({
-        title: "Template Error",
-        content: "Agreement HTML is not available yet",
-        svgIcon: alertCircleOutline,
-        svgIconColor: "danger",
-      });
-      return;
-    }
-
-    const agreementFile = new File(
-      [html.replace(/(<head[^>]*>)/i, `$1<meta charset="utf-8" />`)],
-      `agreement-${props.agreementCode ?? "unknown"}.html`,
-      { type: "text/html" }
-    );
-
     verifySignAgreementMutation.mutate(
       {
         id: props.agreementId,
         otpCode: result.output,
-        signedAgreementFile: agreementFile,
       },
       {
         onError: (error) => {
@@ -146,7 +116,7 @@ export default function AgreementConfirmOtp(props: AgreementConfirmOtpProps) {
         grid grid-rows-[2.5rem_3rem_1fr_3rem] justify-items-center items-center gap-2"
       >
         <ShieldQuestionMark className="size-10 text-blue-500" />
-        <h2 className="mt-0! font-semibold!">Please verify with your email</h2>
+        <h2 className="my-0! font-semibold! text-center">Verify OTP</h2>
 
         <IonInputOtp
           disabled={disabled}

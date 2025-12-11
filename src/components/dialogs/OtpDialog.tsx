@@ -110,7 +110,7 @@ export default function OtpDialog() {
                 text: "Back to Log In",
                 color: "success",
                 closeFn: () =>
-                  router.push(`${ROUTES.L_AUTH}?authPage=0`, "none", "replace"),
+                  router.push(ROUTES.L_AUTH_LOGIN, "none", "replace"),
               },
             });
             closeOtpDialog();

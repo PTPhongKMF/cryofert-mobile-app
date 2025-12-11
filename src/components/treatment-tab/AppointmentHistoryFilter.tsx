@@ -1,7 +1,7 @@
 import { IonSelect, IonSelectOption } from "@ionic/react";
-import { titleCase } from "text-case";
 import { AppointmentStatus, AppointmentTypes } from "@src/schemas/appointment";
 import { useAppointmentHistoryFilterStore } from "@src/stores/appointment";
+import { toTitleCase } from "@src/utils/case";
 import { useShallow } from "zustand/react/shallow";
 
 export default function AppointmentHistoryFilter() {
@@ -29,7 +29,7 @@ export default function AppointmentHistoryFilter() {
         <IonSelectOption value="">All</IonSelectOption>
         {AppointmentTypes.map((type, i) => (
           <IonSelectOption key={i} value={type}>
-            {type === type.toUpperCase() ? type : titleCase(type)}
+            {toTitleCase(type)}
           </IonSelectOption>
         ))}
       </IonSelect>
@@ -49,7 +49,7 @@ export default function AppointmentHistoryFilter() {
         <IonSelectOption value="">All</IonSelectOption>
         {AppointmentStatus.map((status, i) => (
           <IonSelectOption key={i} value={status}>
-            {status === status.toUpperCase() ? status : titleCase(status)}
+            {toTitleCase(status)}
           </IonSelectOption>
         ))}
       </IonSelect>

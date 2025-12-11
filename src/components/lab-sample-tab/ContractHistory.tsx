@@ -33,9 +33,9 @@ export default function ContractHistory() {
 
   const currencyFormatter = useMemo(
     () =>
-      new Intl.NumberFormat("en-US", {
+      new Intl.NumberFormat("vi-VN", {
         style: "currency",
-        currency: "USD",
+        currency: "VND",
         maximumFractionDigits: 0,
       }),
     []
@@ -162,11 +162,6 @@ export default function ContractHistory() {
                           <span className="text-gray-500">
                             of {currencyFormatter.format(contract.totalAmount)}
                           </span>
-                          {contract.isAutoRenew && (
-                            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full border bg-indigo-50 text-indigo-700 border-indigo-200">
-                              Auto renew
-                            </span>
-                          )}
                         </div>
                       </div>
                     </div>

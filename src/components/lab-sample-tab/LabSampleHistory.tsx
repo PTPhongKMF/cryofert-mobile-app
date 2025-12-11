@@ -127,6 +127,17 @@ export default function LabSampleHistory() {
                                 : "TBD"}
                             </span>
                           </div>
+                          <div className="flex items-baseline gap-1.5 text-xs text-gray-700">
+                            <span className=" tracking-wide text-gray-400">
+                              Available
+                            </span>
+                            <span>{sample.isAvailable ? "Yes" : "No"}</span>
+                            <span className="inline-block size-1 self-center rounded-full bg-gray-400" />
+                            <span className=" tracking-wide text-gray-400">
+                              In storage
+                            </span>
+                            <span>{sample.isStoraged ? "Yes" : "No"}</span>
+                          </div>
                         </div>
                       </div>
 
@@ -138,18 +149,6 @@ export default function LabSampleHistory() {
                         >
                           {titleCase(sample.status)}
                         </span>
-                        <div className="flex flex-wrap gap-2 justify-end">
-                          {sample.isStoraged && (
-                            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full border bg-cyan-50 text-cyan-700 border-cyan-200">
-                              In storage
-                            </span>
-                          )}
-                          {sample.isAvailable && (
-                            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full border bg-emerald-50 text-emerald-700 border-emerald-200">
-                              Available
-                            </span>
-                          )}
-                        </div>
                       </div>
                     </div>
                   </IonItem>

@@ -1,27 +1,52 @@
 import { createApiResponseSchema } from "@src/schemas/api-response";
 import * as v from "valibot";
 
+const vietnamPhoneSchema = v.pipe(
+  v.string(),
+  v.transform((value) => value.trim()),
+  v.check((value) => /^\d+$/.test(value), "Phone must contain only numbers"),
+  v.check((value) => value.length === 9, "Phone must be 9 digits"),
+  v.transform((value) => `+84${value}`)
+);
+
+const nationalIdSchema = v.pipe(
+  v.string(),
+  v.transform((value) => value.trim()),
+  v.check((value) => /^\d+$/.test(value), "National ID must contain only numbers"),
+  v.check((value) => value.length === 12, "National ID must be 12 digits")
+);
+
 export const UpdatePatientRequestSchema = v.object({
-  patientCode: v.optional(v.string()),
-  nationalId: v.optional(v.string()),
-  emergencyContact: v.optional(v.string()),
-  emergencyPhone: v.optional(v.string()),
-  insurance: v.optional(v.string()),
-  occupation: v.optional(v.string()),
-  medicalHistory: v.optional(v.string()),
-  allergies: v.optional(v.string()),
-  bloodType: v.optional(v.string()),
-  height: v.optional(v.number()),
-  weight: v.optional(v.number()),
-  notes: v.optional(v.string()),
-  isActive: v.optional(v.boolean()),
+  phone: vietnamPhoneSchema,
+  emergencyContact: v.string(),
+  emergencyPhone: v.pipe(
+    v.string(),
+    v.transform((value) => value.trim()),
+    v.check(
+      (value) => value === "" || /^\d+$/.test(value),
+      "Emergency phone must contain only numbers"
+    ),
+    v.check(
+      (value) => value === "" || value.length === 9,
+      "Emergency phone must be 9 digits"
+    ),
+    v.transform((value) => (value === "" ? "" : `+84${value}`))
+  ),
+  firstName: v.pipe(v.string(), v.nonEmpty("First name is required")),
+  lastName: v.pipe(v.string(), v.nonEmpty("Last name is required")),
+  country: v.string(),
+  address: v.pipe(v.string(), v.nonEmpty("Address is required")),
+  nationalId: nationalIdSchema,
+  insurance: v.string(),
+  occupation: v.string(),
+  medicalHistory: v.string(),
+  allergies: v.string(),
+  bloodType: v.string(),
+  height: v.string(),
+  weight: v.string(),
 });
 
-/////////////////////////////////////////////////////////////
-
-export type UpdatePatientRequest = v.InferOutput<
-  typeof UpdatePatientRequestSchema
->;
+export type UpdatePatientRequest = v.InferOutput<typeof UpdatePatientRequestSchema>;
 
 ///////////////////////////////////////////////////////////////////////////
 // Patient details schemas
@@ -68,12 +93,25 @@ export const PatientResponseSchema = v.object({
   accountInfo: AccountInfoResponseSchema,
 });
 
+export const UserResponseSchema = v.object({
+  ...PatientResponseSchema.entries,
+  accountInfo: v.unknown(),
+});
+
 export const PatientApiResponseSchema = createApiResponseSchema(
   PatientResponseSchema
+);
+export const AccountInfoApiResponseSchema = createApiResponseSchema(
+  AccountInfoResponseSchema
 );
 
 export type AccountInfoResponse = v.InferOutput<
   typeof AccountInfoResponseSchema
 >;
+
 export type PatientResponse = v.InferOutput<typeof PatientResponseSchema>;
+
 export type PatientApiResponse = v.InferOutput<typeof PatientApiResponseSchema>;
+export type AccountInfoApiResponse = v.InferOutput<
+  typeof AccountInfoApiResponseSchema
+>;

@@ -7,7 +7,7 @@ import {
   IonToast,
   useIonRouter,
 } from "@ionic/react";
-import SafeAreaView from "@src/components/SafeAreaView";
+import SafeAreaView from "@src/components/layout/SafeAreaView";
 import { useLocalUserStore } from "@src/stores/user";
 import EditProfile from "@assets/images/lucide/user-pen.svg";
 import { ROUTES } from "@src/routes/routes";
@@ -24,7 +24,7 @@ import { Clipboard } from "@capacitor/clipboard";
 import { useState } from "react";
 import { clearAllSecuredTokens } from "@src/services/token-service";
 import { cn } from "@utils/cn";
-import AppTabHeader from "@src/components/AppTabHeader";
+import AppTabHeader from "@src/components/layout/AppTabHeader";
 
 export default function Account() {
   const [isOpenToastCopy, setIsOpenToastCopy] = useState(false);
@@ -118,7 +118,7 @@ export default function Account() {
                     closeFn: async () => {
                       await clearAllSecuredTokens();
                       clearLocalUser();
-                      router.push(ROUTES.L_AUTH);
+                      router.push(ROUTES.L_AUTH_LOGIN);
                     },
                   },
                 ],
@@ -142,10 +142,11 @@ export default function Account() {
                 <p className="ps-3">Update Account Information</p>
               </IonItem>
 
-              <IonItem detail button className="ion-bg-transparent text-sm">
+              {/* TODO: wait for backend to complete */}
+              {/* <IonItem detail button className="ion-bg-transparent text-sm">
                 <IonIcon aria-hidden="true" icon={keyOutline} slot="start" />
                 <p className="ps-3">Change Password</p>
-              </IonItem>
+              </IonItem> */}
 
               <IonItem
                 detail

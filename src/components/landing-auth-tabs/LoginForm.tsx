@@ -1,5 +1,6 @@
 import { IonButton, IonIcon, IonInput, useIonRouter } from "@ionic/react";
 import { ROUTES } from "@src/routes/routes";
+import { slideDirectionRouter } from "@src/animations/slide-directional";
 import { LoginRequestSchema, type LoginRequest } from "@src/schemas/auth";
 import {
   alertCircleOutline,
@@ -172,7 +173,7 @@ export default function LoginForm() {
         fill="clear"
         color="warning"
         onClick={() =>
-          router.push(`${ROUTES.L_AUTH}?authPage=1`, "none", "replace")
+          router.push(ROUTES.L_AUTH_REGISTER, "forward", "replace", undefined, slideDirectionRouter)
         }
         className="text-base font-semibold ion-py-[0.1rem] self-center ion-b-w-[1px] text-amber-900!"
       >

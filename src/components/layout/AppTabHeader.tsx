@@ -39,11 +39,11 @@ export default function AppTabHeader() {
             CryoFert
           </>
         );
-      case ROUTES.T_HISTORY:
+      case ROUTES.T_TREATMENT:
         return (
           <>
             <List className="h-7 w-7 text-blue-600" />
-            History
+            Treatment Records
           </>
         );
       case ROUTES.T_SAMPLES:

@@ -41,7 +41,7 @@ export default function PackageDetailModal({
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding bg-neutral-50">
+      <IonContent className="ion-padding ion-bg-neutral-200">
         {pkg ? (
           <div className="flex flex-col gap-4 text-sm">
             <div className="rounded-lg border border-neutral-200 bg-white shadow-sm p-4 flex flex-col gap-2">

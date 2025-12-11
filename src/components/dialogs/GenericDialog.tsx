@@ -12,7 +12,9 @@ export default function GenericDialog() {
     }))
   );
 
-  async function handleButtonClick(button: { closeFn?: () => void | Promise<void> }) {
+  async function handleButtonClick(button: {
+    closeFn?: () => void | Promise<void>;
+  }) {
     if (button.closeFn) {
       await button.closeFn();
     }
@@ -55,7 +57,7 @@ export default function GenericDialog() {
         )}
 
         {buttons.length > 0 && (
-          <div className="flex gap-2 w-full mt-8">
+          <div className="flex gap-2 w-full mt-6">
             {buttons.map((button, index) => (
               <IonButton
                 key={index}

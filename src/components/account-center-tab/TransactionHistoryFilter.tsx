@@ -8,13 +8,13 @@ import {
   IonSelectOption,
 } from "@ionic/react";
 import { format } from "@formkit/tempo";
-import { titleCase } from "text-case";
 import type { TransactionHistoryFilters } from "@src/hooks/transaction-hook";
 import {
   relatedEntityType,
   TransactionStatuses,
   TransactionTypes,
 } from "@src/schemas/transaction";
+import { toTitleCase } from "@src/utils/case";
 
 interface TransactionHistoryFilterProps {
   filters: TransactionHistoryFilters;
@@ -43,7 +43,7 @@ export default function TransactionHistoryFilter({
           <IonSelectOption value="">All</IonSelectOption>
           {TransactionStatuses.map((status, idx) => (
             <IonSelectOption key={idx} value={status}>
-              {status === status.toUpperCase() ? status : titleCase(status)}
+              {toTitleCase(status)}
             </IonSelectOption>
           ))}
         </IonSelect>
@@ -63,12 +63,12 @@ export default function TransactionHistoryFilter({
           <IonSelectOption value="">All</IonSelectOption>
           {relatedEntityType.map((related, idx) => (
             <IonSelectOption key={idx} value={related}>
-              {related === related.toUpperCase() ? related : titleCase(related)}
+              {toTitleCase(related)}
             </IonSelectOption>
           ))}
         </IonSelect>
 
-        <div className="flex justify-between items-center gap-2 border border-blue-400 rounded-2xl px-2">
+        <div className="flex justify-between items-baseline gap-2 border border-blue-400 rounded-2xl px-2">
           <p>From</p>
 
           <IonDatetimeButton
@@ -77,7 +77,7 @@ export default function TransactionHistoryFilter({
           />
         </div>
 
-        <div className="flex justify-between items-center gap-2 border border-blue-400 rounded-2xl px-2">
+        <div className="flex justify-between items-baseline gap-2 border border-blue-400 rounded-2xl px-2">
           <p>To</p>
 
           <IonDatetimeButton

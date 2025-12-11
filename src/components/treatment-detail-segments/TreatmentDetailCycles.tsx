@@ -122,8 +122,8 @@ export default function TreatmentDetailCycles({
               >
                 <div className="size-full flex flex-col justify-start items-center gap-4">
                   <div className="size-full grid grid-cols-[1fr_auto] auto-rows-auto gap-x-2 gap-y-1">
-                    <p className="text-lg font-semibold text-blue-500 line-clamp-1">
-                      Cycle {cycle.cycleName}
+                    <p className="text-base font-semibold text-blue-500 line-clamp-2">
+                      {cycle.cycleName}
                     </p>
 
                     <div

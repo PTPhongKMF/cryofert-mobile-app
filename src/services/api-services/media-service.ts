@@ -2,25 +2,12 @@ import { httpClient } from "@src/services/api-services/http-service";
 import * as v from "valibot";
 import {
   MediaListApiResponseSchema,
-  MediaTemplateApiResponseSchema,
+  MediaHtmlApiResponseSchema,
   type MediaListApiResponse,
-  type MediaTemplateApiResponse,
+  type MediaHtmlApiResponse,
   type MediaType,
 } from "@src/schemas/media";
 
-export async function mediaTemplateQueryFn(params: {
-  templateType: MediaType;
-}): Promise<MediaTemplateApiResponse> {
-  const res = await httpClient
-    .get("api/media/template", {
-      searchParams: {
-        templateType: params.templateType,
-      },
-    })
-    .json();
-
-  return v.parse(MediaTemplateApiResponseSchema, res);
-}
 
 export type MediaQueryParams = {
   relatedEntityId?: string;
@@ -42,4 +29,20 @@ export async function mediaQueryFn(
     .json();
 
   return v.parse(MediaListApiResponseSchema, res);
+}
+
+export async function htmlPaperQueryFn(params: {
+  relatedEntityType: MediaType;
+  relatedEntityId: string;
+}): Promise<MediaHtmlApiResponse> {
+  const res = await httpClient
+    .get("api/media/html", {
+      searchParams: {
+        relatedEntityType: params.relatedEntityType,
+        relatedEntityId: params.relatedEntityId,
+      },
+    })
+    .json();
+
+  return v.parse(MediaHtmlApiResponseSchema, res);
 }

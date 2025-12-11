@@ -6,17 +6,18 @@ import { ROUTES } from "@src/routes/routes";
 import AppTabRoutes from "@src/routes/AppTabRoutes";
 import { IonRouterOutlet, useIonRouter } from "@ionic/react";
 import TreatmentBooking from "@src/pages/TreatmentBooking";
-import UpdateAccount from "@src/pages/account-center/UpdateAccount";
-import TransactionHistory from "@src/pages/account-center/TransactionHistory";
-import TreatmentDetail from "@src/pages/TreatmentDetail";
+import UpdateAccount from "@src/pages/account-center-tab/UpdateAccount";
+import TransactionHistory from "@src/pages/account-center-tab/TransactionHistory";
+import TreatmentDetail from "@src/pages/treatment-tab/TreatmentDetail";
 import PaymentPortal from "@src/pages/PaymentPortal";
 import TestPage from "@src/pages/devs/TestPage";
 import TestPage2 from "@src/pages/devs/TestPage2";
 import { setGlobalPush } from "@src/services/navigation-service";
-import AppointmentDetail from "@src/pages/AppointmentDetail";
-import TreatmentCycleDetail from "@src/pages/TreatmentCycleDetail";
-import Relationship from "@src/pages/account-center/Relationship";
-import StartCryoContract from "@src/pages/StartCryoContract";
+import AppointmentDetail from "@src/pages/treatment-tab/AppointmentDetail";
+import TreatmentCycleDetail from "@src/pages/treatment-tab/TreatmentCycleDetail";
+import Relationship from "@src/pages/account-center-tab/Relationship";
+import StartCryoContractForm from "@src/pages/start-cryo-contract/StartCryoContractForm";
+import StartCryoContractPaper from "@src/pages/start-cryo-contract/StartCryoContractPaper";
 
 export default function RootRoutes() {
   const router = useIonRouter();
@@ -33,7 +34,14 @@ export default function RootRoutes() {
       <Route path={ROUTES.TABS} component={AppTabRoutes} />
 
       <Route path={ROUTES.BOOK_TREATMENT} component={TreatmentBooking} />
-      <Route path={ROUTES.START_CONTRACT} component={StartCryoContract} />
+      <Route
+        path={ROUTES.START_CONTRACT_FORM}
+        component={StartCryoContractForm}
+      />
+      <Route
+        path={ROUTES.START_CONTRACT_PAPER}
+        component={StartCryoContractPaper}
+      />
 
       <Route path={ROUTES.PAYMENT_PORTAL} component={PaymentPortal} />
 

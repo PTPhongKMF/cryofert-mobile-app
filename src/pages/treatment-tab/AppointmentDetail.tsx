@@ -18,10 +18,15 @@ import {
 import { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router";
 import { useAppointmentDetailQuery } from "@src/hooks/appointment-hook";
+import { useServiceRequestInAppointment } from "@src/hooks/service-request-hook";
+import { useMedicalRecordQuery } from "@src/hooks/medical-record-hook";
 import AppointmentDetailInfo from "@src/components/appointment-detail-segments/AppointmentDetailInfo";
 import AppointmentDetailCycles from "@src/components/appointment-detail-segments/AppointmentDetailCycles";
+import AppointmentDetailServiceReq from "@src/components/appointment-detail-segments/AppointmentDetailServiceReq";
+import AppointmentDetailMedicalRecord from "@src/components/appointment-detail-segments/AppointmentDetailMedicalRecord";
 import { ROUTES } from "@src/routes/routes";
 import { reload } from "ionicons/icons";
+import ContentSpinnerOverlay from "@src/components/layout/ContentSpinnerOverlay";
 
 export default function AppointmentDetail() {
   const [segment, setSegment] = useState("info");
@@ -33,6 +38,13 @@ export default function AppointmentDetail() {
 
   const appointmentQuery = useAppointmentDetailQuery(appointmentId ?? "");
   const appointment = appointmentQuery.data?.data;
+
+  const serviceRequestQuery = useServiceRequestInAppointment(appointmentId ?? "");
+
+  const medicalRecordQuery = useMedicalRecordQuery({
+    patientId: appointment?.patient?.id ?? "",
+    appointmentId: appointmentId,
+  });
 
   const showPayNowFooter = useMemo(() => {
     if (!appointment?.transactions?.length) return false;
@@ -50,7 +62,10 @@ export default function AppointmentDetail() {
     return latestPayment.status === "Pending";
   }, [appointment]);
 
-  const isLoading = appointmentQuery.isPending;
+  const isLoading =
+    appointmentQuery.isPending ||
+    serviceRequestQuery.isPending ||
+    medicalRecordQuery.isPending;
 
   useEffect(() => {
     if (appointmentQuery.isError) console.log(appointmentQuery.error);
@@ -66,7 +81,8 @@ export default function AppointmentDetail() {
           <IonTitle>
             {appointment ? (
               <>
-                Appointment <span className="text-xs">{appointment.typeName}</span>
+                Appointment{" "}
+                <span className="text-xs">{appointment.typeName}</span>
               </>
             ) : (
               "Appointment"
@@ -77,7 +93,11 @@ export default function AppointmentDetail() {
               onClick={async () => {
                 setIsManualRefetching(true);
                 try {
-                  await appointmentQuery.refetch();
+                  await Promise.all([
+                    appointmentQuery.refetch(),
+                    serviceRequestQuery.refetch(),
+                    medicalRecordQuery.refetch(),
+                  ]);
                 } finally {
                   setIsManualRefetching(false);
                 }
@@ -93,9 +113,7 @@ export default function AppointmentDetail() {
       <IonContent scrollY={false}>
         <div className="bg-blue-100 flex flex-col h-full">
           {isLoading ? (
-            <div className="flex justify-center items-center py-8">
-              <IonSpinner name="crescent" />
-            </div>
+            <ContentSpinnerOverlay />
           ) : appointmentQuery.isError || !appointment ? (
             <div className="flex justify-center items-center py-8 italic text-red-500">
               Error loading appointment details.
@@ -116,6 +134,12 @@ export default function AppointmentDetail() {
                 <IonSegmentButton value="cycles">
                   <IonLabel className="normal-case text-base">Cycles</IonLabel>
                 </IonSegmentButton>
+                <IonSegmentButton value="services">
+                  <IonLabel className="normal-case text-base">Services</IonLabel>
+                </IonSegmentButton>
+                <IonSegmentButton value="med-record">
+                  <IonLabel className="normal-case text-base">Record</IonLabel>
+                </IonSegmentButton>
               </IonSegment>
 
               <div className="py-4 flex-1 min-h-0 overflow-y-auto">
@@ -125,14 +149,18 @@ export default function AppointmentDetail() {
                   <AppointmentDetailCycles
                     treatmentCycle={appointment.treatmentCycle}
                   />
+                ) : segment === "services" ? (
+                  <AppointmentDetailServiceReq
+                    serviceRequestQuery={serviceRequestQuery}
+                  />
+                ) : segment === "med-record" ? (
+                  <AppointmentDetailMedicalRecord
+                    medicalRecordQuery={medicalRecordQuery}
+                  />
                 ) : null}
               </div>
 
-              {isManualRefetching && (
-                <div className="absolute inset-0 bg-white/60 flex items-center justify-center z-10">
-                  <IonSpinner name="crescent" />
-                </div>
-              )}
+              {isManualRefetching && <ContentSpinnerOverlay />}
             </div>
           )}
         </div>
@@ -142,11 +170,11 @@ export default function AppointmentDetail() {
         <IonFooter>
           <IonToolbar className="ion-px-[0.5rem]">
             <IonButton
+            disabled={isLoading}
               onClick={() =>
                 router.push(
                   `${ROUTES.PAYMENT_PORTAL}?relatedEntityType=Appointment&relatedEntityId=${appointment.id}`,
-                  "forward",
-                  "replace"
+                  "forward"
                 )
               }
               fill="solid"

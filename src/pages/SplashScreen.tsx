@@ -1,5 +1,5 @@
 import { IonContent, IonPage, IonSpinner, useIonRouter } from "@ionic/react";
-import SafeAreaView from "@src/components/SafeAreaView";
+import SafeAreaView from "@src/components/layout/SafeAreaView";
 import { ROUTES } from "@src/routes/routes";
 import { useLocalUserStore } from "@src/stores/user";
 import { useEffect } from "react";

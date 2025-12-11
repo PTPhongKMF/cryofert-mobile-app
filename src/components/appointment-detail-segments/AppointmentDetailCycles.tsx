@@ -22,7 +22,7 @@ export default function AppointmentDetailCycles({
   }
 
   return (
-    <div className="px-4 flex flex-col h-full justify-start gap-20">
+    <div className="px-4 flex flex-col h-full justify-between gap-20">
       <div className="bg-gray-50 w-full p-4 rounded-xl border shadow-lg border-blue-200 flex flex-col gap-3">
         <div className="flex flex-col gap-2 text-sm">
           <div className="flex items-start justify-between gap-2">

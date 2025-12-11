@@ -22,7 +22,7 @@ import {
 } from "@src/schemas/appointment";
 import { Controller, useForm } from "react-hook-form";
 import ChildIcon from "@assets/images/child.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocalUserStore } from "@src/stores/user";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import { alertCircleOutline, checkmarkCircleOutline } from "ionicons/icons";
@@ -33,6 +33,7 @@ import { useSlotsQuery } from "@src/hooks/slot-hook";
 import { useCreateBookingAppointmentMutation } from "@src/hooks/appointment-hook";
 import { addDay } from "@formkit/tempo";
 import { ROUTES } from "@src/routes/routes";
+import { usePatientHasRequiredInfo } from "@src/hooks/account-hook";
 
 export default function TreatmentBooking() {
   const localUser = useLocalUserStore((s) => s.localUser);
@@ -40,9 +41,14 @@ export default function TreatmentBooking() {
 
   const router = useIonRouter();
 
+  const patientRequiredInfoQuery = usePatientHasRequiredInfo(
+    localUser?.id ?? "",
+    !!localUser?.id
+  );
+
   const slotsQuery = useSlotsQuery();
   const bookingMutation = useCreateBookingAppointmentMutation();
-  const isLoading = bookingMutation.isPending || slotsQuery.isPending;
+  const isLoading = bookingMutation.isPending || slotsQuery.isPending || patientRequiredInfoQuery.isLoading;
 
   const [formType, setFormType] = useState<"doctor-first" | "date-first">(
     "doctor-first"
@@ -103,6 +109,31 @@ export default function TreatmentBooking() {
     });
     console.log(req);
   }
+
+  useEffect(() => {
+    if (!patientRequiredInfoQuery.isError) return;
+
+    const missingInfoMessage =
+      patientRequiredInfoQuery.error?.message ?? "information";
+
+    openGenericDialog({
+      content: `Please provide more information to use our service, missing: ${missingInfoMessage}`,
+      svgIcon: alertCircleOutline,
+      svgIconColor: "warning",
+      backdropDismiss: false,
+      buttons: {
+        text: "Go to update",
+        color: "warning",
+        closeFn: () =>
+          router.push(ROUTES.UPDATE_ACCOUNT, "forward", "replace"),
+      },
+    });
+  }, [
+    openGenericDialog,
+    patientRequiredInfoQuery.error?.message,
+    patientRequiredInfoQuery.isError,
+    router,
+  ]);
 
   return (
     <IonPage>
