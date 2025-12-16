@@ -97,7 +97,7 @@ export default function TreatmentDetailInfo({
         </div>
       )}
 
-      {(treatment.estimatedCost !== null || treatment.actualCost !== null) && (
+      {/* {(treatment.estimatedCost !== null || treatment.actualCost !== null) && (
         <div className="bg-gray-50 w-full p-4 rounded-xl shadow-lg border border-blue-200 flex flex-col gap-3">
           <h2 className="text-lg font-semibold text-blue-500 my-2!">
             Financial Information
@@ -119,7 +119,7 @@ export default function TreatmentDetailInfo({
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       {treatment.treatmentType === "IVF" && (
         <div className="bg-gray-50 w-full p-4 rounded-xl shadow-lg border border-blue-200 flex flex-col gap-3">

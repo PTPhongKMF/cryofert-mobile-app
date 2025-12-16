@@ -15,6 +15,7 @@ type LabSampleFilterOptions = {
   sortType: LabSampleSortType;
   isAvailable?: boolean;
   isStoraged?: boolean;
+  canFrozen?: boolean;
 };
 
 export function useLabSampleInfiniteQuery(
@@ -38,6 +39,7 @@ export function useLabSampleInfiniteQuery(
       filterOptions?.sortType,
       filterOptions?.isAvailable,
       filterOptions?.isStoraged,
+      filterOptions?.canFrozen,
     ],
     queryFn: ({ pageParam }) =>
       labSampleInfiniteQueryFn({
@@ -49,6 +51,7 @@ export function useLabSampleInfiniteQuery(
         sortType: filterOptions?.sortType ?? "LatestCollection",
         isAvailable: filterOptions?.isAvailable,
         isStoraged: filterOptions?.isStoraged,
+        canFrozen: filterOptions?.canFrozen,
       }),
     enabled: !!patientId,
     initialPageParam: 1,

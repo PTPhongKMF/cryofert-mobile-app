@@ -113,6 +113,7 @@ export default function StartCryoContractForm() {
     sortType: "LatestCollection",
     isAvailable: true,
     isStoraged: false,
+    canFrozen: true,
   });
   const labSamples =
     labSampleQuery.data?.pages.flatMap((page) => page.data) ?? [];

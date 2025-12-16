@@ -2,12 +2,9 @@ import { httpClient } from "@src/services/api-services/http-service";
 import * as v from "valibot";
 import {
   MediaListApiResponseSchema,
-  MediaHtmlApiResponseSchema,
   type MediaListApiResponse,
-  type MediaHtmlApiResponse,
   type MediaType,
 } from "@src/schemas/media";
-
 
 export type MediaQueryParams = {
   relatedEntityId?: string;
@@ -31,18 +28,17 @@ export async function mediaQueryFn(
   return v.parse(MediaListApiResponseSchema, res);
 }
 
-export async function htmlPaperQueryFn(params: {
+export async function pdfPaperQueryFn(params: {
   relatedEntityType: MediaType;
   relatedEntityId: string;
-}): Promise<MediaHtmlApiResponse> {
-  const res = await httpClient
-    .get("api/media/html", {
+}): Promise<Blob> {
+  // NOTE: backend expects PascalCase query param keys
+  return await httpClient
+    .get("api/media/generate-pdf", {
       searchParams: {
-        relatedEntityType: params.relatedEntityType,
-        relatedEntityId: params.relatedEntityId,
+        RelatedEntityType: params.relatedEntityType,
+        RelatedEntityId: params.relatedEntityId,
       },
     })
-    .json();
-
-  return v.parse(MediaHtmlApiResponseSchema, res);
+    .blob();
 }
