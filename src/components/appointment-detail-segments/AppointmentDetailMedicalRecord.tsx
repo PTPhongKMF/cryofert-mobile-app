@@ -36,17 +36,18 @@ export default function AppointmentDetailMedicalRecord({
 
   return (
     <div className="px-4 flex flex-col gap-4">
-      <IonList className="bg-transparent">
+      <IonList className="bg-transparent!">
         {medicalRecords.map((record) => (
           <IonItem
             key={record.id}
-            lines="full"
+            lines="none"
+            button
             className="bg-gray-50 rounded-xl border border-blue-200 shadow-lg mb-4"
           >
             <div className="w-full flex flex-col gap-3 py-2">
               <div className="flex justify-between items-center">
-                <IonLabel className="text-base font-semibold text-blue-500">
-                  Medical Record
+                <IonLabel className="text-base font-semibold text-blue-500!">
+                  Medical Record #{record.id.slice(-4)}
                 </IonLabel>
                 <span className="text-xs text-black">
                   {record.appointmentDate
@@ -103,7 +104,9 @@ export default function AppointmentDetailMedicalRecord({
 
                 {record.followUpInstructions && (
                   <div className="flex flex-col gap-1">
-                    <span className="font-semibold">Follow-up Instructions:</span>
+                    <span className="font-semibold">
+                      Follow-up Instructions:
+                    </span>
                     <span className="font-normal text-xs text-black">
                       {record.followUpInstructions}
                     </span>

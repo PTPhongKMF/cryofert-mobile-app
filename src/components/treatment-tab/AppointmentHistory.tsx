@@ -16,6 +16,7 @@ import { useAppointmentHistoryInfiniteQuery } from "@src/hooks/appointment-hook"
 import { useAppointmentHistoryFilterStore } from "@src/stores/appointment";
 import { useShallow } from "zustand/react/shallow";
 import { ROUTES } from "@src/routes/routes";
+import { useEffect } from "react";
 
 function getPrioritizedPaymentTransaction(
   transactions: TransactionResponse[]
@@ -103,6 +104,10 @@ export default function AppointmentHistory() {
     await bookingHistoryQuery.refetch();
     e.detail.complete();
   }
+
+  useEffect(() => {
+    if (bookingHistoryQuery.isError) console.log(bookingHistoryQuery.error);
+  }, [bookingHistoryQuery.error, bookingHistoryQuery.isError]);
 
   if (bookingHistoryQuery.isPending) {
     return (

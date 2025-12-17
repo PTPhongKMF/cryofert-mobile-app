@@ -107,7 +107,7 @@ export default function AppointmentDetailServiceReq({
                     <IonItem
                       slot="header"
                       lines="none"
-                      className="w-full py-2 ion-min-h-[0rem]! ion-p-[0rem]! ion-ps-[0.1rem]! ion-b-r-[6px]"
+                      className="w-full py-2 ion-min-h-[0rem]! ion-p-[0rem]! ion-ps-[0.5rem]! ion-b-r-[6px]"
                     >
                       <IonLabel className="text-sm text-sky-700!">
                         Service Details ({serviceRequest.serviceDetails.length})

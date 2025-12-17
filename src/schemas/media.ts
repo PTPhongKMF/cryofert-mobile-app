@@ -7,6 +7,10 @@ export const MediaTypes = [
   "Account",
   "Agreement",
   "CryoStorageContract",
+  "CryoImport",
+  "CryoExport",
+  "ServiceRequest",
+  "ServiceRequestDetails",
 ] as const;
 
 export const MediaTypeSchema = v.picklist(MediaTypes);
