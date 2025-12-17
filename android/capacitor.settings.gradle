@@ -5,6 +5,9 @@ project(':capacitor-android').projectDir = new File('../node_modules/.pnpm/@capa
 include ':aparajita-capacitor-secure-storage'
 project(':aparajita-capacitor-secure-storage').projectDir = new File('../node_modules/.pnpm/@aparajita+capacitor-secure-storage@7.1.6/node_modules/@aparajita/capacitor-secure-storage/android')
 
+include ':capacitor-community-photoviewer'
+project(':capacitor-community-photoviewer').projectDir = new File('../node_modules/.pnpm/@capacitor-community+photoviewer@7.1.0_@capacitor+core@7.4.3/node_modules/@capacitor-community/photoviewer/android')
+
 include ':capacitor-app'
 project(':capacitor-app').projectDir = new File('../node_modules/.pnpm/@capacitor+app@7.0.2_@capacitor+core@7.4.3/node_modules/@capacitor/app/android')
 

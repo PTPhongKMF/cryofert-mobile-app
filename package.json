@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@aparajita/capacitor-secure-storage": "^7.1.6",
+    "@capacitor-community/photoviewer": "^7.1.0",
     "@capacitor/android": "^7.4.4",
     "@capacitor/app": "7.0.2",
     "@capacitor/clipboard": "^7.0.2",
@@ -62,6 +63,7 @@
     "@types/react-dom": "19.0.4",
     "@vitejs/plugin-legacy": "^5.0.0",
     "@vitejs/plugin-react": "^4.0.1",
+    "jeep-photoviewer": "^1.2.3",
     "oxlint": "^1.25.0",
     "terser": "^5.4.0",
     "typescript": "^5.1.6",

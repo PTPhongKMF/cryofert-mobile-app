@@ -47,14 +47,12 @@ export default function AgreementPaperDialog(props: AgreementDialogProps) {
   const openGenericDialog = useGenericDialogStore((s) => s.openGenericDialog);
   const requestSignAgreementMutation = useRequestSignAgreementMutation();
 
-  // Preview PDF generated on-the-fly (used for signing flow only)
   const agreementPreviewPdfQuery = usePdfPaperQuery({
     relatedEntityType: "Agreement",
     relatedEntityId: agreementId,
     enabled: props.isOpen && !!agreementId && !isViewMode,
   });
 
-  // Final stored PDF (used in view mode only)
   const viewAgreementMediaQuery = useMediaQuery(
     { relatedEntityId: agreementId, relatedEntityType: "Agreement" },
     props.isOpen && !!agreementId && isViewMode

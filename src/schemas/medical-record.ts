@@ -1,4 +1,6 @@
 import { createApiResponseSchema } from "@src/schemas/api-response";
+import { MediaResponseSchema } from "@src/schemas/media";
+import { PrescriptionDetailResponseSchema } from "@src/schemas/prescription";
 import * as v from "valibot";
 
 export const MedicalRecordResponseSchema = v.object({
@@ -19,6 +21,8 @@ export const MedicalRecordResponseSchema = v.object({
   patientName: v.nullable(v.string()),
   createdAt: v.string(),
   updatedAt: v.nullable(v.string()),
+  prescriptions: v.nullable(v.array(PrescriptionDetailResponseSchema)),
+  medias: v.nullable(v.array(MediaResponseSchema)),
 });
 
 ///////////////////////////////////////////////////////////////////////
