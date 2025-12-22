@@ -6,10 +6,15 @@ import {
   IonLabel,
   IonAccordion,
   IonAccordionGroup,
+  IonImg,
 } from "@ionic/react";
 import type { UseQueryResult } from "@tanstack/react-query";
 import type { HTTPError } from "ky";
 import type { ServiceRequestApiResponse } from "@src/schemas/service-request";
+import type { MediaResponse } from "@src/schemas/media";
+import MediaActionSheet from "@src/components/dialogs/MediaActionSheet";
+import { ellipsisVertical } from "ionicons/icons";
+import { useEffect, useState } from "react";
 
 interface AppointmentDetailServiceReqProps {
   serviceRequestQuery: UseQueryResult<ServiceRequestApiResponse, HTTPError>;
@@ -20,6 +25,13 @@ export default function AppointmentDetailServiceReq({
 }: AppointmentDetailServiceReqProps) {
   const { data, isError } = serviceRequestQuery;
   const serviceRequests = data?.data ?? [];
+  const [selectedMedia, setSelectedMedia] = useState<MediaResponse | null>(null);
+
+  useEffect(() => {
+    if (isError) {
+      console.log(serviceRequestQuery.error);
+    }
+  }, [isError, serviceRequestQuery.error]);
 
   if (isError || !data) {
     return (
@@ -192,6 +204,97 @@ export default function AppointmentDetailServiceReq({
                                     </span>
                                   </div>
                                 )}
+
+                                {(detail.mediaFiles?.length ?? 0) > 0 && (
+                                  <div className="mt-2">
+                                    <IonAccordionGroup>
+                                      <IonAccordion value={`media-${detail.id}`}>
+                                        <IonItem
+                                          slot="header"
+                                          lines="none"
+                                          className="w-full py-2 ion-min-h-[0rem]! ion-p-[0rem]! ion-ps-[0.5rem]! ion-b-r-[6px]"
+                                        >
+                                          <IonLabel className="text-sm text-sky-700!">
+                                            Media ({detail.mediaFiles?.length ?? 0})
+                                          </IonLabel>
+                                        </IonItem>
+
+                                        <div
+                                          slot="content"
+                                          className="px-0 py-2 flex flex-col gap-2"
+                                        >
+                                          {(() => {
+                                            const imageMedias = (
+                                              detail.mediaFiles ?? []
+                                            ).filter((m) => {
+                                              const mime = (m.fileType ?? "").toLowerCase();
+                                              return mime.startsWith("image/");
+                                            });
+
+                                            const otherMedias = (
+                                              detail.mediaFiles ?? []
+                                            ).filter((m) => {
+                                              const mime = (m.fileType ?? "").toLowerCase();
+                                              return !mime.startsWith("image/");
+                                            });
+
+                                            return (
+                                              <>
+                                                {imageMedias.length > 0 && (
+                                                  <div className="grid grid-cols-3 gap-2 px-2">
+                                                    {imageMedias.map((media) => (
+                                                      <button
+                                                        key={media.id}
+                                                        type="button"
+                                                        className="flex items-center justify-center bg-white rounded-md shadow-sm overflow-hidden h-20"
+                                                        onClick={() => setSelectedMedia(media)}
+                                                      >
+                                                        <IonImg
+                                                          src={media.filePath}
+                                                          alt={
+                                                            media.originalFileName ??
+                                                            media.fileName
+                                                          }
+                                                          className="object-cover w-full h-full"
+                                                        />
+                                                      </button>
+                                                    ))}
+                                                  </div>
+                                                )}
+
+                                                {otherMedias.length > 0 && (
+                                                  <IonList className="bg-transparent mt-1">
+                                                    {otherMedias.map((media, mediaIdx) => (
+                                                      <IonItem
+                                                        key={media.id}
+                                                        button
+                                                        detail
+                                                        detailIcon={ellipsisVertical}
+                                                        lines={
+                                                          mediaIdx < otherMedias.length - 1
+                                                            ? "full"
+                                                            : "none"
+                                                        }
+                                                        className="bg-gray-100 rounded-lg mb-1"
+                                                        onClick={() => setSelectedMedia(media)}
+                                                      >
+                                                        <div className="w-full flex justify-between items-center py-2">
+                                                          <IonLabel className="text-sm font-medium!">
+                                                            {media.originalFileName}
+                                                          </IonLabel>
+                                                        </div>
+                                                      </IonItem>
+                                                    ))}
+                                                  </IonList>
+                                                )}
+                                              </>
+                                            );
+                                          })()}
+                                        </div>
+                                      </IonAccordion>
+                                    </IonAccordionGroup>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </IonItem>
@@ -205,6 +308,11 @@ export default function AppointmentDetailServiceReq({
           </IonItem>
         ))}
       </IonList>
+
+      <MediaActionSheet
+        media={selectedMedia}
+        onClose={() => setSelectedMedia(null)}
+      />
     </div>
   );
 }

@@ -1,21 +1,12 @@
 import { format } from "@formkit/tempo";
-import {
-  IonList,
-  IonItem,
-  IonLabel,
-  IonAccordion,
-  IonAccordionGroup,
-  IonActionSheet,
-} from "@ionic/react";
+import { IonList, IonItem, IonLabel, IonAccordion, IonAccordionGroup } from "@ionic/react";
 import type { UseQueryResult } from "@tanstack/react-query";
 import type { HTTPError } from "ky";
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import type { MedicalRecordApiResponse } from "@src/schemas/medical-record";
 import type { MediaResponse } from "@src/schemas/media";
-import { useGenericDialogStore } from "@src/stores/dialog";
-import GenericViewPdfDialog from "@src/components/dialogs/GenericViewPdfDialog";
+import MediaActionSheet from "@src/components/dialogs/MediaActionSheet";
 import { ellipsisVertical } from "ionicons/icons";
-import { PhotoViewer } from "@capacitor-community/photoviewer"
 
 interface AppointmentDetailMedicalRecordProps {
   medicalRecordQuery: UseQueryResult<MedicalRecordApiResponse, HTTPError>;
@@ -27,66 +18,6 @@ export default function AppointmentDetailMedicalRecord({
   const { data, isError } = medicalRecordQuery;
   const medicalRecords = data?.data ?? [];
   const [selectedMedia, setSelectedMedia] = useState<MediaResponse | null>(null);
-  const [pdfViewerIsOpen, setPdfViewerIsOpen] = useState(false);
-  const [viewerFileUrl, setViewerFileUrl] = useState<string | undefined>(undefined);
-  const [viewerTitle, setViewerTitle] = useState<string | undefined>(undefined);
-  const openGenericDialog = useGenericDialogStore((s) => s.openGenericDialog);
-
-  const handleViewSelectedMedia = useCallback(() => {
-    if (!selectedMedia) return;
-
-    const mime = (selectedMedia.fileType ?? "").toLowerCase();
-    const fileUrl = selectedMedia.filePath;
-    const title = selectedMedia.originalFileName;
-
-    if (mime === "application/pdf" || mime.includes("pdf")) {
-      setViewerFileUrl(fileUrl);
-      setViewerTitle(title);
-      setPdfViewerIsOpen(true);
-      setSelectedMedia(null);
-      return;
-    }
-
-    if (mime.startsWith("image/")) {
-      PhotoViewer.show({images: [{url: fileUrl}]});
-      setSelectedMedia(null);
-      return;
-    }
-
-    openGenericDialog({
-      title: "Unsupported file type",
-      content: selectedMedia.fileType,
-      svgIconColor: "warning",
-    });
-    setSelectedMedia(null);
-  }, [openGenericDialog, selectedMedia]);
-
-  const actionSheetButtons = useMemo(() => {
-    return [
-      {
-        text: "View",
-        handler: () => {
-          handleViewSelectedMedia();
-        },
-      },
-      {
-        text: "Download (work in progress)",
-        handler: () => {
-          console.log("media:download", selectedMedia);
-          openGenericDialog({
-            title: "Not implemented",
-            content: "Download is a work in progress.",
-            svgIconColor: "warning",
-          });
-          setSelectedMedia(null);
-        },
-      },
-      {
-        text: "Cancel",
-        role: "cancel" as const,
-      },
-    ];
-  }, [handleViewSelectedMedia, openGenericDialog, selectedMedia]);
 
   if (isError || !data) {
     return (
@@ -394,18 +325,9 @@ export default function AppointmentDetailMedicalRecord({
         ))}
       </IonList>
 
-      <IonActionSheet
-        isOpen={selectedMedia !== null}
-        onDidDismiss={() => setSelectedMedia(null)}
-        header={selectedMedia?.originalFileName ?? "Media"}
-        buttons={actionSheetButtons}
-      />
-
-      <GenericViewPdfDialog
-        isOpen={pdfViewerIsOpen}
-        setIsOpen={setPdfViewerIsOpen}
-        fileUrl={viewerFileUrl}
-        title={viewerTitle ?? "PDF Viewer"}
+      <MediaActionSheet
+        media={selectedMedia}
+        onClose={() => setSelectedMedia(null)}
       />
     </div>
   );

@@ -61,7 +61,7 @@ export default function UpcommingAppointments() {
                 </span>
               </div>
 
-              <span className="text-xs font-semibold text-blue-600">
+              <span className="text-xs text-blue-500">
                 {appointment.typeName}
               </span>
             </div>

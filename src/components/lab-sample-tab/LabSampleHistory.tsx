@@ -76,7 +76,7 @@ export default function LabSampleHistory() {
                     detail
                     onClick={() => console.log("Lab sample clicked", sample)}
                   >
-                    <div className="w-full py-3 flex items-stretch gap-3 border-b border-blue-50">
+                    <div className="w-full py-3 grid grid-cols-[1fr_auto] items-stretch gap-2 border-b border-blue-50">
                       <div className="flex-1 flex flex-col gap-2 min-w-0">
                         <div className="flex items-baseline gap-1.5 min-w-0">
                           <span className="text-sm font-semibold text-gray-900 truncate">
@@ -90,10 +90,6 @@ export default function LabSampleHistory() {
                               </span>
                             </>
                           )}
-                          <span className="inline-block size-1 self-center rounded-full bg-gray-500 flex-shrink-0" />
-                          <span className="text-xs text-gray-600 truncate">
-                            {sample.sampleCode}
-                          </span>
                         </div>
 
                         <div className="flex flex-col gap-1 text-sm text-gray-700">
@@ -127,17 +123,6 @@ export default function LabSampleHistory() {
                                 : "TBD"}
                             </span>
                           </div>
-                          <div className="flex items-baseline gap-1.5 text-xs text-gray-700">
-                            <span className=" tracking-wide text-gray-400">
-                              Available
-                            </span>
-                            <span>{sample.isAvailable ? "Yes" : "No"}</span>
-                            <span className="inline-block size-1 self-center rounded-full bg-gray-400" />
-                            <span className=" tracking-wide text-gray-400">
-                              In storage
-                            </span>
-                            <span>{sample.isStoraged ? "Yes" : "No"}</span>
-                          </div>
                         </div>
                       </div>
 
@@ -149,6 +134,23 @@ export default function LabSampleHistory() {
                         >
                           {titleCase(sample.status)}
                         </span>
+                      </div>
+
+                      <div className="flex col-span-2 items-baseline gap-1.5 text-xs text-gray-700">
+                        <span className=" tracking-wide text-gray-400">
+                          Available
+                        </span>
+                        <span>{sample.isAvailable ? "Yes" : "No"}</span>
+                        <span className="inline-block size-1 self-center rounded-full bg-gray-400" />
+                        <span className=" tracking-wide text-gray-400">
+                          In storage
+                        </span>
+                        <span>{sample.isStoraged ? "Yes" : "No"}</span>
+                        <span className="inline-block size-1 self-center rounded-full bg-gray-400" />
+                        <span className=" tracking-wide text-gray-400">
+                          Can frozen
+                        </span>
+                        <span>{sample.canFrozen ? "Yes" : "No"}</span>
                       </div>
                     </div>
                   </IonItem>

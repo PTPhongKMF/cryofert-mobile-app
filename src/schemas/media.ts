@@ -25,17 +25,17 @@ export const MediaResponseSchema = v.object({
   fileExtension: v.string(),
   relatedEntityId: v.nullable(v.string()),
   relatedEntityType: v.string(),
-  title: v.string(),
-  description: v.string(),
-  category: v.string(),
-  tags: v.string(),
+  title: v.nullable(v.string()),
+  description: v.nullable(v.string()),
+  category: v.nullable(v.string()),
+  tags: v.nullable(v.string()),
   uploadDate: v.string(),
   uploadedBy: v.nullable(v.string()),
   uploadedByUserId: v.nullable(v.string()),
   isPublic: v.boolean(),
   thumbnailPath: v.nullable(v.string()),
   storageLocation: v.nullable(v.string()),
-  notes: v.string(),
+  notes: v.nullable(v.string()),
 });
 
 ///////////////////////////////////////////////////////////////////////
