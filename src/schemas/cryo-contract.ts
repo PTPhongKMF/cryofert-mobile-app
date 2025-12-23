@@ -4,11 +4,11 @@ import * as v from "valibot";
 
 export const CryoContractStatuses = [
   "Active",
-    "Expired",
-    "Terminated",
-    "Renewed",
-    "Draft",
-    "Pending"
+  "Expired",
+  "Terminated",
+  "Renewed",
+  "Draft",
+  "Pending",
 ] as const;
 export const CryoContractStatusSchema = v.picklist(CryoContractStatuses);
 
@@ -21,8 +21,8 @@ export const CryoContractResponseSchema = v.object({
   totalAmount: v.number(),
   paidAmount: v.number(),
   // isAutoRenew: v.boolean(),
-  signedDate: v.string(),
-  signedBy: v.string(),
+  signedDate: v.nullable(v.string()),
+  signedBy: v.nullable(v.string()),
   notes: v.nullable(v.string()),
   patientId: v.string(),
   patientName: v.nullable(v.string()),

@@ -47,7 +47,7 @@ export default function Home() {
     {
       icon: Snowflake,
       title: "Start Cryo Reserve",
-      onClick: () => router.push(ROUTES.T_TREATMENT),
+      onClick: () => router.push(ROUTES.START_CONTRACT_FORM),
       color: "bg-sky-500",
     },
     {

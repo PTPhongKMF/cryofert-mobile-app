@@ -17,7 +17,8 @@ import { useLocation } from "react-router";
 import { useRequestSignCryoContractMutation } from "@src/hooks/cryo-contract-hook";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import ContractOtpDialog from "@src/components/start-cryo-contract/ContractOtpDialog";
-import { useHtmlPaperQuery } from "@src/hooks/media-hook";
+import { usePdfPaperQuery } from "@src/hooks/media-hook";
+import PdfWebViewer from "@src/components/PdfWebViewer";
 
 export default function StartCryoContractPaper() {
   const [isAgree, setIsAgree] = useState(false);
@@ -31,7 +32,7 @@ export default function StartCryoContractPaper() {
   const contractId = searchParams.get("contractId") ?? "";
   const hasContractId = !!contractId;
 
-  const contractTemplateQuery = useHtmlPaperQuery({
+  const contractPdfQuery = usePdfPaperQuery({
     relatedEntityType: "CryoStorageContract",
     relatedEntityId: contractId,
     enabled: hasContractId,
@@ -40,11 +41,10 @@ export default function StartCryoContractPaper() {
   const requestSignCryoContractMutation = useRequestSignCryoContractMutation();
 
   const isLoading =
-    contractTemplateQuery.isLoading ||
-    contractTemplateQuery.isFetching ||
+    contractPdfQuery.isLoading ||
+    contractPdfQuery.isFetching ||
     requestSignCryoContractMutation.isPending;
-  const shouldShowError = !hasContractId || contractTemplateQuery.isError;
-  const contractHtml = contractTemplateQuery.data?.data.html ?? "";
+  const shouldShowError = !hasContractId || contractPdfQuery.isError;
 
   function handleCancel() {
     openGenericDialog({
@@ -132,13 +132,10 @@ export default function StartCryoContractPaper() {
             </div>
           )}
 
-          {contractTemplateQuery.isSuccess && (
-            <iframe
-              title="Cryo contract"
-              srcDoc={contractHtml}
-              className="w-full h-full min-h-[70vh] border-0"
-            />
-          )}
+          <PdfWebViewer
+            fileUrl={contractPdfQuery.data?.objectUrl}
+            className="w-full h-full min-h-[70vh]"
+          />
         </div>
       </IonContent>
 

@@ -1,4 +1,5 @@
 import { createApiResponseSchema } from "@src/schemas/api-response";
+import { MediaResponseSchema } from "@src/schemas/media";
 import * as v from "valibot";
 
 export const ServiceRequestStatuses = [
@@ -21,6 +22,7 @@ export const ServiceRequestDetailResponseSchema = v.object({
   discount: v.nullable(v.number()),
   totalPrice: v.number(),
   notes: v.nullable(v.string()),
+  mediaFiles: v.array(MediaResponseSchema),
 });
 
 export const ServiceRequestResponseSchema = v.object({
@@ -61,4 +63,3 @@ export type ServiceRequestResponse = v.InferOutput<
 export type ServiceRequestApiResponse = v.InferOutput<
   typeof ServiceRequestApiResponseSchema
 >;
-

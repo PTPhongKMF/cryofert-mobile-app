@@ -1,6 +1,4 @@
 import type {
-  MediaHtml,
-  MediaHtmlApiResponse,
   MediaListApiResponse,
   MediaType,
 } from "@src/schemas/media";
@@ -8,11 +6,10 @@ import type { HTTPError } from "ky";
 import { useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
-  htmlPaperQueryFn,
   mediaQueryFn,
+  pdfPaperQueryFn,
   type MediaQueryParams,
 } from "@src/services/api-services/media-service";
-import ky from "ky";
 
 export function useMediaQuery(
   req?: MediaQueryParams,
@@ -25,43 +22,69 @@ export function useMediaQuery(
   });
 }
 
-export function useHtmlPaperQuery(params: {
+export interface PdfPaperResult {
+  objectUrl: string;
+  blob: Blob;
+}
+
+export function usePdfPaperQuery(params: {
   relatedEntityType: MediaType;
   relatedEntityId: string;
   enabled?: boolean;
 }) {
   const { relatedEntityId, relatedEntityType, enabled = true } = params;
+  const previousUrlRef = useRef<string | null>(null);
 
-  return useQuery<MediaHtmlApiResponse, HTTPError>({
+  const query = useQuery<PdfPaperResult, HTTPError>({
     queryKey: [
-      "api/media/html",
+      "api/media/generate-pdf",
       relatedEntityType,
       relatedEntityId,
-      enabled,
     ],
-    queryFn: () =>
-      htmlPaperQueryFn({
+    queryFn: async () => {
+      const blob = await pdfPaperQueryFn({
         relatedEntityId,
         relatedEntityType,
-      }),
+      });
+
+      const objectUrl = URL.createObjectURL(
+        new Blob([blob], { type: blob.type || "application/pdf" })
+      );
+
+      return { objectUrl, blob };
+    },
     enabled: enabled && !!relatedEntityId && !!relatedEntityType,
   });
-}
 
-interface ViewMediaResult {
-  objectUrl: string;
-  value: string;
-  filePath: string;
+  useEffect(() => {
+    const currentUrl = query.data?.objectUrl ?? null;
+    const previousUrl = previousUrlRef.current;
+
+    if (previousUrl && previousUrl !== currentUrl) {
+      URL.revokeObjectURL(previousUrl);
+    }
+
+    previousUrlRef.current = currentUrl;
+
+    return () => {
+      if (previousUrlRef.current) {
+        URL.revokeObjectURL(previousUrlRef.current);
+        previousUrlRef.current = null;
+      }
+    };
+  }, [query.data?.objectUrl]);
+
+  return query;
 }
 
 // Keep it for later use
-// export function useViewMediaQuery(
+// export function useViewPdfMediaQuery(
 //   req?: MediaQueryParams,
 //   enabled: boolean = true
 // ) {
 //   const previousUrlRef = useRef<string | null>(null);
 
-//   const query = useQuery<ViewMediaResult, HTTPError>({
+//   const query = useQuery<{ objectUrl: string; blob: Blob; filePath: string }, HTTPError>({
 //     queryKey: ["api/media/view", req],
 //     queryFn: async () => {
 //       const media = await mediaQueryFn(req);
@@ -71,12 +94,10 @@ interface ViewMediaResult {
 //         throw new Error("Media file path not available");
 //       }
 
-//       const value = await ky.get(filePath).text();
-//       const objectUrl = URL.createObjectURL(
-//         new Blob([value], { type: "text/html" })
-//       );
+//       const blob = await ky.get(filePath).blob();
+//       const objectUrl = URL.createObjectURL(blob);
 
-//       return { objectUrl, value, filePath };
+//       return { objectUrl, blob, filePath };
 //     },
 //     enabled,
 //   });

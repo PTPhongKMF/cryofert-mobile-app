@@ -11,7 +11,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useRequestSignAgreementMutation } from "@src/hooks/agreement-hook";
-import { useHtmlPaperQuery, useMediaQuery } from "@src/hooks/media-hook";
+import { useMediaQuery, usePdfPaperQuery } from "@src/hooks/media-hook";
 import type { AgreementResponse } from "@src/schemas/agreement";
 import type { TreatmentDetail } from "@src/schemas/treatment";
 import { useGenericDialogStore } from "@src/stores/dialog";
@@ -47,7 +47,7 @@ export default function AgreementPaperDialog(props: AgreementDialogProps) {
   const openGenericDialog = useGenericDialogStore((s) => s.openGenericDialog);
   const requestSignAgreementMutation = useRequestSignAgreementMutation();
 
-  const agreementHtmlPaperQuery = useHtmlPaperQuery({
+  const agreementPreviewPdfQuery = usePdfPaperQuery({
     relatedEntityType: "Agreement",
     relatedEntityId: agreementId,
     enabled: props.isOpen && !!agreementId && !isViewMode,
@@ -66,15 +66,15 @@ export default function AgreementPaperDialog(props: AgreementDialogProps) {
   }, [props.isOpen]);
 
   useEffect(() => {
-    if (agreementHtmlPaperQuery.isError) {
-      console.log(agreementHtmlPaperQuery.error);
+    if (agreementPreviewPdfQuery.isError) {
+      console.log(agreementPreviewPdfQuery.error);
     }
     if (viewAgreementMediaQuery.isError) {
       console.log(viewAgreementMediaQuery.error);
     }
   }, [
-    agreementHtmlPaperQuery.error,
-    agreementHtmlPaperQuery.isError,
+    agreementPreviewPdfQuery.error,
+    agreementPreviewPdfQuery.isError,
     viewAgreementMediaQuery.error,
     viewAgreementMediaQuery.isError,
   ]);
@@ -93,53 +93,25 @@ export default function AgreementPaperDialog(props: AgreementDialogProps) {
   const isPdfMedia =
     latestAgreementMedia?.fileExtension?.toLowerCase() === ".pdf";
 
-  const nonPdfViewError =
+  const viewModeMissingPdf =
     isViewMode &&
     viewAgreementMediaQuery.isSuccess &&
-    (latestAgreementMedia ? !isPdfMedia : true);
+    (!latestAgreementMedia || !isPdfMedia);
 
-  const viewAgreementHtmlPaperFallbackQuery = useHtmlPaperQuery({
-    relatedEntityType: "Agreement",
-    relatedEntityId: agreementId,
-    enabled:
-      isViewMode &&
-      props.isOpen &&
-      !!agreementId &&
-      (viewAgreementMediaQuery.isError || nonPdfViewError),
-  }); // temporary use fallback, remove later
-
-  const isLoading = useMemo(() => {
-    if (isViewMode) {
-      return (
-        viewAgreementMediaQuery.isLoading ||
-        viewAgreementHtmlPaperFallbackQuery.isLoading
-      );
-    }
-
-    return (
-      agreementHtmlPaperQuery.isLoading ||
-      requestSignAgreementMutation.isPending
-    );
-  }, [
-    isViewMode,
-    viewAgreementMediaQuery.isLoading,
-    viewAgreementHtmlPaperFallbackQuery.isLoading,
-    agreementHtmlPaperQuery.isLoading,
-    requestSignAgreementMutation.isPending,
-  ]);
-
-  // const shouldShowError =
-  //   !agreementId ||
-  //   (!isViewMode && agreementHtmlPaperQuery.isError) ||
-  //   (isViewMode && (viewAgreementMediaQuery.isError || nonPdfViewError));
-  // temporary disable
+  const isLoading = isViewMode
+    ? viewAgreementMediaQuery.isLoading
+    : agreementPreviewPdfQuery.isLoading || requestSignAgreementMutation.isPending;
 
   const shouldShowError =
     !agreementId ||
-    (!isViewMode && agreementHtmlPaperQuery.isError) ||
-    (isViewMode &&
-      (viewAgreementMediaQuery.isError || nonPdfViewError) &&
-      viewAgreementHtmlPaperFallbackQuery.isError);
+    (!isViewMode && agreementPreviewPdfQuery.isError) ||
+    (isViewMode && (viewAgreementMediaQuery.isError || viewModeMissingPdf));
+
+  const pdfUrl = isViewMode
+    ? isPdfMedia
+      ? latestAgreementMedia?.filePath
+      : undefined
+    : agreementPreviewPdfQuery.data?.objectUrl;
 
   function handleClose() {
     props.setIsOpen(false);
@@ -187,7 +159,7 @@ export default function AgreementPaperDialog(props: AgreementDialogProps) {
               </p>
               <p className="text-sm text-gray-600">
                 {agreementId
-                  ? isViewMode && nonPdfViewError
+                  ? viewModeMissingPdf
                     ? "Latest agreement file is not a PDF."
                     : "Something went wrong. Please try again."
                   : "Missing agreement id."}
@@ -199,29 +171,10 @@ export default function AgreementPaperDialog(props: AgreementDialogProps) {
           ) : (
             <div className="relative h-full">
               {isLoading && <ContentSpinnerOverlay />}
-
-              {isViewMode ? (
-                viewAgreementMediaQuery.isSuccess &&
-                latestAgreementMedia &&
-                isPdfMedia ? (
-                  <PdfWebViewer
-                    fileUrl={latestAgreementMedia.filePath}
-                    className="w-full h-full min-h-[70vh]"
-                  />
-                ) : viewAgreementHtmlPaperFallbackQuery.isSuccess ? (
-                  <iframe
-                    title="Agreement"
-                    srcDoc={viewAgreementHtmlPaperFallbackQuery.data?.data.html}
-                    className="w-full h-full min-h-[70vh] border-0 p-2"
-                  />
-                ) : null
-              ) : agreementHtmlPaperQuery.isSuccess ? (
-                <iframe
-                  title="Agreement"
-                  srcDoc={agreementHtmlPaperQuery.data?.data.html}
-                  className="w-full h-full min-h-[70vh] border-0 p-2"
-                />
-              ) : null}
+              <PdfWebViewer
+                fileUrl={pdfUrl}
+                className="w-full h-full min-h-[70vh]"
+              />
             </div>
           )}
         </IonContent>

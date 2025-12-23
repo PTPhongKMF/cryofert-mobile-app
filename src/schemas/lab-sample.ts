@@ -29,6 +29,7 @@ export const LabSampleResponseSchema = v.object({
   collectionDate: v.string(),
   isAvailable: v.boolean(),
   isStoraged: v.boolean(),
+  canFrozen: v.boolean(),
   storageDate: v.nullable(v.string()),
   expiryDate: v.nullable(v.string()),
   quality: v.nullable(v.string()),

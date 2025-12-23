@@ -23,6 +23,7 @@ export async function loginMutationFn(
         json: {
           email: req.email,
           password: req.password,
+          mobile: true,
         },
       })
       .json();

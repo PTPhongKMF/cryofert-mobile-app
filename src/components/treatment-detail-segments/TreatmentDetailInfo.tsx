@@ -17,7 +17,7 @@ export default function TreatmentDetailInfo({
     <div className="px-4 flex flex-col justify-center items-center gap-4">
       <div className="bg-gray-50 w-full p-4 rounded-xl border shadow-lg border-blue-200 flex flex-col gap-3">
         <h2 className="text-lg font-semibold text-blue-500 my-2!">
-          Basic Information
+          Information
         </h2>
 
         <div className="flex flex-col gap-2">
@@ -57,6 +57,304 @@ export default function TreatmentDetailInfo({
               {formatDate(treatment.endDate)}
             </span>
           </div>
+
+          {treatment.treatmentType === "IVF" && (
+            <>
+              <div className="bg-gray-200 w-full h-0.5 my-1" />
+              <div className="text-base font-semibold mb-1 text-blue-500!">
+                IVF Details
+              </div>
+
+              {treatment.ivf.protocol && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Protocol:</span>
+                  <span className="font-normal text-xs text-black">
+                    {treatment.ivf.protocol}
+                  </span>
+                </div>
+              )}
+
+              <div className="bg-gray-200 w-full h-0.5 my-1" />
+
+              <div className="text-sm font-semibold mb-1">Important Dates:</div>
+              {treatment.ivf.stimulationStartDate && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Stimulation Start:</span>
+                  <span className="font-normal text-xs text-black">
+                    {formatDate(treatment.ivf.stimulationStartDate)}
+                  </span>
+                </div>
+              )}
+              {treatment.ivf.oocyteRetrievalDate && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Oocyte Retrieval:</span>
+                  <span className="font-normal text-xs text-black">
+                    {formatDate(treatment.ivf.oocyteRetrievalDate)}
+                  </span>
+                </div>
+              )}
+              {treatment.ivf.fertilizationDate && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Fertilization:</span>
+                  <span className="font-normal text-xs text-black">
+                    {formatDate(treatment.ivf.fertilizationDate)}
+                  </span>
+                </div>
+              )}
+              {treatment.ivf.transferDate && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Transfer:</span>
+                  <span className="font-normal text-xs text-black">
+                    {formatDate(treatment.ivf.transferDate)}
+                  </span>
+                </div>
+              )}
+
+              <div className="bg-gray-200 w-full h-0.5 my-1" />
+
+              <div className="text-sm font-semibold mb-1">
+                Oocyte Information:
+              </div>
+              {treatment.ivf.oocytesRetrieved !== null && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Oocytes Retrieved:</span>
+                  <span className="font-normal text-xs text-black">
+                    {treatment.ivf.oocytesRetrieved}
+                  </span>
+                </div>
+              )}
+              {treatment.ivf.oocytesMature !== null && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Oocytes Mature:</span>
+                  <span className="font-normal text-xs text-black">
+                    {treatment.ivf.oocytesMature}
+                  </span>
+                </div>
+              )}
+              {treatment.ivf.oocytesFertilized !== null && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Oocytes Fertilized:</span>
+                  <span className="font-normal text-xs text-black">
+                    {treatment.ivf.oocytesFertilized}
+                  </span>
+                </div>
+              )}
+
+              <div className="bg-gray-200 w-full h-0.5 my-1" />
+
+              <div className="text-sm font-semibold mb-1">
+                Embryo Information:
+              </div>
+              {treatment.ivf.embryosCultured !== null && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Embryos Cultured:</span>
+                  <span className="font-normal text-xs text-black">
+                    {treatment.ivf.embryosCultured}
+                  </span>
+                </div>
+              )}
+              {treatment.ivf.embryosTransferred !== null && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Embryos Transferred:</span>
+                  <span className="font-normal text-xs text-black">
+                    {treatment.ivf.embryosTransferred}
+                  </span>
+                </div>
+              )}
+              {treatment.ivf.embryosCryopreserved !== null && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Embryos Cryopreserved:</span>
+                  <span className="font-normal text-xs text-black">
+                    {treatment.ivf.embryosCryopreserved}
+                  </span>
+                </div>
+              )}
+              {treatment.ivf.embryosFrozen !== null && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Embryos Frozen:</span>
+                  <span className="font-normal text-xs text-black">
+                    {treatment.ivf.embryosFrozen}
+                  </span>
+                </div>
+              )}
+
+              {treatment.ivf.usedICSI !== null && (
+                <>
+                  <div className="bg-gray-200 w-full h-0.5 my-1" />
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="font-semibold">ICSI Used:</span>
+                    <span className="font-normal text-xs text-black">
+                      {treatment.ivf.usedICSI ? "Yes" : "No"}
+                    </span>
+                  </div>
+                </>
+              )}
+
+              {treatment.ivf.outcome && (
+                <>
+                  <div className="bg-gray-200 w-full h-0.5 my-1" />
+                  <div className="flex flex-col gap-1 text-sm">
+                    <span className="font-semibold">Outcome:</span>
+                    <span className="font-normal text-xs text-black">
+                      {treatment.ivf.outcome}
+                    </span>
+                  </div>
+                </>
+              )}
+
+              {treatment.ivf.complications && (
+                <>
+                  <div className="bg-gray-200 w-full h-0.5 my-1" />
+                  <div className="flex flex-col gap-1 text-sm">
+                    <span className="font-semibold">Complications:</span>
+                    <span className="font-normal text-xs text-black">
+                      {treatment.ivf.complications}
+                    </span>
+                  </div>
+                </>
+              )}
+
+              {treatment.ivf.notes && (
+                <>
+                  <div className="bg-gray-200 w-full h-0.5 my-1" />
+                  <div className="flex flex-col gap-1 text-sm">
+                    <span className="font-semibold">Notes:</span>
+                    <span className="font-normal text-xs text-black whitespace-pre-wrap">
+                      {treatment.ivf.notes}
+                    </span>
+                  </div>
+                </>
+              )}
+
+              <div className="bg-gray-200 w-full h-0.5 my-1" />
+              <div className="flex justify-between items-center text-sm">
+                <span className="font-semibold">IVF Status:</span>
+                <span className="font-normal text-xs text-black px-2 py-1 rounded bg-gray-100">
+                  {treatment.ivf.status}
+                </span>
+              </div>
+            </>
+          )}
+
+          {treatment.treatmentType === "IUI" && (
+            <>
+              <div className="bg-gray-200 w-full h-0.5 my-1" />
+              <div className="text-base font-semibold mb-1 text-blue-500!">
+                IUI Details
+              </div>
+
+              {treatment.iui.protocol && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Protocol:</span>
+                  <span className="font-normal text-xs text-black">
+                    {treatment.iui.protocol}
+                  </span>
+                </div>
+              )}
+
+              {treatment.iui.medications && (
+                <>
+                  <div className="bg-gray-200 w-full h-0.5 my-1" />
+                  <div className="flex flex-col gap-1 text-sm">
+                    <span className="font-semibold">Medications:</span>
+                    <span className="font-normal text-xs text-black">
+                      {treatment.iui.medications}
+                    </span>
+                  </div>
+                </>
+              )}
+
+              {treatment.iui.monitoring && (
+                <>
+                  <div className="bg-gray-200 w-full h-0.5 my-1" />
+                  <div className="flex flex-col gap-1 text-sm">
+                    <span className="font-semibold">Monitoring:</span>
+                    <span className="font-normal text-xs text-black">
+                      {treatment.iui.monitoring}
+                    </span>
+                  </div>
+                </>
+              )}
+
+              <div className="bg-gray-200 w-full h-0.5 my-1" />
+
+              <div className="text-sm font-semibold mb-1">Important Dates:</div>
+              {treatment.iui.ovulationTriggerDate && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Ovulation Trigger:</span>
+                  <span className="font-normal text-xs text-black">
+                    {formatDate(treatment.iui.ovulationTriggerDate)}
+                  </span>
+                </div>
+              )}
+              {treatment.iui.inseminationDate && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Insemination:</span>
+                  <span className="font-normal text-xs text-black">
+                    {formatDate(treatment.iui.inseminationDate)}
+                  </span>
+                </div>
+              )}
+
+              {(treatment.iui.motileSpermCount !== null ||
+                treatment.iui.numberOfAttempts !== null) && (
+                <>
+                  <div className="bg-gray-200 w-full h-0.5 my-1" />
+                  <div className="text-sm font-semibold mb-1">
+                    Procedure Details:
+                  </div>
+                  {treatment.iui.motileSpermCount !== null && (
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="font-semibold">Motile Sperm Count:</span>
+                      <span className="font-normal text-xs text-black">
+                        {treatment.iui.motileSpermCount}
+                      </span>
+                    </div>
+                  )}
+                  {treatment.iui.numberOfAttempts !== null && (
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="font-semibold">Number of Attempts:</span>
+                      <span className="font-normal text-xs text-black">
+                        {treatment.iui.numberOfAttempts}
+                      </span>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {treatment.iui.outcome && (
+                <>
+                  <div className="bg-gray-200 w-full h-0.5 my-1" />
+                  <div className="flex flex-col gap-1 text-sm">
+                    <span className="font-semibold">Outcome:</span>
+                    <span className="font-normal text-xs text-black">
+                      {treatment.iui.outcome}
+                    </span>
+                  </div>
+                </>
+              )}
+
+              {treatment.iui.notes && (
+                <>
+                  <div className="bg-gray-200 w-full h-0.5 my-1" />
+                  <div className="flex flex-col gap-1 text-sm">
+                    <span className="font-semibold">Notes:</span>
+                    <span className="font-normal text-xs text-black whitespace-pre-wrap">
+                      {treatment.iui.notes}
+                    </span>
+                  </div>
+                </>
+              )}
+
+              <div className="bg-gray-200 w-full h-0.5 my-1" />
+              <div className="flex justify-between items-center text-sm">
+                <span className="font-semibold">IUI Status:</span>
+                <span className="font-normal text-xs text-black px-2 py-1 rounded bg-gray-100">
+                  {treatment.iui.status}
+                </span>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -97,7 +395,7 @@ export default function TreatmentDetailInfo({
         </div>
       )}
 
-      {(treatment.estimatedCost !== null || treatment.actualCost !== null) && (
+      {/* {(treatment.estimatedCost !== null || treatment.actualCost !== null) && (
         <div className="bg-gray-50 w-full p-4 rounded-xl shadow-lg border border-blue-200 flex flex-col gap-3">
           <h2 className="text-lg font-semibold text-blue-500 my-2!">
             Financial Information
@@ -119,307 +417,8 @@ export default function TreatmentDetailInfo({
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
-      {treatment.treatmentType === "IVF" && (
-        <div className="bg-gray-50 w-full p-4 rounded-xl shadow-lg border border-blue-200 flex flex-col gap-3">
-          <h2 className="text-lg font-semibold text-blue-500 my-2!">
-            IVF Details
-          </h2>
-
-          <div className="flex flex-col gap-2">
-            {treatment.ivf.protocol && (
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Protocol:</span>
-                <span className="font-normal text-xs text-black">
-                  {treatment.ivf.protocol}
-                </span>
-              </div>
-            )}
-
-            <div className="bg-gray-200 w-full h-0.5 my-1" />
-
-            <div className="text-sm font-semibold mb-1">Important Dates:</div>
-            {treatment.ivf.stimulationStartDate && (
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Stimulation Start:</span>
-                <span className="font-normal text-xs text-black">
-                  {formatDate(treatment.ivf.stimulationStartDate)}
-                </span>
-              </div>
-            )}
-            {treatment.ivf.oocyteRetrievalDate && (
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Oocyte Retrieval:</span>
-                <span className="font-normal text-xs text-black">
-                  {formatDate(treatment.ivf.oocyteRetrievalDate)}
-                </span>
-              </div>
-            )}
-            {treatment.ivf.fertilizationDate && (
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Fertilization:</span>
-                <span className="font-normal text-xs text-black">
-                  {formatDate(treatment.ivf.fertilizationDate)}
-                </span>
-              </div>
-            )}
-            {treatment.ivf.transferDate && (
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Transfer:</span>
-                <span className="font-normal text-xs text-black">
-                  {formatDate(treatment.ivf.transferDate)}
-                </span>
-              </div>
-            )}
-
-            <div className="bg-gray-200 w-full h-0.5 my-1" />
-
-            <div className="text-sm font-semibold mb-1">
-              Oocyte Information:
-            </div>
-            {treatment.ivf.oocytesRetrieved !== null && (
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Oocytes Retrieved:</span>
-                <span className="font-normal text-xs text-black">
-                  {treatment.ivf.oocytesRetrieved}
-                </span>
-              </div>
-            )}
-            {treatment.ivf.oocytesMature !== null && (
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Oocytes Mature:</span>
-                <span className="font-normal text-xs text-black">
-                  {treatment.ivf.oocytesMature}
-                </span>
-              </div>
-            )}
-            {treatment.ivf.oocytesFertilized !== null && (
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Oocytes Fertilized:</span>
-                <span className="font-normal text-xs text-black">
-                  {treatment.ivf.oocytesFertilized}
-                </span>
-              </div>
-            )}
-
-            <div className="bg-gray-200 w-full h-0.5 my-1" />
-
-            <div className="text-sm font-semibold mb-1">
-              Embryo Information:
-            </div>
-            {treatment.ivf.embryosCultured !== null && (
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Embryos Cultured:</span>
-                <span className="font-normal text-xs text-black">
-                  {treatment.ivf.embryosCultured}
-                </span>
-              </div>
-            )}
-            {treatment.ivf.embryosTransferred !== null && (
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Embryos Transferred:</span>
-                <span className="font-normal text-xs text-black">
-                  {treatment.ivf.embryosTransferred}
-                </span>
-              </div>
-            )}
-            {treatment.ivf.embryosCryopreserved !== null && (
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Embryos Cryopreserved:</span>
-                <span className="font-normal text-xs text-black">
-                  {treatment.ivf.embryosCryopreserved}
-                </span>
-              </div>
-            )}
-            {treatment.ivf.embryosFrozen !== null && (
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Embryos Frozen:</span>
-                <span className="font-normal text-xs text-black">
-                  {treatment.ivf.embryosFrozen}
-                </span>
-              </div>
-            )}
-
-            {treatment.ivf.usedICSI !== null && (
-              <>
-                <div className="bg-gray-200 w-full h-0.5 my-1" />
-                <div className="flex justify-between items-center text-sm">
-                  <span className="font-semibold">ICSI Used:</span>
-                  <span className="font-normal text-xs text-black">
-                    {treatment.ivf.usedICSI ? "Yes" : "No"}
-                  </span>
-                </div>
-              </>
-            )}
-
-            {treatment.ivf.outcome && (
-              <>
-                <div className="bg-gray-200 w-full h-0.5 my-1" />
-                <div className="flex flex-col gap-1 text-sm">
-                  <span className="font-semibold">Outcome:</span>
-                  <span className="font-normal text-xs text-black">
-                    {treatment.ivf.outcome}
-                  </span>
-                </div>
-              </>
-            )}
-
-            {treatment.ivf.complications && (
-              <>
-                <div className="bg-gray-200 w-full h-0.5 my-1" />
-                <div className="flex flex-col gap-1 text-sm">
-                  <span className="font-semibold">Complications:</span>
-                  <span className="font-normal text-xs text-black">
-                    {treatment.ivf.complications}
-                  </span>
-                </div>
-              </>
-            )}
-
-            {treatment.ivf.notes && (
-              <>
-                <div className="bg-gray-200 w-full h-0.5 my-1" />
-                <div className="flex flex-col gap-1 text-sm">
-                  <span className="font-semibold">Notes:</span>
-                  <span className="font-normal text-xs text-black whitespace-pre-wrap">
-                    {treatment.ivf.notes}
-                  </span>
-                </div>
-              </>
-            )}
-
-            <div className="bg-gray-200 w-full h-0.5 my-1" />
-            <div className="flex justify-between items-center text-sm">
-              <span className="font-semibold">IVF Status:</span>
-              <span className="font-normal text-xs text-black px-2 py-1 rounded bg-gray-100">
-                {treatment.ivf.status}
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {treatment.treatmentType === "IUI" && (
-        <div className="bg-gray-50 w-full p-4 rounded-xl shadow-lg border border-blue-200 flex flex-col gap-3">
-          <h2 className="text-lg font-semibold text-blue-500 my-2!">
-            IUI Details
-          </h2>
-
-          <div className="flex flex-col gap-2">
-            {treatment.iui.protocol && (
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Protocol:</span>
-                <span className="font-normal text-xs text-black">
-                  {treatment.iui.protocol}
-                </span>
-              </div>
-            )}
-
-            {treatment.iui.medications && (
-              <>
-                <div className="bg-gray-200 w-full h-0.5 my-1" />
-                <div className="flex flex-col gap-1 text-sm">
-                  <span className="font-semibold">Medications:</span>
-                  <span className="font-normal text-xs text-black">
-                    {treatment.iui.medications}
-                  </span>
-                </div>
-              </>
-            )}
-
-            {treatment.iui.monitoring && (
-              <>
-                <div className="bg-gray-200 w-full h-0.5 my-1" />
-                <div className="flex flex-col gap-1 text-sm">
-                  <span className="font-semibold">Monitoring:</span>
-                  <span className="font-normal text-xs text-black">
-                    {treatment.iui.monitoring}
-                  </span>
-                </div>
-              </>
-            )}
-
-            <div className="bg-gray-200 w-full h-0.5 my-1" />
-
-            <div className="text-sm font-semibold mb-1">Important Dates:</div>
-            {treatment.iui.ovulationTriggerDate && (
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Ovulation Trigger:</span>
-                <span className="font-normal text-xs text-black">
-                  {formatDate(treatment.iui.ovulationTriggerDate)}
-                </span>
-              </div>
-            )}
-            {treatment.iui.inseminationDate && (
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Insemination:</span>
-                <span className="font-normal text-xs text-black">
-                  {formatDate(treatment.iui.inseminationDate)}
-                </span>
-              </div>
-            )}
-
-            {(treatment.iui.motileSpermCount !== null ||
-              treatment.iui.numberOfAttempts !== null) && (
-              <>
-                <div className="bg-gray-200 w-full h-0.5 my-1" />
-                <div className="text-sm font-semibold mb-1">
-                  Procedure Details:
-                </div>
-                {treatment.iui.motileSpermCount !== null && (
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="font-semibold">Motile Sperm Count:</span>
-                    <span className="font-normal text-xs text-black">
-                      {treatment.iui.motileSpermCount}
-                    </span>
-                  </div>
-                )}
-                {treatment.iui.numberOfAttempts !== null && (
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="font-semibold">Number of Attempts:</span>
-                    <span className="font-normal text-xs text-black">
-                      {treatment.iui.numberOfAttempts}
-                    </span>
-                  </div>
-                )}
-              </>
-            )}
-
-            {treatment.iui.outcome && (
-              <>
-                <div className="bg-gray-200 w-full h-0.5 my-1" />
-                <div className="flex flex-col gap-1 text-sm">
-                  <span className="font-semibold">Outcome:</span>
-                  <span className="font-normal text-xs text-black">
-                    {treatment.iui.outcome}
-                  </span>
-                </div>
-              </>
-            )}
-
-            {treatment.iui.notes && (
-              <>
-                <div className="bg-gray-200 w-full h-0.5 my-1" />
-                <div className="flex flex-col gap-1 text-sm">
-                  <span className="font-semibold">Notes:</span>
-                  <span className="font-normal text-xs text-black whitespace-pre-wrap">
-                    {treatment.iui.notes}
-                  </span>
-                </div>
-              </>
-            )}
-
-            <div className="bg-gray-200 w-full h-0.5 my-1" />
-            <div className="flex justify-between items-center text-sm">
-              <span className="font-semibold">IUI Status:</span>
-              <span className="font-normal text-xs text-black px-2 py-1 rounded bg-gray-100">
-                {treatment.iui.status}
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

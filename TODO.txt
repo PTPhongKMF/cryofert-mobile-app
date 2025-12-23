@@ -1,0 +1,1 @@
+- photoviewer plugin issues: https://github.com/capacitor-community/photoviewer/issues/83

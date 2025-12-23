@@ -17,6 +17,7 @@ export async function labSampleInfiniteQueryFn(params: {
   sortType: LabSampleSortType;
   isAvailable?: boolean;
   isStoraged?: boolean;
+  canFrozen?: boolean;
 }): Promise<LabSampleListApiResponse> {
   const isExpirySort = params.sortType === "ExpirySoon";
   const sortField = isExpirySort ? "expiryDate" : "collectionDate";
@@ -28,12 +29,13 @@ export async function labSampleInfiniteQueryFn(params: {
         patientId: params.patientId,
         isAvailable: params.isAvailable,
         isStoraged: params.isStoraged,
+        canFrozen: params.canFrozen,
         page: params.pageParam,
         size: params.pageSize,
         sort: sortField,
         order: sortOrder,
-        ...(params.type && { sampleType: params.type }),
-        ...(params.status && { status: params.status }),
+        sampleType: params.type ,
+        status: params.status ,
       },
     })
     .json();
