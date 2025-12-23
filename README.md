@@ -12,13 +12,14 @@ Phiên bản di động này được thiết kế đặc biệt cho bệnh nhâ
 - **Web App (Staff):** <https://github.com/devnguyen0111/cryoweb>
 - **Backend:** <https://github.com/khiemvuong2310/ITCS-Backend>
 
-## Missing Features / Tính năng thiếu
+## Missing Features in Web Preview / Tính năng thiếu trong bản Web
 
 The web preview attached in the GitHub page is for demo purposes only. Some capabilities or features may be missing. For the best experience, please use our mobile version.
 
 Bản xem trước trên GitHub chỉ phục vụ mục đích demo. Một số chức năng có thể chưa đầy đủ. Để trải nghiệm tốt nhất, vui lòng sử dụng ứng dụng di động.
 
 Possible missing features:
+
 - Payment (VNPAY)
 - View images (PDF is supported)
 - Download media (images and PDF)
