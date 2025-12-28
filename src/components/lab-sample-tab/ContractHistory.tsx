@@ -6,6 +6,7 @@ import {
   IonRefresher,
   IonRefresherContent,
   IonSpinner,
+  useIonRouter,
 } from "@ionic/react";
 import { useCryoContractInfiniteQuery } from "@src/hooks/cryo-contract-hook";
 import type { CryoContractListApiResponse } from "@src/schemas/cryo-contract";
@@ -14,8 +15,10 @@ import { useLocalUserStore } from "@src/stores/user";
 import { safeFormat } from "@src/utils/date";
 import { useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { ROUTES } from "@src/routes/routes";
 
 export default function ContractHistory() {
+  const router = useIonRouter();
   const localUser = useLocalUserStore((s) => s.localUser);
   const filterOptions = useCryoContractFilterStore(
     useShallow((s) => s.filterOptions)
@@ -84,18 +87,20 @@ export default function ContractHistory() {
                     button
                     detail
                     onClick={() =>
-                      console.log("Contract clicked", contract.contractNumber)
+                      router.push(
+                        `${ROUTES.CRYO_CONTRACT}/${contract.id}`,
+                        "forward"
+                      )
                     }
                   >
                     <div className="w-full py-3 flex items-stretch gap-3 border-b border-blue-50">
                       <div className="flex-1 flex flex-col gap-2 min-w-0">
-                        <div className="flex items-baseline gap-2 min-w-0">
+                        <div className="flex flex-col gap-1 min-w-0">
                           <span className="text-sm font-semibold text-gray-900 truncate">
-                            {contract.contractNumber}
-                          </span>
-                          <span className="inline-block size-1 self-center rounded-full bg-gray-500 flex-shrink-0" />
-                          <span className="text-xs text-gray-700 truncate">
                             {contract.cryoPackageName}
+                          </span>
+                          <span className="text-xs tracking-wider text-gray-700 truncate">
+                            {contract.contractNumber}
                           </span>
                         </div>
 
@@ -199,4 +204,3 @@ function getStatusBadgeClass(status: string) {
       return "bg-gray-50 text-gray-700 border-gray-200";
   }
 }
-

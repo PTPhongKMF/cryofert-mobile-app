@@ -3,6 +3,8 @@ import {
   type CryoContractApiResponse,
   CryoContractListApiResponseSchema,
   type CryoContractListApiResponse,
+  CryoContractDetailApiResponseSchema,
+  type CryoContractDetailApiResponse,
   type CryoContractStatus,
 } from "@src/schemas/cryo-contract";
 import { httpClient } from "@src/services/api-services/http-service";
@@ -77,3 +79,12 @@ export async function verifySignCryoContractMutationFn(params: {
   return v.parse(CryoContractApiResponseSchema, res);
 }
 
+export async function getCryoContractDetailQueryFn(
+  id: string
+): Promise<CryoContractDetailApiResponse> {
+  const res = await httpClient
+    .get(`api/cryostoragecontracts/${id}`)
+    .json();
+
+  return v.parse(CryoContractDetailApiResponseSchema, res);
+}

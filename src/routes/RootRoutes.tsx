@@ -18,6 +18,7 @@ import TreatmentCycleDetail from "@src/pages/treatment-tab/TreatmentCycleDetail"
 import Relationship from "@src/pages/account-center-tab/Relationship";
 import StartCryoContractForm from "@src/pages/start-cryo-contract/StartCryoContractForm";
 import StartCryoContractPaper from "@src/pages/start-cryo-contract/StartCryoContractPaper";
+import CryoContractDetail from "@src/pages/lab-samples-tab/CryoContractDetail";
 
 export default function RootRoutes() {
   const router = useIonRouter();
@@ -56,6 +57,10 @@ export default function RootRoutes() {
       <Route
         path={`${ROUTES.TREATMENT_CYCLE}/:cycleId`}
         component={TreatmentCycleDetail}
+      />
+      <Route
+        path={`${ROUTES.CRYO_CONTRACT}/:contractId`}
+        component={CryoContractDetail}
       />
 
       <Route path={ROUTES.UPDATE_ACCOUNT} component={UpdateAccount} />

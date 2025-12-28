@@ -77,7 +77,7 @@ export default function LabSampleHistory() {
                     onClick={() => console.log("Lab sample clicked", sample)}
                   >
                     <div className="w-full py-3 grid grid-cols-[1fr_auto] items-stretch gap-2 border-b border-blue-50">
-                      <div className="flex-1 flex flex-col gap-2 min-w-0">
+                      <div className="flex-1 flex flex-col gap-0.5 min-w-0">
                         <div className="flex items-baseline gap-1.5 min-w-0">
                           <span className="text-sm font-semibold text-gray-900 truncate">
                             {titleCase(sample.sampleType)}
@@ -92,7 +92,7 @@ export default function LabSampleHistory() {
                           )}
                         </div>
 
-                        <div className="flex flex-col gap-1 text-sm text-gray-700">
+                        <div className="flex flex-col gap-0.5 text-sm text-gray-700">
                           <div className="flex items-baseline gap-1.5">
                             <span className="text-[11px] uppercase tracking-wide text-gray-400">
                               Collected
@@ -126,7 +126,7 @@ export default function LabSampleHistory() {
                         </div>
                       </div>
 
-                      <div className="flex flex-col justify-between items-end gap-2 min-w-fit">
+                      <div className="flex flex-col justify-between items-end gap-1 min-w-fit">
                         <span
                           className={`text-[11px] font-semibold px-3 py-1 rounded-full border ${getStatusBadgeClass(
                             sample.status

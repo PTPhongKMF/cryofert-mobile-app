@@ -82,7 +82,7 @@ export default function Home() {
       <BlueToGrayGradientBg />
 
       <SafeAreaView withFixedHeader={true} className="relative">
-        <div className="pb-20">
+        <div className="">
           {/* Greeting Section */}
           <div
             className="py-2 pt-10 pb-30 bg-cover mask-b-from-70% mask-b-to-100%"

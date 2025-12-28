@@ -12,6 +12,7 @@ const BASE = {
   TREATMENT: `/treatment`,
   APPOINTMENT: `/appointment`,
   TREATMENT_CYCLE: `/treatment-cycle`,
+  CRYO_CONTRACT: `/cryo-contract`,
 
   UPDATE_ACCOUNT: `/update-account`,
   RELATIONSHIP: `/relationship`,

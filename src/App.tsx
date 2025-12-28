@@ -38,7 +38,7 @@ import WebPreviewAlert from "@src/components/dialogs/WebPreviewAlert";
 
 setupIonicReact();
 
-const isWebPreview = import.meta.env.VITE_WEB_PREVIEW === "true";
+export const isWebPreview = import.meta.env.VITE_WEB_PREVIEW === "true";
 
 export default function App() {
   return (

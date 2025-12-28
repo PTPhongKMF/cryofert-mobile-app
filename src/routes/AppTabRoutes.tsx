@@ -40,9 +40,10 @@ import { ClipboardPlus, Dna, Snowflake, Stethoscope } from "lucide-react";
 import Dev from "@src/pages/devs/Dev";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import Home from "@src/pages/Home";
-import LabSamples from "@src/pages/LabSamples";
+import LabSamplesTab from "@src/pages/lab-samples-tab/LabSamplesTab";
 import AppTabHeader from "@src/components/layout/AppTabHeader";
 import HomeCopy from "@src/pages/HomeCopy";
+import { isWebPreview } from "@src/App";
 
 export default function AppTabRoutes() {
   const router = useIonRouter();
@@ -93,10 +94,14 @@ export default function AppTabRoutes() {
         <IonContent>
           <Route exact path={ROUTES.T_HOME} component={Home} />
           <Route exact path={ROUTES.T_TREATMENT} component={TreatmentTab} />
-          <Route exact path={ROUTES.T_SAMPLES} component={LabSamples} />
+          <Route exact path={ROUTES.T_SAMPLES} component={LabSamplesTab} />
           <Route exact path={ROUTES.T_ACCOUNT} component={Account} />
-          <Route exact path={"/tabs/dev"} component={HomeCopy} />
-          {/* <Route exact path={"/tabs/dev"} component={Dev} /> */}
+          {isWebPreview && (
+            <>
+              <Route exact path={"/tabs/dev"} component={HomeCopy} />
+              {/* <Route exact path={"/tabs/dev"} component={Dev} /> */}
+            </>
+          )}
         </IonContent>
       </IonRouterOutlet>
 
@@ -146,15 +151,17 @@ export default function AppTabRoutes() {
           <IonLabel className="text-xs">Account</IonLabel>
         </IonTabButton>
 
-        <IonTabButton tab="dev" href={"/tabs/dev"}>
-          <IonIcon
-            icon={
-              matchCurrentTab("/tabs/dev") ? codeWorking : codeWorkingOutline
-            }
-            className="size-6"
-          />
-          <IonLabel className="text-xs">Dev</IonLabel>
-        </IonTabButton>
+        {isWebPreview && (
+          <IonTabButton tab="dev" href={"/tabs/dev"}>
+            <IonIcon
+              icon={
+                matchCurrentTab("/tabs/dev") ? codeWorking : codeWorkingOutline
+              }
+              className="size-6"
+            />
+            <IonLabel className="text-xs">Dev</IonLabel>
+          </IonTabButton>
+        )}
       </IonTabBar>
 
       <IonFab vertical="bottom" horizontal="end">
