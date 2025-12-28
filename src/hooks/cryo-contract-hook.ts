@@ -8,6 +8,8 @@ import {
   createCryoContractMutationFn,
   cryoContractInfiniteQueryFn,
   type CreateCryoContractRequest,
+  renewCryoContractMutationFn,
+  type RenewCryoContractRequest,
   requestSignCryoContractMutationFn,
   verifySignCryoContractMutationFn,
   getCryoContractDetailQueryFn,
@@ -29,6 +31,16 @@ export function useCreateCryoContractMutation() {
     CreateCryoContractRequest
   >({
     mutationFn: createCryoContractMutationFn,
+  });
+}
+
+export function useRenewContractMutation() {
+  return useMutation<
+    CryoContractApiResponse,
+    HTTPError,
+    RenewCryoContractRequest
+  >({
+    mutationFn: renewCryoContractMutationFn,
   });
 }
 

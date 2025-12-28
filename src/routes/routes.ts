@@ -6,6 +6,7 @@ const BASE = {
   BOOK_TREATMENT: `/book-treatment`,
   START_CONTRACT_FORM: `/start-contract-form`,
   START_CONTRACT_PAPER: `/start-contract-paper`,
+  RENEW_CONTRACT_PAPER: `/renew-contract-paper`,
 
   PAYMENT_PORTAL: `/payment-portal`,
 

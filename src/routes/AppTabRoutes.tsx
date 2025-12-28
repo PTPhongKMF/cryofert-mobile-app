@@ -3,15 +3,12 @@ import {
   IonFab,
   IonFabButton,
   IonFabList,
-  IonHeader,
   IonIcon,
   IonLabel,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
-  IonTitle,
-  IonToolbar,
   useIonRouter,
 } from "@ionic/react";
 import { Route } from "react-router-dom";
@@ -30,8 +27,6 @@ import {
   personCircleOutline,
   server,
   serverOutline,
-  snow,
-  snowOutline,
 } from "ionicons/icons";
 import { useEffect } from "react";
 import { useLocalUserStore } from "@src/stores/user";
@@ -172,7 +167,7 @@ export default function AppTabRoutes() {
         <IonFabList side="start" className="flex gap-2 me-20">
           <IonFabButton
             onClick={() => router.push(ROUTES.BOOK_TREATMENT)}
-            className="ion-b-r-[6px] w-[10rem] h-14 ion-bg-sky-500"
+            className="ion-b-r-[6px] w-40 h-14 ion-bg-sky-500"
           >
             <ClipboardPlus className="me-4 text-gray-50" />
             <p className="text-gray-50 font-semibold text-lg [text-box:trim-both_cap_alphabetic]">
@@ -182,7 +177,7 @@ export default function AppTabRoutes() {
 
           <IonFabButton
             onClick={() => router.push(ROUTES.START_CONTRACT_FORM)}
-            className="ion-b-r-[6px] w-[8rem] h-14 ion-bg-blue-500"
+            className="ion-b-r-[6px] w-32 h-14 ion-bg-blue-500"
           >
             <Snowflake className="me-4 text-gray-50" />
             <p className="text-gray-50 font-semibold text-lg [text-box:trim-both_cap_alphabetic]">

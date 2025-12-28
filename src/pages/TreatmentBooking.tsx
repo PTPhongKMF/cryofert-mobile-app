@@ -7,10 +7,8 @@ import {
   IonFooter,
   IonHeader,
   IonImg,
-  IonNote,
   IonPage,
   IonSpinner,
-  IonTextarea,
   IonTitle,
   IonToolbar,
   useIonRouter,
@@ -20,7 +18,7 @@ import {
   type BookAppointmentForm,
   type BookAppointmentRequest,
 } from "@src/schemas/appointment";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import ChildIcon from "@assets/images/child.png";
 import { useEffect, useState } from "react";
 import { useLocalUserStore } from "@src/stores/user";
@@ -48,7 +46,10 @@ export default function TreatmentBooking() {
 
   const slotsQuery = useSlotsQuery();
   const bookingMutation = useCreateBookingAppointmentMutation();
-  const isLoading = bookingMutation.isPending || slotsQuery.isPending || patientRequiredInfoQuery.isLoading;
+  const isLoading =
+    bookingMutation.isPending ||
+    slotsQuery.isPending ||
+    patientRequiredInfoQuery.isLoading;
 
   const [formType, setFormType] = useState<"doctor-first" | "date-first">(
     "doctor-first"
@@ -124,8 +125,7 @@ export default function TreatmentBooking() {
       buttons: {
         text: "Go to update",
         color: "warning",
-        closeFn: () =>
-          router.push(ROUTES.UPDATE_ACCOUNT, "forward", "replace"),
+        closeFn: () => router.push(ROUTES.UPDATE_ACCOUNT, "forward", "replace"),
       },
     });
   }, [

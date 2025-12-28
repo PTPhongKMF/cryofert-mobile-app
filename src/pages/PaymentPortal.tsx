@@ -30,6 +30,7 @@ export default function PaymentPortal() {
   const searchParams = new URLSearchParams(location.search);
   const relatedEntityType = searchParams.get("relatedEntityType");
   const relatedEntityId = searchParams.get("relatedEntityId");
+  const paymentFor = searchParams.get("paymentFor");
 
   const openGenericDialog = useGenericDialogStore(
     useShallow((s) => s.openGenericDialog)
@@ -79,6 +80,7 @@ export default function PaymentPortal() {
 
   async function handleVnPay() {
     const res = v.safeParse(CreateTransactionRequestSchema, {
+      paymentGateway: "VnPay",
       relatedEntityId: relatedEntityId,
       relatedEntityType: relatedEntityType,
     });
@@ -128,6 +130,17 @@ export default function PaymentPortal() {
           <p className="text-2xl font-semibold text-blue-500">
             CryoFert Online Payment Portal
           </p>
+
+          <div className="text-center">
+            <p className="text-3xl font-bold text-slate-900">
+              {paymentFor ? "Payment for" : "Payment"}
+            </p>
+            {paymentFor && (
+              <p className="mt-2 text-lg font-medium text-slate-700">
+                {paymentFor}
+              </p>
+            )}
+          </div>
 
           <div className="size-full flex flex-col justify-start items-center gap-10 pt-8 px-8">
             <button

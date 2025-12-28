@@ -22,11 +22,29 @@ export interface CreateCryoContractRequest {
   samples: CreateCryoContractSample[];
 }
 
+export interface RenewCryoContractRequest {
+  contractID: string;
+  patientId: string;
+  cryoPackageId: string;
+}
+
 export async function createCryoContractMutationFn(
   payload: CreateCryoContractRequest
 ): Promise<CryoContractApiResponse> {
   const res = await httpClient
     .post("api/cryostoragecontracts", {
+      json: payload,
+    })
+    .json();
+
+  return v.parse(CryoContractApiResponseSchema, res);
+}
+
+export async function renewCryoContractMutationFn(
+  payload: RenewCryoContractRequest
+): Promise<CryoContractApiResponse> {
+  const res = await httpClient
+    .post("api/cryostoragecontracts/renew", {
       json: payload,
     })
     .json();

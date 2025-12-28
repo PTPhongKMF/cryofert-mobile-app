@@ -9,6 +9,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import type { CryoPackageResponse } from "@src/schemas/cryo-package";
+import { formatCurrency } from "@src/utils/currency";
 import { close } from "ionicons/icons";
 
 type PackageDetailModalProps = {
@@ -56,7 +57,7 @@ export default function PackageDetailModal({
                 </div>
                 <div className="text-right">
                   <p className="text-lg font-semibold text-blue-600">
-                    {pkg.price}
+                    {formatCurrency(pkg.price, { locale: "vi-VN", currency: "VND" })}
                   </p>
                   <p className="text-xs text-gray-500">
                     {pkg.durationMonths} months
@@ -89,7 +90,10 @@ export default function PackageDetailModal({
                 <div className="rounded-md border border-neutral-200 bg-white p-3">
                   <p className="text-xs text-gray-500">Insurance amount</p>
                   <p className="text-sm font-medium text-gray-900">
-                    {pkg.insuranceAmount}
+                    {formatCurrency(pkg.insuranceAmount ?? 0, {
+                      locale: "vi-VN",
+                      currency: "VND",
+                    })}
                   </p>
                 </div>
               )}

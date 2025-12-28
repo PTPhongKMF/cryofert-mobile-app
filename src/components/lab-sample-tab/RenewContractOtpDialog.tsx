@@ -1,34 +1,37 @@
 import { IonButton, IonInputOtp, IonModal, IonSpinner } from "@ionic/react";
+import { useIonRouter } from "@ionic/react";
 import { alertCircleOutline, checkmarkCircleOutline } from "ionicons/icons";
-import { useVerifySignCryoContractMutation } from "@src/hooks/cryo-contract-hook";
-import { useAppLoadingStore } from "@src/stores/app-loading";
-import { useGenericDialogStore } from "@src/stores/dialog";
-import { cn } from "@src/utils/cn";
-import { ROUTES } from "@src/routes/routes";
 import { ShieldQuestionMark } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import * as v from "valibot";
-import { useIonRouter } from "@ionic/react";
 
-const LOADER_KEY = "cryo-contract-sign";
+import { useVerifySignCryoContractMutation } from "@src/hooks/cryo-contract-hook";
+import { ROUTES } from "@src/routes/routes";
+import { useAppLoadingStore } from "@src/stores/app-loading";
+import { useGenericDialogStore } from "@src/stores/dialog";
+import { cn } from "@src/utils/cn";
 
-interface ContractOtpDialogProps {
+const LOADER_KEY = "cryo-contract-renew-sign";
+
+interface RenewContractOtpDialogProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   contractId: string;
   onContractSigned?: () => void;
 }
 
-export default function ContractOtpDialog(props: ContractOtpDialogProps) {
+export default function RenewContractOtpDialog(
+  props: RenewContractOtpDialogProps
+) {
   const { startLoading, stopLoading } = useAppLoadingStore(
     useShallow((s) => ({
       startLoading: s.startLoading,
       stopLoading: s.stopLoading,
     }))
   );
-  const router = useIonRouter();
 
+  const router = useIonRouter();
   const openGenericDialog = useGenericDialogStore((s) => s.openGenericDialog);
 
   const [otp, setOtp] = useState("");
@@ -72,10 +75,7 @@ export default function ContractOtpDialog(props: ContractOtpDialogProps) {
     }
 
     verifySignCryoContractMutation.mutate(
-      {
-        id: props.contractId,
-        otpCode: result.output,
-      },
+      { id: props.contractId, otpCode: result.output },
       {
         onError: (error) => {
           setOtpError(true);
@@ -143,12 +143,8 @@ export default function ContractOtpDialog(props: ContractOtpDialogProps) {
           length={6}
           size="small"
           value={otp}
-          onIonInput={(e) => {
-            setOtp(e.detail.value ?? "");
-          }}
-          onIonFocus={() => {
-            setOtpError(false);
-          }}
+          onIonInput={(e) => setOtp(e.detail.value ?? "")}
+          onIonFocus={() => setOtpError(false)}
           onIonComplete={(e) => handleConfirm(e.detail.value ?? "")}
           className={cn(
             "ion-min-w-[0px]! ion-w-[2.4rem]!",
@@ -170,7 +166,7 @@ export default function ContractOtpDialog(props: ContractOtpDialogProps) {
             className="w-full text-base"
           >
             {verifySignCryoContractMutation.isPending ? (
-              <IonSpinner name="crescent"></IonSpinner>
+              <IonSpinner name="crescent" />
             ) : (
               "Confirm"
             )}

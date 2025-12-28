@@ -29,6 +29,7 @@ export const CryoContractResponseSchema = v.object({
   cryoPackageName: v.string(),
   createdAt: v.string(),
   updatedAt: v.nullable(v.string()),
+  renewFromContractId: v.nullable(v.string()),
 });
 
 export const CryoContractDetailResponseSchema = v.object({

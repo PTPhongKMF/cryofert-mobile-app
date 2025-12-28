@@ -19,6 +19,7 @@ import Relationship from "@src/pages/account-center-tab/Relationship";
 import StartCryoContractForm from "@src/pages/start-cryo-contract/StartCryoContractForm";
 import StartCryoContractPaper from "@src/pages/start-cryo-contract/StartCryoContractPaper";
 import CryoContractDetail from "@src/pages/lab-samples-tab/CryoContractDetail";
+import RenewCryoContractPaper from "@src/pages/lab-samples-tab/RenewCryoContractPaper";
 
 export default function RootRoutes() {
   const router = useIonRouter();
@@ -42,6 +43,10 @@ export default function RootRoutes() {
       <Route
         path={ROUTES.START_CONTRACT_PAPER}
         component={StartCryoContractPaper}
+      />
+      <Route
+        path={ROUTES.RENEW_CONTRACT_PAPER}
+        component={RenewCryoContractPaper}
       />
 
       <Route path={ROUTES.PAYMENT_PORTAL} component={PaymentPortal} />

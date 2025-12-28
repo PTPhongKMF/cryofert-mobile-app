@@ -8,7 +8,8 @@ import { cryoPackageInfiniteQueryFn } from "@src/services/api-services/cryo-pack
 
 export function useCryoPackageInfiniteQuery(
   sampleType: LabSampleType,
-  pageSize: number = 20
+  pageSize: number = 20,
+  enabled: boolean = true
 ) {
   return useInfiniteQuery<
     CryoPackageApiResponse,
@@ -24,6 +25,7 @@ export function useCryoPackageInfiniteQuery(
         pageSize,
         pageParam: queryParams.pageParam,
       }),
+    enabled,
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
       lastPage.metaData?.hasNext ? lastPage.metaData.page + 1 : undefined,
