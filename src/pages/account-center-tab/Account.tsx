@@ -22,7 +22,6 @@ import {
 import { useGenericDialogStore } from "@src/stores/dialog";
 import { Clipboard } from "@capacitor/clipboard";
 import { useState } from "react";
-import { clearAllSecuredTokens } from "@src/services/token-service";
 import { cn } from "@utils/cn";
 import AppTabHeader from "@src/components/layout/AppTabHeader";
 
@@ -31,7 +30,7 @@ export default function Account() {
 
   const router = useIonRouter();
   const localUser = useLocalUserStore((s) => s.localUser);
-  const clearLocalUser = useLocalUserStore((s) => s.clearLocalUser);
+  const logout = useLocalUserStore((s) => s.logout);
   const openGenericDialog = useGenericDialogStore((s) => s.openGenericDialog);
 
   return (
@@ -116,9 +115,7 @@ export default function Account() {
                     text: "Confirm",
                     color: "danger",
                     closeFn: async () => {
-                      await clearAllSecuredTokens();
-                      clearLocalUser();
-                      router.push(ROUTES.L_AUTH_LOGIN);
+                      await logout();
                     },
                   },
                 ],

@@ -30,7 +30,6 @@ import {
 } from "ionicons/icons";
 import { useEffect } from "react";
 import { useLocalUserStore } from "@src/stores/user";
-import { clearAllSecuredTokens } from "@src/services/token-service";
 import { ClipboardPlus, Dna, Snowflake, Stethoscope } from "lucide-react";
 import Dev from "@src/pages/devs/Dev";
 import { useGenericDialogStore } from "@src/stores/dialog";
@@ -44,6 +43,7 @@ export default function AppTabRoutes() {
   const router = useIonRouter();
   const localUser = useLocalUserStore((s) => s.localUser);
   const hasHydrated = useLocalUserStore((s) => s.hasHydrated);
+  const logout = useLocalUserStore((s) => s.logout);
   const openGenericDialog = useGenericDialogStore((s) => s.openGenericDialog);
 
   const matchCurrentTab = (path: string) =>
@@ -57,7 +57,6 @@ export default function AppTabRoutes() {
     (async () => {
       if (router.routeInfo.pathname.startsWith(ROUTES.TABS)) {
         if (!localUser) {
-          await clearAllSecuredTokens();
           openGenericDialog({
             title: "Authentication Error",
             content: "We can't verify your account, please log in again",
@@ -66,7 +65,7 @@ export default function AppTabRoutes() {
             buttons: {
               text: "Back to Log In",
               color: "danger",
-              closeFn: () => router.push(ROUTES.L_AUTH_LOGIN, "back"),
+              closeFn: () => logout(),
             },
             backdropDismiss: false,
           });
@@ -78,6 +77,7 @@ export default function AppTabRoutes() {
     router.routeInfo.pathname,
     localUser,
     hasHydrated,
+    logout,
     openGenericDialog,
   ]);
 

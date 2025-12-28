@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { Preferences } from "@capacitor/preferences";
 import type { StateStorage } from "zustand/middleware";
+import { clearAllSecuredTokens } from "@src/services/token-service";
 
 interface LocalUser {
   id: string;
@@ -30,19 +31,31 @@ const capPrefStorage: StateStorage = {
 interface UserStore {
   localUser: LocalUser | null;
   hasHydrated: boolean;
+  logoutCallback: (() => void | Promise<void>) | null;
   setLocalUser: (newUser: LocalUser | null) => void;
-  clearLocalUser: () => void;
   setHasHydrated: (hasHydrated: boolean) => void;
+  setLogout: (logoutCallback: (() => void | Promise<void>) | null) => void;
+  logout: () => Promise<void>;
 }
 
 export const useLocalUserStore = create<UserStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       localUser: null,
       hasHydrated: false,
+      logoutCallback: null,
       setLocalUser: (newUser) => set({ localUser: newUser }),
-      clearLocalUser: () => set({ localUser: null }),
       setHasHydrated: (hasHydrated) => set({ hasHydrated }),
+      setLogout: (logoutCallback) => set({ logoutCallback }),
+      logout: async () => {
+        await clearAllSecuredTokens();
+        set({ localUser: null });
+
+        const cb = get().logoutCallback;
+        if (cb) {
+          await cb();
+        }
+      },
     }),
     {
       name: "local-user",

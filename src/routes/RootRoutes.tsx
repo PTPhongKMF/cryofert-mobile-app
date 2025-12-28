@@ -20,15 +20,30 @@ import StartCryoContractForm from "@src/pages/start-cryo-contract/StartCryoContr
 import StartCryoContractPaper from "@src/pages/start-cryo-contract/StartCryoContractPaper";
 import CryoContractDetail from "@src/pages/lab-samples-tab/CryoContractDetail";
 import RenewCryoContractPaper from "@src/pages/lab-samples-tab/RenewCryoContractPaper";
+import { useLocalUserStore } from "@src/stores/user";
 
 export default function RootRoutes() {
   const router = useIonRouter();
+  const hasHydrated = useLocalUserStore((s) => s.hasHydrated);
+  const localUser = useLocalUserStore((s) => s.localUser);
+  const setLogout = useLocalUserStore((s) => s.setLogout);
 
   useEffect(() =>
     setGlobalPush((path, direction) => {
       router.push(path, direction);
     })
   );
+
+  useEffect(() => {
+    if (!hasHydrated || !localUser) {
+      return;
+    }
+
+    setLogout(async () => {
+      router.push(ROUTES.L_AUTH_LOGIN, "back");
+    });
+  }, [hasHydrated, localUser, router, setLogout]);
+
   return (
     <IonRouterOutlet>
       <Route exact path={ROUTES.ROOT} component={SplashScreen} />
