@@ -3,15 +3,12 @@ import {
   IonFab,
   IonFabButton,
   IonFabList,
-  IonHeader,
   IonIcon,
   IonLabel,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
-  IonTitle,
-  IonToolbar,
   useIonRouter,
 } from "@ionic/react";
 import { Route } from "react-router-dom";
@@ -30,24 +27,23 @@ import {
   personCircleOutline,
   server,
   serverOutline,
-  snow,
-  snowOutline,
 } from "ionicons/icons";
 import { useEffect } from "react";
 import { useLocalUserStore } from "@src/stores/user";
-import { clearAllSecuredTokens } from "@src/services/token-service";
 import { ClipboardPlus, Dna, Snowflake, Stethoscope } from "lucide-react";
 import Dev from "@src/pages/devs/Dev";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import Home from "@src/pages/Home";
-import LabSamples from "@src/pages/LabSamples";
+import LabSamplesTab from "@src/pages/lab-samples-tab/LabSamplesTab";
 import AppTabHeader from "@src/components/layout/AppTabHeader";
 import HomeCopy from "@src/pages/HomeCopy";
+import { isWebPreview } from "@src/App";
 
 export default function AppTabRoutes() {
   const router = useIonRouter();
   const localUser = useLocalUserStore((s) => s.localUser);
   const hasHydrated = useLocalUserStore((s) => s.hasHydrated);
+  const logout = useLocalUserStore((s) => s.logout);
   const openGenericDialog = useGenericDialogStore((s) => s.openGenericDialog);
 
   const matchCurrentTab = (path: string) =>
@@ -61,7 +57,6 @@ export default function AppTabRoutes() {
     (async () => {
       if (router.routeInfo.pathname.startsWith(ROUTES.TABS)) {
         if (!localUser) {
-          await clearAllSecuredTokens();
           openGenericDialog({
             title: "Authentication Error",
             content: "We can't verify your account, please log in again",
@@ -70,7 +65,7 @@ export default function AppTabRoutes() {
             buttons: {
               text: "Back to Log In",
               color: "danger",
-              closeFn: () => router.push(ROUTES.L_AUTH_LOGIN, "back"),
+              closeFn: () => logout(),
             },
             backdropDismiss: false,
           });
@@ -82,6 +77,7 @@ export default function AppTabRoutes() {
     router.routeInfo.pathname,
     localUser,
     hasHydrated,
+    logout,
     openGenericDialog,
   ]);
 
@@ -93,10 +89,14 @@ export default function AppTabRoutes() {
         <IonContent>
           <Route exact path={ROUTES.T_HOME} component={Home} />
           <Route exact path={ROUTES.T_TREATMENT} component={TreatmentTab} />
-          <Route exact path={ROUTES.T_SAMPLES} component={LabSamples} />
+          <Route exact path={ROUTES.T_SAMPLES} component={LabSamplesTab} />
           <Route exact path={ROUTES.T_ACCOUNT} component={Account} />
-          <Route exact path={"/tabs/dev"} component={HomeCopy} />
-          {/* <Route exact path={"/tabs/dev"} component={Dev} /> */}
+          {isWebPreview && (
+            <>
+              <Route exact path={"/tabs/dev"} component={HomeCopy} />
+              {/* <Route exact path={"/tabs/dev"} component={Dev} /> */}
+            </>
+          )}
         </IonContent>
       </IonRouterOutlet>
 
@@ -146,15 +146,17 @@ export default function AppTabRoutes() {
           <IonLabel className="text-xs">Account</IonLabel>
         </IonTabButton>
 
-        <IonTabButton tab="dev" href={"/tabs/dev"}>
-          <IonIcon
-            icon={
-              matchCurrentTab("/tabs/dev") ? codeWorking : codeWorkingOutline
-            }
-            className="size-6"
-          />
-          <IonLabel className="text-xs">Dev</IonLabel>
-        </IonTabButton>
+        {isWebPreview && (
+          <IonTabButton tab="dev" href={"/tabs/dev"}>
+            <IonIcon
+              icon={
+                matchCurrentTab("/tabs/dev") ? codeWorking : codeWorkingOutline
+              }
+              className="size-6"
+            />
+            <IonLabel className="text-xs">Dev</IonLabel>
+          </IonTabButton>
+        )}
       </IonTabBar>
 
       <IonFab vertical="bottom" horizontal="end">
@@ -165,7 +167,7 @@ export default function AppTabRoutes() {
         <IonFabList side="start" className="flex gap-2 me-20">
           <IonFabButton
             onClick={() => router.push(ROUTES.BOOK_TREATMENT)}
-            className="ion-b-r-[6px] w-[10rem] h-14 ion-bg-sky-500"
+            className="ion-b-r-[6px] w-40 h-14 ion-bg-sky-500"
           >
             <ClipboardPlus className="me-4 text-gray-50" />
             <p className="text-gray-50 font-semibold text-lg [text-box:trim-both_cap_alphabetic]">
@@ -175,7 +177,7 @@ export default function AppTabRoutes() {
 
           <IonFabButton
             onClick={() => router.push(ROUTES.START_CONTRACT_FORM)}
-            className="ion-b-r-[6px] w-[8rem] h-14 ion-bg-blue-500"
+            className="ion-b-r-[6px] w-32 h-14 ion-bg-blue-500"
           >
             <Snowflake className="me-4 text-gray-50" />
             <p className="text-gray-50 font-semibold text-lg [text-box:trim-both_cap_alphabetic]">

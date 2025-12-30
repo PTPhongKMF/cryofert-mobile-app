@@ -126,7 +126,7 @@ export default function OtpDialog() {
     <IonModal
       isOpen={isOpen}
       onDidDismiss={closeOtpDialog}
-      backdropDismiss={false}
+      backdropDismiss={true}
       className="ion-w-fit ion-h-fit ion-b-r-[10px] ion-box-shadow"
     >
       <div

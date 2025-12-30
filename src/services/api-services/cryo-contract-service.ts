@@ -3,6 +3,8 @@ import {
   type CryoContractApiResponse,
   CryoContractListApiResponseSchema,
   type CryoContractListApiResponse,
+  CryoContractDetailApiResponseSchema,
+  type CryoContractDetailApiResponse,
   type CryoContractStatus,
 } from "@src/schemas/cryo-contract";
 import { httpClient } from "@src/services/api-services/http-service";
@@ -20,11 +22,29 @@ export interface CreateCryoContractRequest {
   samples: CreateCryoContractSample[];
 }
 
+export interface RenewCryoContractRequest {
+  contractID: string;
+  patientId: string;
+  cryoPackageId: string;
+}
+
 export async function createCryoContractMutationFn(
   payload: CreateCryoContractRequest
 ): Promise<CryoContractApiResponse> {
   const res = await httpClient
     .post("api/cryostoragecontracts", {
+      json: payload,
+    })
+    .json();
+
+  return v.parse(CryoContractApiResponseSchema, res);
+}
+
+export async function renewCryoContractMutationFn(
+  payload: RenewCryoContractRequest
+): Promise<CryoContractApiResponse> {
+  const res = await httpClient
+    .post("api/cryostoragecontracts/renew", {
       json: payload,
     })
     .json();
@@ -77,3 +97,12 @@ export async function verifySignCryoContractMutationFn(params: {
   return v.parse(CryoContractApiResponseSchema, res);
 }
 
+export async function getCryoContractDetailQueryFn(
+  id: string
+): Promise<CryoContractDetailApiResponse> {
+  const res = await httpClient
+    .get(`api/cryostoragecontracts/${id}`)
+    .json();
+
+  return v.parse(CryoContractDetailApiResponseSchema, res);
+}

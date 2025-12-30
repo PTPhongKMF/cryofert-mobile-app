@@ -4,6 +4,12 @@ import * as v from "valibot";
 export const TransactionTypes = ["Payment", "Refund", "Adjustment"] as const;
 const transactionType = v.picklist(TransactionTypes);
 
+export const PaymentGateway = ["VNPay", "PayOS"] as const;
+const paymentGatewaySchema = v.picklist(PaymentGateway);
+
+export const CreateTransPaymentGateway = ["VnPay", "PayOS"] as const;
+const createTransPaymentGatewaySchema = v.picklist(CreateTransPaymentGateway);
+
 export const TransactionStatuses = [
   "Pending",
   "Completed",
@@ -20,11 +26,8 @@ export const relatedEntityType = [
 const relatedEntityTypeSchema = v.picklist(relatedEntityType);
 
 export const CreateTransactionRequestSchema = v.object({
-  relatedEntityType: v.union([
-    v.literal("ServiceRequest"),
-    v.literal("Appointment"),
-    v.literal("CryoStorageContract"),
-  ]),
+  paymentGateway: createTransPaymentGatewaySchema,
+  relatedEntityType: relatedEntityTypeSchema,
   relatedEntityId: v.pipe(v.string(), v.nonEmpty()),
 });
 
@@ -38,7 +41,7 @@ export const TransactionResponseSchema = v.object({
   transactionDate: v.string(),
   status: transactionStatus,
   paymentMethod: v.nullable(v.string()),
-  paymentGateway: v.nullable(v.string()),
+  paymentGateway: v.nullable(paymentGatewaySchema),
   referenceNumber: v.string(),
   description: v.string(),
   notes: v.nullable(v.string()),

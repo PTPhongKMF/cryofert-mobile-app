@@ -34,7 +34,7 @@ export default function HomeCopy() {
   const router = useIonRouter();
   const { localUser } = useLocalUserStore();
   const greeting = getGreetingOfDay();
-  const firstName = localUser?.firstName || "User";
+  const lastName = localUser?.lastName || "User";
 
   const mockUpcomingAppointments = [
     {
@@ -128,7 +128,7 @@ export default function HomeCopy() {
           {/* Greeting Section */}
           <div className="pt-6 mb-8">
             <h1 className="text-xl! m-0! font-bold! text-blue-700">
-              {greeting}, {firstName}
+              {greeting}, {lastName}
             </h1>
           </div>
 

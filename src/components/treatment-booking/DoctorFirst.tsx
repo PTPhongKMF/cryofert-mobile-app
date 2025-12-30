@@ -171,7 +171,7 @@ export default function DoctorFirst({
                       button
                       detail={false}
                       onClick={() => {
-                        setDoctorName(doctor.account.firstName);
+                        setDoctorName(doctor.account.lastName);
                         bookingForm.setValue("doctorIds", doctor.id);
                         doctorModal.current?.dismiss();
                       }}
@@ -180,7 +180,7 @@ export default function DoctorFirst({
                       <div className="flex flex-col gap-2 py-2 w-full">
                         <div className="flex items-center justify-between">
                           <p className="text-base font-semibold text-gray-900">
-                            {`${doctor.account.lastName} ${doctor.account.firstName}`}
+                            {`${doctor.account.firstName} ${doctor.account.lastName}`}
                           </p>
                           <IonBadge color="primary" className="p-1">
                             {doctor.badgeId}

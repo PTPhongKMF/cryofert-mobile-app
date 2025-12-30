@@ -32,12 +32,11 @@ export async function pdfPaperQueryFn(params: {
   relatedEntityType: MediaType;
   relatedEntityId: string;
 }): Promise<Blob> {
-  // NOTE: backend expects PascalCase query param keys
   return await httpClient
-    .get("api/media/generate-pdf", {
+    .post("api/media/generate-pdf", {
       searchParams: {
-        RelatedEntityType: params.relatedEntityType,
-        RelatedEntityId: params.relatedEntityId,
+        relatedEntityType: params.relatedEntityType,
+        relatedEntityId: params.relatedEntityId,
       },
     })
     .blob();

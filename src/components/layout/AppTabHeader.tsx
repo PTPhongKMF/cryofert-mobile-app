@@ -81,7 +81,7 @@ export default function AppTabHeader() {
           <IonIcon
             icon={notificationsOutline}
             color="primary"
-            onClick={() => console.log("click bell")}
+            onClick={() => router.push(ROUTES.NOTIFICATION, "forward")}
             className="size-7"
           ></IonIcon>
         </div>

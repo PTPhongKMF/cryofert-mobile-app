@@ -54,6 +54,7 @@ export function useTransactionHistoryInfiniteQuery(
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
       lastPage.metaData?.hasNext ? lastPage.metaData.page + 1 : undefined,
+    enabled: !!patientId,
   });
 }
 

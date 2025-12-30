@@ -16,7 +16,7 @@ import { useLocation } from "react-router";
 
 type LabSampleSegment = "samples" | "contracts";
 
-export default function LabSamples() {
+export default function LabSamplesTab() {
   const location = useLocation();
   const router = useIonRouter();
 

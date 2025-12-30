@@ -18,54 +18,87 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import GreenToGrayGradientBg from "@src/components/backgrounds/GreenToGrayGradientBg";
-import type { TransactionHistoryApiResponse } from "@src/schemas/transaction";
+import type { NotificationHistoryApiResponse } from "@src/schemas/notification";
 import { useLocalUserStore } from "@src/stores/user";
-import { addYear, format } from "@formkit/tempo";
+import { format } from "@formkit/tempo";
 import {
-  useTransactionHistoryInfiniteQuery,
-  type TransactionHistoryFilters,
-} from "@src/hooks/transaction-hook";
-import TransactionHistoryFilter from "@src/components/account-center-tab/TransactionHistoryFilter";
+  useNotificationHistoryInfiniteQuery,
+  type NotificationHistoryFilters,
+} from "@src/hooks/notification-hook";
+import NotificationHistoryFilter from "@src/components/account-center-tab/NotificationHistoryFilter";
 import { useEffect, useState } from "react";
 import { filter } from "ionicons/icons";
 import { cn } from "@src/utils/cn";
+import BlueToGrayGradientBg from "@src/components/backgrounds/BlueToGrayGradientBg";
 
-type TransactionFilterOptions = TransactionHistoryFilters;
-
-export default function TransactionHistory() {
+export default function Notification() {
   const localUser = useLocalUserStore((s) => s.localUser);
 
-  const [filterOptions, setFilterOptions] = useState<TransactionFilterOptions>({
-    status: null,
-    relatedEntityType: null,
-    fromDate: addYear(new Date(), -1).toISOString(),
-    toDate: new Date().toISOString(),
-  });
+  const [filterOptions, setFilterOptions] =
+    useState<NotificationHistoryFilters>({
+      status: null,
+      type: null,
+    });
 
   const [isFilterVisible, setIsFilterVisible] = useState(false);
 
-  const transactionQuery = useTransactionHistoryInfiniteQuery(
+  const notificationQuery = useNotificationHistoryInfiniteQuery(
     localUser?.id || "",
     filterOptions
   );
 
   useEffect(() => {
-    if (transactionQuery.isError) console.log(transactionQuery.error);
-  }, [transactionQuery.isError, transactionQuery.error]);
+    if (notificationQuery.isError) console.log(notificationQuery.error);
+  }, [notificationQuery.error, notificationQuery.isError]);
 
-  const transactions =
-    transactionQuery.data?.pages.flatMap(
-      (page: TransactionHistoryApiResponse) => page.data
+  const notifications =
+    notificationQuery.data?.pages.flatMap(
+      (page: NotificationHistoryApiResponse) => page.data
     ) ?? [];
 
   async function handleLoadMore(e: CustomEvent<void>) {
-    await transactionQuery.fetchNextPage();
+    await notificationQuery.fetchNextPage();
     (e.target as HTMLIonInfiniteScrollElement)?.complete();
   }
 
   async function handleRefresh(e: CustomEvent) {
-    await transactionQuery.refetch();
+    await notificationQuery.refetch();
     e.detail.complete();
+  }
+
+  function getNotificationItemClasses(
+    isImportant: boolean,
+    readTime: string | null
+  ): string {
+    const isRead = readTime !== null;
+    const baseClasses =
+      "ion-bg-transparent bg-white/90 rounded-xl mb-2 transition-all";
+
+    if (isImportant) {
+      // Important items: orange border, brighter if unread, dimmer if read
+      if (isRead) {
+        return cn(baseClasses, "border-2 border-orange-300 opacity-60");
+      } else {
+        return cn(baseClasses, "border-2 border-orange-500 opacity-100");
+      }
+    } else {
+      // Normal items: gray border, dimmer if read, brighter if unread
+      if (isRead) {
+        return cn(baseClasses, "border border-gray-200 opacity-60");
+      } else {
+        return cn(baseClasses, "border border-gray-200 opacity-100");
+      }
+    }
+  }
+
+  function getTitleClasses(
+    isImportant: boolean,
+    readTime: string | null
+  ): string {
+    const baseClasses = "text-gray-900";
+    const importantClasses = isImportant ? "font-bold" : "font-semibold";
+
+    return cn(baseClasses, importantClasses);
   }
 
   return (
@@ -75,7 +108,7 @@ export default function TransactionHistory() {
           <IonButtons slot="start">
             <IonBackButton />
           </IonButtons>
-          <IonTitle>Transaction History</IonTitle>
+          <IonTitle>Notifications</IonTitle>
 
           <IonButtons slot="end">
             <IonButton onClick={() => setIsFilterVisible((prev) => !prev)}>
@@ -86,7 +119,7 @@ export default function TransactionHistory() {
       </IonHeader>
 
       <IonContent scrollY={false} className="relative">
-        <GreenToGrayGradientBg />
+        <BlueToGrayGradientBg />
 
         <div className="relative flex flex-col h-full">
           <div
@@ -98,7 +131,7 @@ export default function TransactionHistory() {
             )}
           >
             <div className={cn(!isFilterVisible && "invisible")}>
-              <TransactionHistoryFilter
+              <NotificationHistoryFilter
                 filters={filterOptions}
                 onChange={(update) =>
                   setFilterOptions((prev) => ({ ...prev, ...update }))
@@ -117,73 +150,79 @@ export default function TransactionHistory() {
                 <IonRefresherContent />
               </IonRefresher>
 
-              {transactionQuery.isLoading ? (
+              {notificationQuery.isLoading ? (
                 <div className="flex justify-center items-center h-full">
                   <IonSpinner name="crescent" />
                 </div>
               ) : (
                 <IonList className="bg-transparent! pb-0!">
-                  {!transactionQuery.isLoading &&
-                  transactionQuery.isSuccess &&
-                  transactions.length === 0 ? (
+                  {!notificationQuery.isLoading &&
+                  notificationQuery.isSuccess &&
+                  notifications.length === 0 ? (
                     <div className="flex justify-center items-center h-full italic text-gray-500">
-                      No transactions found.
+                      No notifications found.
                     </div>
                   ) : (
                     <>
-                      {transactions.map((transaction) => (
+                      {notifications.map((notification) => (
                         <IonItem
                           button
                           detail
-                          key={transaction.id}
+                          key={notification.id}
                           lines="none"
-                          className="ion-bg-transparent bg-white/90 rounded-xl mb-2"
+                          className={getNotificationItemClasses(
+                            notification.isImportant,
+                            notification.readTime
+                          )}
                         >
                           <div className="flex flex-col gap-2 w-full py-2">
                             <div className="flex items-center justify-between">
-                              <div className="font-semibold text-gray-900 text-base">
-                                {transaction.transactionCode}
+                              <div
+                                className={getTitleClasses(
+                                  notification.isImportant,
+                                  notification.readTime
+                                )}
+                              >
+                                {notification.title}
                               </div>
                               <div className="text-xs text-gray-500 px-2 py-1 rounded bg-gray-100">
-                                {transaction.status}
+                                {notification.status}
                               </div>
-                            </div>
-
-                            <div className="text-sm text-gray-900 font-semibold flex flex-wrap items-center gap-1">
-                              <span>{transaction.transactionType}</span>
-                              <span aria-hidden>&middot;</span>
-                              <span>
-                                {new Intl.NumberFormat("vi-VN", {
-                                  style: "currency",
-                                  currency: "VND",
-                                }).format(transaction.amount)}
-                              </span>
-                              {transaction.paymentGateway && (
-                                <>
-                                  <span aria-hidden>&middot;</span>
-                                  <span>{transaction.paymentGateway}</span>
-                                </>
-                              )}
                             </div>
 
                             <div className="text-sm text-gray-700">
+                              {notification.content}
+                            </div>
+
+                            <div className="flex items-center justify-between text-xs text-gray-600">
+                              <div className="flex items-center gap-2">
+                                <span>{notification.type}</span>
+                                {notification.channel && (
+                                  <>
+                                    <span aria-hidden>&middot;</span>
+                                    <span>{notification.channel}</span>
+                                  </>
+                                )}
+                              </div>
                               <span>
                                 {format(
-                                  transaction.transactionDate,
+                                  notification.createdAt,
                                   "YYYY-MM-DD HH:mm"
                                 )}
                               </span>
                             </div>
 
-                            <IonNote className="text-xs text-gray-600 mt-1 line-clamp-1">
-                              {transaction.description}
-                            </IonNote>
+                            {notification.notes && (
+                              <IonNote className="text-xs text-gray-600 mt-1 line-clamp-1">
+                                {notification.notes}
+                              </IonNote>
+                            )}
                           </div>
                         </IonItem>
                       ))}
 
                       <IonInfiniteScroll
-                        disabled={!transactionQuery.hasNextPage}
+                        disabled={!notificationQuery.hasNextPage}
                         onIonInfinite={handleLoadMore}
                       >
                         <IonInfiniteScrollContent

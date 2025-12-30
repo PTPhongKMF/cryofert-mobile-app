@@ -1,4 +1,7 @@
-import type { RelationshipApiResponse } from "@src/schemas/relationship";
+import type {
+  RelationshipApiResponse,
+  relationshipType,
+} from "@src/schemas/relationship";
 import { RelationshipApiResponseSchema } from "@src/schemas/relationship";
 import { httpClient } from "@src/services/api-services/http-service";
 import * as v from "valibot";
@@ -13,18 +16,24 @@ export async function relationshipQueryFn(
   return v.parse(RelationshipApiResponseSchema, res);
 }
 
-export async function requestRelationshipMutationFn(req: {
-  patientId: string;
-  partnerId: string;
-  relationshipType: string;
-  notes: string;
-}): Promise<void> {
+export interface RequestRelationship {
+  patient1Id: string;
+  patient2Id: string;
+  relationshipType: relationshipType;
+  establishedDate: string;
+  isActive: boolean;
+}
+
+export async function requestRelationshipMutationFn(
+  req: RequestRelationship
+): Promise<void> {
   await httpClient.post("api/relationship", {
     json: {
-      patient1Id: req.patientId,
-      patient2Id: req.partnerId,
+      patient1Id: req.patient1Id,
+      patient2Id: req.patient2Id,
       relationshipType: req.relationshipType,
-      notes: req.notes,
+      establishedDate: req.establishedDate,
+      isActive: req.isActive,
     },
   });
 }

@@ -3,15 +3,19 @@ const BASE = {
   LANDING: "/landing",
   TABS: "/tabs",
 
+  NOTIFICATION: `/notifications`,
+
   BOOK_TREATMENT: `/book-treatment`,
   START_CONTRACT_FORM: `/start-contract-form`,
   START_CONTRACT_PAPER: `/start-contract-paper`,
+  RENEW_CONTRACT_PAPER: `/renew-contract-paper`,
 
   PAYMENT_PORTAL: `/payment-portal`,
 
   TREATMENT: `/treatment`,
   APPOINTMENT: `/appointment`,
   TREATMENT_CYCLE: `/treatment-cycle`,
+  CRYO_CONTRACT: `/cryo-contract`,
 
   UPDATE_ACCOUNT: `/update-account`,
   RELATIONSHIP: `/relationship`,

@@ -18,20 +18,40 @@ import TreatmentCycleDetail from "@src/pages/treatment-tab/TreatmentCycleDetail"
 import Relationship from "@src/pages/account-center-tab/Relationship";
 import StartCryoContractForm from "@src/pages/start-cryo-contract/StartCryoContractForm";
 import StartCryoContractPaper from "@src/pages/start-cryo-contract/StartCryoContractPaper";
+import CryoContractDetail from "@src/pages/lab-samples-tab/CryoContractDetail";
+import RenewCryoContractPaper from "@src/pages/lab-samples-tab/RenewCryoContractPaper";
+import { useLocalUserStore } from "@src/stores/user";
+import Notification from "@src/pages/Notification";
 
 export default function RootRoutes() {
   const router = useIonRouter();
+  const hasHydrated = useLocalUserStore((s) => s.hasHydrated);
+  const localUser = useLocalUserStore((s) => s.localUser);
+  const setLogout = useLocalUserStore((s) => s.setLogout);
 
   useEffect(() =>
     setGlobalPush((path, direction) => {
       router.push(path, direction);
     })
   );
+
+  useEffect(() => {
+    if (!hasHydrated || !localUser) {
+      return;
+    }
+
+    setLogout(async () => {
+      router.push(ROUTES.L_AUTH_LOGIN, "back");
+    });
+  }, [hasHydrated, localUser, router, setLogout]);
+
   return (
     <IonRouterOutlet>
       <Route exact path={ROUTES.ROOT} component={SplashScreen} />
       <Route path={ROUTES.LANDING} component={LandingTabRoutes} />
       <Route path={ROUTES.TABS} component={AppTabRoutes} />
+
+      <Route path={ROUTES.NOTIFICATION} component={Notification} />
 
       <Route path={ROUTES.BOOK_TREATMENT} component={TreatmentBooking} />
       <Route
@@ -41,6 +61,10 @@ export default function RootRoutes() {
       <Route
         path={ROUTES.START_CONTRACT_PAPER}
         component={StartCryoContractPaper}
+      />
+      <Route
+        path={ROUTES.RENEW_CONTRACT_PAPER}
+        component={RenewCryoContractPaper}
       />
 
       <Route path={ROUTES.PAYMENT_PORTAL} component={PaymentPortal} />
@@ -56,6 +80,10 @@ export default function RootRoutes() {
       <Route
         path={`${ROUTES.TREATMENT_CYCLE}/:cycleId`}
         component={TreatmentCycleDetail}
+      />
+      <Route
+        path={`${ROUTES.CRYO_CONTRACT}/:contractId`}
+        component={CryoContractDetail}
       />
 
       <Route path={ROUTES.UPDATE_ACCOUNT} component={UpdateAccount} />
