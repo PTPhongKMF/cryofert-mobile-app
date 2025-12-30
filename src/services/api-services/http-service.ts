@@ -1,7 +1,4 @@
-import {
-  getSecuredToken,
-  setSecuredToken,
-} from "@src/services/token-service";
+import { getSecuredToken, setSecuredToken } from "@src/services/token-service";
 import * as v from "valibot";
 import ky from "ky";
 import { GenericApiResponseSchema } from "@src/schemas/api-response";

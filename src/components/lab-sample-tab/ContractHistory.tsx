@@ -143,11 +143,6 @@ export default function ContractHistory() {
                                   )
                                 : "TBD"}
                             </span>
-                            {contract.signedBy && (
-                              <span className="text-xs text-gray-600 truncate">
-                                by {contract.signedBy}
-                              </span>
-                            )}
                           </div>
                         </div>
                       </div>

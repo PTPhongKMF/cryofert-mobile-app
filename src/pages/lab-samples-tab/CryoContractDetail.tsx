@@ -181,8 +181,7 @@ export default function CryoContractDetail() {
 
     router.push(
       `${ROUTES.RENEW_CONTRACT_PAPER}?contractId=${renewTargetContractId}`,
-      "forward",
-      "replace"
+      "forward"
     );
   }
 
@@ -341,6 +340,19 @@ export default function CryoContractDetail() {
               onClick={handleSignContractClick}
             >
               Sign Contract
+            </IonButton>
+          )}
+
+          {contract?.status === "Pending" && (
+            <IonButton
+              fill="solid"
+              className="w-full"
+              disabled={
+                contractQuery.isPending || isManualRefetching || isRenewing
+              }
+              // onClick={}
+            >
+              Proceed to payment
             </IonButton>
           )}
         </IonToolbar>

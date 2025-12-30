@@ -21,6 +21,7 @@ import StartCryoContractPaper from "@src/pages/start-cryo-contract/StartCryoCont
 import CryoContractDetail from "@src/pages/lab-samples-tab/CryoContractDetail";
 import RenewCryoContractPaper from "@src/pages/lab-samples-tab/RenewCryoContractPaper";
 import { useLocalUserStore } from "@src/stores/user";
+import Notification from "@src/pages/Notification";
 
 export default function RootRoutes() {
   const router = useIonRouter();
@@ -49,6 +50,8 @@ export default function RootRoutes() {
       <Route exact path={ROUTES.ROOT} component={SplashScreen} />
       <Route path={ROUTES.LANDING} component={LandingTabRoutes} />
       <Route path={ROUTES.TABS} component={AppTabRoutes} />
+
+      <Route path={ROUTES.NOTIFICATION} component={Notification} />
 
       <Route path={ROUTES.BOOK_TREATMENT} component={TreatmentBooking} />
       <Route

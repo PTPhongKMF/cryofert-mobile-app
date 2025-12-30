@@ -50,8 +50,8 @@ export default function TransactionHistory() {
   );
 
   useEffect(() => {
-    console.log(filterOptions);
-  }, [filterOptions]);
+    if (transactionQuery.isError) console.log(transactionQuery.error);
+  }, [transactionQuery.isError, transactionQuery.error]);
 
   const transactions =
     transactionQuery.data?.pages.flatMap(

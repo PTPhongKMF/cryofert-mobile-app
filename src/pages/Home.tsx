@@ -35,7 +35,7 @@ export default function Home() {
   const router = useIonRouter();
   const { localUser } = useLocalUserStore();
   const greeting = getGreetingOfDay();
-  const firstName = localUser?.firstName || "User";
+  const lastName = localUser?.lastName || "User";
 
   const quickActionsArray = [
     {
@@ -90,7 +90,7 @@ export default function Home() {
           >
             <div className="px-4 bg-neutral-100 mask-r-from-50% mask-r-to-90% text-blue-700">
               <p className="font-semibold">{greeting},</p>
-              <p className="font-bold text-xl">{firstName}</p>
+              <p className="font-bold text-xl">{lastName}</p>
             </div>
           </div>
 

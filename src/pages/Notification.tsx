@@ -29,16 +29,16 @@ import NotificationHistoryFilter from "@src/components/account-center-tab/Notifi
 import { useEffect, useState } from "react";
 import { filter } from "ionicons/icons";
 import { cn } from "@src/utils/cn";
+import BlueToGrayGradientBg from "@src/components/backgrounds/BlueToGrayGradientBg";
 
 export default function Notification() {
   const localUser = useLocalUserStore((s) => s.localUser);
 
-  const [filterOptions, setFilterOptions] = useState<NotificationHistoryFilters>(
-    {
+  const [filterOptions, setFilterOptions] =
+    useState<NotificationHistoryFilters>({
       status: null,
       type: null,
-    }
-  );
+    });
 
   const [isFilterVisible, setIsFilterVisible] = useState(false);
 
@@ -73,7 +73,7 @@ export default function Notification() {
     const isRead = readTime !== null;
     const baseClasses =
       "ion-bg-transparent bg-white/90 rounded-xl mb-2 transition-all";
-    
+
     if (isImportant) {
       // Important items: orange border, brighter if unread, dimmer if read
       if (isRead) {
@@ -91,7 +91,10 @@ export default function Notification() {
     }
   }
 
-  function getTitleClasses(isImportant: boolean, readTime: string | null): string {
+  function getTitleClasses(
+    isImportant: boolean,
+    readTime: string | null
+  ): string {
     const baseClasses = "text-gray-900";
     const importantClasses = isImportant ? "font-bold" : "font-semibold";
 
@@ -116,7 +119,7 @@ export default function Notification() {
       </IonHeader>
 
       <IonContent scrollY={false} className="relative">
-        <GreenToGrayGradientBg />
+        <BlueToGrayGradientBg />
 
         <div className="relative flex flex-col h-full">
           <div

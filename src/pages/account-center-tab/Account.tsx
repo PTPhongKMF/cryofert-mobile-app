@@ -85,7 +85,7 @@ export default function Account() {
                   )}
                 >
                   {localUser?.lastName && localUser.firstName
-                    ? `${localUser.lastName} ${localUser.firstName}`
+                    ? `${localUser.firstName} ${localUser.lastName}`
                     : "N/A"}
                 </span>
               </div>

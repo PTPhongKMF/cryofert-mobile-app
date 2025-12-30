@@ -56,7 +56,7 @@ export default function LabSampleHistory() {
             <IonSpinner name="crescent" />
           </div>
         ) : labSamplesQuery.isError ? (
-          <div className="text-center text-sm text-red-600 py-12 px-6 bg-white/60 rounded-2xl border border-red-100">
+          <div className="text-center text-sm text-red-600 py-12 px-6">
             Unable to load lab samples. Please pull to refresh or try again
             later.
           </div>
