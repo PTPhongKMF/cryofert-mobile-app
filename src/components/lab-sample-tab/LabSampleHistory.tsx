@@ -14,6 +14,7 @@ import { useLabSampleFilterStore } from "@src/stores/lab-sample";
 import { titleCase } from "text-case";
 import { safeFormat } from "@src/utils/date";
 import { useShallow } from "zustand/react/shallow";
+import { useEffect } from "react";
 
 export default function LabSampleHistory() {
   const localUser = useLocalUserStore((s) => s.localUser);
@@ -43,6 +44,10 @@ export default function LabSampleHistory() {
 
   const isInitialLoading =
     labSamplesQuery.isPending && !labSamplesQuery.isFetchingNextPage;
+
+  useEffect(() => {
+    if (labSamplesQuery.isError) console.log(labSamplesQuery.error);
+  }, [labSamplesQuery.isError, labSamplesQuery.error]);
 
   return (
     <div className="size-full">
