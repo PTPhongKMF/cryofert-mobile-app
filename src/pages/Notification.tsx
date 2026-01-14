@@ -71,22 +71,19 @@ export default function Notification() {
     readTime: string | null
   ): string {
     const isRead = readTime !== null;
-    const baseClasses =
-      "ion-bg-transparent bg-white/90 rounded-xl mb-2 transition-all";
+    const baseClasses = "ion-bg-transparent rounded-xl mb-2 transition-all";
 
-    if (isImportant) {
-      // Important items: orange border, brighter if unread, dimmer if read
-      if (isRead) {
-        return cn(baseClasses, "border-2 border-orange-300 opacity-60");
-      } else {
-        return cn(baseClasses, "border-2 border-orange-500 opacity-100");
-      }
+    if (isImportant && !isRead) {
+      // Important unread items: colored background
+      return cn(baseClasses, "bg-orange-50/90 opacity-100");
     } else {
-      // Normal items: gray border, dimmer if read, brighter if unread
-      if (isRead) {
-        return cn(baseClasses, "border border-gray-200 opacity-60");
+      // Normal items or read items: transparent background
+      if (isImportant && isRead) {
+        // Important but read: transparent
+        return cn(baseClasses, "opacity-60");
       } else {
-        return cn(baseClasses, "border border-gray-200 opacity-100");
+        // Normal items: transparent
+        return cn(baseClasses, "opacity-100");
       }
     }
   }
@@ -185,7 +182,7 @@ export default function Notification() {
                               >
                                 {notification.title}
                               </div>
-                              <div className="text-xs text-gray-500 px-2 py-1 rounded bg-gray-100">
+                              <div className="text-xs text-gray-500 px-2 py-1 rounded">
                                 {notification.status}
                               </div>
                             </div>

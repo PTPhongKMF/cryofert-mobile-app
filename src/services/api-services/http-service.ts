@@ -7,7 +7,9 @@ import { useGenericDialogStore } from "@src/stores/dialog";
 import { alertCircleOutline } from "ionicons/icons";
 
 // const LOCAL = "";
-const CLOUD = "https://cryofert.runasp.net/";
+const CLOUD = "https://cryoferts.runasp.net/";
+// const CLOUD =
+//   "https://cryofert-bfbqgkgzf8b3e9ap.southeastasia-01.azurewebsites.net/";
 
 interface RefreshResponse {
   data?: { token?: string; refreshToken?: string };
