@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@aparajita/capacitor-secure-storage": "^7.1.6",
-    "@capacitor-community/photoviewer": "^7.1.0",
+    "@capacitor-community/photoviewer": "^8.0.0",
     "@capacitor/android": "^8.0.1",
     "@capacitor/app": "^8.0.0",
     "@capacitor/clipboard": "^8.0.0",
@@ -24,7 +24,7 @@
     "@capacitor/file-transfer": "^2.0.3",
     "@capacitor/filesystem": "^8.0.0",
     "@capacitor/haptics": "^8.0.0",
-    "@capacitor/inappbrowser": "^2.5.3",
+    "@capacitor/inappbrowser": "^3.0.1",
     "@capacitor/keyboard": "^8.0.0",
     "@capacitor/preferences": "^8.0.0",
     "@capacitor/status-bar": "^8.0.0",

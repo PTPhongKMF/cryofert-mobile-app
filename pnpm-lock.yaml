@@ -12,8 +12,8 @@ importers:
         specifier: ^7.1.6
         version: 7.1.6
       '@capacitor-community/photoviewer':
-        specifier: ^7.1.0
-        version: 7.1.0(@capacitor/core@8.0.1)
+        specifier: ^8.0.0
+        version: 8.0.0(@capacitor/core@8.0.1)
       '@capacitor/android':
         specifier: ^8.0.1
         version: 8.0.1(@capacitor/core@8.0.1)
@@ -36,8 +36,8 @@ importers:
         specifier: ^8.0.0
         version: 8.0.0(@capacitor/core@8.0.1)
       '@capacitor/inappbrowser':
-        specifier: ^2.5.3
-        version: 2.5.3(@capacitor/core@8.0.1)
+        specifier: ^3.0.1
+        version: 3.0.1(@capacitor/core@8.0.1)
       '@capacitor/keyboard':
         specifier: ^8.0.0
         version: 8.0.0(@capacitor/core@8.0.1)
@@ -685,10 +685,10 @@ packages:
     resolution: {integrity: sha512-0ZrskXVEHSWIqZM/sQZ4EV3jZJXRkio/WCxaqKZP1g//CEWEPSfeZFcms4XeKBCHU0ZKnIkdJeU/kF+eRp5lBg==}
     engines: {node: '>=6.9.0'}
 
-  '@capacitor-community/photoviewer@7.1.0':
-    resolution: {integrity: sha512-wKf82wQI9GBzf3/Qrp+KpcsyRpDT0G1FirGuCEpK/ShWZsxdE6Dl5N4i3CF8Qmm7aku78IYmZW6quM0bWpscYA==}
+  '@capacitor-community/photoviewer@8.0.0':
+    resolution: {integrity: sha512-W+CAsm2k6N8/WdP5HeBPWaSLmzeK/Y9TfuDVfd9t2wl/eFVHHUp9gVV+rYd3dOzEix//88nOGD8cKWGGjmIilA==}
     peerDependencies:
-      '@capacitor/core': '>=7.0.0'
+      '@capacitor/core': '>=8.0.0'
 
   '@capacitor/android@7.4.5':
     resolution: {integrity: sha512-G76C+PGIFkG+hxj6JLlY003txRaGZwsXBPo4b4xiZMZaD6DG++sDCoumYl/5xL40dL2b8P5tb3CKf/khWyL2Gw==}
@@ -741,10 +741,10 @@ packages:
     peerDependencies:
       '@capacitor/core': '>=8.0.0'
 
-  '@capacitor/inappbrowser@2.5.3':
-    resolution: {integrity: sha512-FpHiujfXYDYIH8rhobA9C1ilqT4XvZDFUON2FVVOK4xyhkYg0cFjvp8Zhchb1Wq+kNP+/oxSjTA71+xa+Uqumg==}
+  '@capacitor/inappbrowser@3.0.1':
+    resolution: {integrity: sha512-FWVOQ9dvrM9AWyaNTPmpMvVIB4kDO0xdp58LpG4iaesSim7+EAysyjwDGRMGgCn7uSQxxDOGLQLY8X7OfirUNA==}
     peerDependencies:
-      '@capacitor/core': '>=7.0.0'
+      '@capacitor/core': '>=8.0.0'
 
   '@capacitor/ios@7.4.5':
     resolution: {integrity: sha512-i9cfo15Vn0GvFJ0Pm2zPhxQrK3NW5ISrf7bdzmKWUM5TUaCnWkCO4Zxsgjm8/VMXwt/gabA/di1O1c9pC3enCA==}
@@ -3232,7 +3232,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@capacitor-community/photoviewer@7.1.0(@capacitor/core@8.0.1)':
+  '@capacitor-community/photoviewer@8.0.0(@capacitor/core@8.0.1)':
     dependencies:
       '@capacitor/core': 8.0.1
       jeep-photoviewer: 1.2.3
@@ -3301,7 +3301,7 @@ snapshots:
     dependencies:
       '@capacitor/core': 8.0.1
 
-  '@capacitor/inappbrowser@2.5.3(@capacitor/core@8.0.1)':
+  '@capacitor/inappbrowser@3.0.1(@capacitor/core@8.0.1)':
     dependencies:
       '@capacitor/core': 8.0.1
 
