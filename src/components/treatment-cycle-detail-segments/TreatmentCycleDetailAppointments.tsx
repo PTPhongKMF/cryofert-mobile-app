@@ -15,9 +15,12 @@ export default function TreatmentCycleDetailAppointments({
   appointments,
 }: TreatmentCycleDetailAppointmentsProps) {
   const router = useIonRouter();
-  const [serviceRequestDialogOpen, setServiceRequestDialogOpen] = useState(false);
+  const [serviceRequestDialogOpen, setServiceRequestDialogOpen] =
+    useState(false);
   const [medicalRecordDialogOpen, setMedicalRecordDialogOpen] = useState(false);
-  const [selectedAppointmentId, setSelectedAppointmentId] = useState<string | null>(null);
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState<
+    string | null
+  >(null);
 
   if (appointments.length === 0) {
     return (
@@ -66,7 +69,11 @@ export default function TreatmentCycleDetailAppointments({
                   <span className="font-semibold">Date:</span>
                   <span className="font-normal text-xs text-black">
                     {appointment.appointmentDate
-                      ? format(appointment.appointmentDate, "MMM DD, YYYY")
+                      ? format(
+                          appointment.appointmentDate,
+                          "MMM DD, YYYY",
+                          "en",
+                        )
                       : "N/A"}
                   </span>
                 </div>
@@ -128,5 +135,3 @@ export default function TreatmentCycleDetailAppointments({
     </>
   );
 }
-
-

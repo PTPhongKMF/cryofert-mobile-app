@@ -1,5 +1,11 @@
 import { format } from "@formkit/tempo";
-import { IonList, IonItem, IonLabel, IonAccordion, IonAccordionGroup } from "@ionic/react";
+import {
+  IonList,
+  IonItem,
+  IonLabel,
+  IonAccordion,
+  IonAccordionGroup,
+} from "@ionic/react";
 import type { UseQueryResult } from "@tanstack/react-query";
 import type { HTTPError } from "ky";
 import { useState } from "react";
@@ -17,7 +23,9 @@ export default function AppointmentDetailMedicalRecord({
 }: AppointmentDetailMedicalRecordProps) {
   const { data, isError } = medicalRecordQuery;
   const medicalRecords = data?.data ?? [];
-  const [selectedMedia, setSelectedMedia] = useState<MediaResponse | null>(null);
+  const [selectedMedia, setSelectedMedia] = useState<MediaResponse | null>(
+    null,
+  );
 
   if (isError || !data) {
     return (
@@ -57,7 +65,7 @@ export default function AppointmentDetailMedicalRecord({
                 </IonLabel>
                 <span className="text-xs text-black">
                   {record.appointmentDate
-                    ? format(record.appointmentDate, "MMM DD, YYYY")
+                    ? format(record.appointmentDate, "MMM DD, YYYY", "en")
                     : "N/A"}
                 </span>
               </div>
@@ -161,12 +169,13 @@ export default function AppointmentDetailMedicalRecord({
                   <span>
                     Created:{" "}
                     {record.createdAt
-                      ? format(record.createdAt, "MMM DD, YYYY HH:mm")
+                      ? format(record.createdAt, "MMM DD, YYYY HH:mm", "en")
                       : "N/A"}
                   </span>
                   {record.updatedAt && (
                     <span>
-                      Updated: {format(record.updatedAt, "MMM DD, YYYY HH:mm")}
+                      Updated:{" "}
+                      {format(record.updatedAt, "MMM DD, YYYY HH:mm", "en")}
                     </span>
                   )}
                 </div>
@@ -187,92 +196,102 @@ export default function AppointmentDetailMedicalRecord({
 
                     <div slot="content" className="px-0 py-2">
                       <IonList className="bg-transparent">
-                        {(record.prescriptions ?? []).map((prescription, idx) => (
-                          <IonItem
-                            key={prescription.id}
-                            lines={
-                              idx < (record.prescriptions?.length ?? 0) - 1
-                                ? "full"
-                                : "none"
-                            }
-                            className="bg-gray-100 rounded-lg mb-2"
-                          >
-                            <div className="w-full flex flex-col gap-2 py-2">
-                              <div className="flex justify-between items-center">
-                                <IonLabel className="text-sm font-medium!">
-                                  Prescription{" "}
-                                  <span className="text-xs text-gray-500">
-                                    #{prescription.id.slice(-4)}
-                                  </span>
-                                </IonLabel>
-                                <span className="text-xs text-gray-500 px-2 py-1 rounded bg-gray-200">
-                                  {prescription.isFilled ? "Filled" : "Not filled"}
-                                </span>
-                              </div>
-
-                              <div className="flex flex-col gap-1 text-xs">
-                                <div className="flex justify-between">
-                                  <span>Date:</span>
-                                  <span className="text-black">
-                                    {prescription.prescriptionDate
-                                      ? format(
-                                          prescription.prescriptionDate,
-                                          "MMM DD, YYYY"
-                                        )
-                                      : "N/A"}
+                        {(record.prescriptions ?? []).map(
+                          (prescription, idx) => (
+                            <IonItem
+                              key={prescription.id}
+                              lines={
+                                idx < (record.prescriptions?.length ?? 0) - 1
+                                  ? "full"
+                                  : "none"
+                              }
+                              className="bg-gray-100 rounded-lg mb-2"
+                            >
+                              <div className="w-full flex flex-col gap-2 py-2">
+                                <div className="flex justify-between items-center">
+                                  <IonLabel className="text-sm font-medium!">
+                                    Prescription{" "}
+                                    <span className="text-xs text-gray-500">
+                                      #{prescription.id.slice(-4)}
+                                    </span>
+                                  </IonLabel>
+                                  <span className="text-xs text-gray-500 px-2 py-1 rounded bg-gray-200">
+                                    {prescription.isFilled
+                                      ? "Filled"
+                                      : "Not filled"}
                                   </span>
                                 </div>
 
-                                {prescription.diagnosis && (
-                                  <div className="flex flex-col gap-1 mt-1">
-                                    <span className="font-semibold">Diagnosis:</span>
+                                <div className="flex flex-col gap-1 text-xs">
+                                  <div className="flex justify-between">
+                                    <span>Date:</span>
                                     <span className="text-black">
-                                      {prescription.diagnosis}
+                                      {prescription.prescriptionDate
+                                        ? format(
+                                            prescription.prescriptionDate,
+                                            "MMM DD, YYYY",
+                                            "en",
+                                          )
+                                        : "N/A"}
                                     </span>
                                   </div>
-                                )}
 
-                                {prescription.instructions && (
-                                  <div className="flex flex-col gap-1 mt-1">
-                                    <span className="font-semibold">
-                                      Instructions:
-                                    </span>
-                                    <span className="text-black">
-                                      {prescription.instructions}
-                                    </span>
-                                  </div>
-                                )}
+                                  {prescription.diagnosis && (
+                                    <div className="flex flex-col gap-1 mt-1">
+                                      <span className="font-semibold">
+                                        Diagnosis:
+                                      </span>
+                                      <span className="text-black">
+                                        {prescription.diagnosis}
+                                      </span>
+                                    </div>
+                                  )}
 
-                                {(prescription.prescriptionDetails?.length ?? 0) >
-                                  0 && (
-                                  <div className="flex flex-col gap-1 mt-2">
-                                    <span className="font-semibold">
-                                      Items ({prescription.prescriptionDetails?.length ?? 0}
-                                      ):
-                                    </span>
-                                    <div className="flex flex-col gap-1">
-                                      {(prescription.prescriptionDetails ?? []).map(
-                                        (item) => (
+                                  {prescription.instructions && (
+                                    <div className="flex flex-col gap-1 mt-1">
+                                      <span className="font-semibold">
+                                        Instructions:
+                                      </span>
+                                      <span className="text-black">
+                                        {prescription.instructions}
+                                      </span>
+                                    </div>
+                                  )}
+
+                                  {(prescription.prescriptionDetails?.length ??
+                                    0) > 0 && (
+                                    <div className="flex flex-col gap-1 mt-2">
+                                      <span className="font-semibold">
+                                        Items (
+                                        {prescription.prescriptionDetails
+                                          ?.length ?? 0}
+                                        ):
+                                      </span>
+                                      <div className="flex flex-col gap-1">
+                                        {(
+                                          prescription.prescriptionDetails ?? []
+                                        ).map((item) => (
                                           <div
                                             key={item.id}
                                             className="flex justify-between gap-3"
                                           >
                                             <span className="text-black">
-                                              {item.medicineName ?? "Unknown medicine"}
+                                              {item.medicineName ??
+                                                "Unknown medicine"}
                                             </span>
                                             <span className="text-gray-600">
                                               x{item.quantity}
                                             </span>
                                           </div>
-                                        )
-                                      )}
+                                        ))}
+                                      </div>
                                     </div>
-                                  </div>
-                                )}
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          </IonItem>
-                        ))}
+                            </IonItem>
+                          ),
+                        )}
                       </IonList>
                     </div>
                   </IonAccordion>

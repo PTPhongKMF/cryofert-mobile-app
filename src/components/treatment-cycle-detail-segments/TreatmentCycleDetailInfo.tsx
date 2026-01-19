@@ -66,7 +66,7 @@ export default function TreatmentCycleDetailInfo({
             <span className="font-semibold">Start Date:</span>
             <span className="font-normal text-xs text-black">
               {cycle.startDate
-                ? format(cycle.startDate, "MMM DD, YYYY")
+                ? format(cycle.startDate, "MMM DD, YYYY", "en")
                 : "N/A"}
             </span>
           </div>
@@ -74,7 +74,9 @@ export default function TreatmentCycleDetailInfo({
           <div className="flex justify-between items-center text-sm">
             <span className="font-semibold">End Date:</span>
             <span className="font-normal text-xs text-black">
-              {cycle.endDate ? format(cycle.endDate, "MMM DD, YYYY") : "N/A"}
+              {cycle.endDate
+                ? format(cycle.endDate, "MMM DD, YYYY", "en")
+                : "N/A"}
             </span>
           </div>
 
@@ -94,9 +96,7 @@ export default function TreatmentCycleDetailInfo({
 
       {cycle.notes && (
         <div className="bg-gray-50 w-full p-4 rounded-xl shadow-lg border border-blue-200 flex flex-col gap-3">
-          <h2 className="text-lg font-semibold text-blue-500 my-2!">
-            Notes
-          </h2>
+          <h2 className="text-lg font-semibold text-blue-500 my-2!">Notes</h2>
 
           <div className="flex flex-col gap-2">
             <div className="flex flex-col gap-1 text-sm">
@@ -125,5 +125,3 @@ export default function TreatmentCycleDetailInfo({
     </div>
   );
 }
-
-

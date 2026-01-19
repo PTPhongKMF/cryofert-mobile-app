@@ -65,7 +65,7 @@ export default function AppointmentDetailInfo({
             <span className="font-semibold">Appointment Date:</span>
             <span className="font-normal text-xs text-black">
               {appointment.appointmentDate
-                ? format(appointment.appointmentDate, "MMM DD, YYYY")
+                ? format(appointment.appointmentDate, "MMM DD, YYYY", "en")
                 : "N/A"}
             </span>
           </div>
@@ -93,7 +93,7 @@ export default function AppointmentDetailInfo({
               <span className="font-semibold">Check-in:</span>
               <span className="font-normal text-xs text-black">
                 {appointment.checkInTime
-                  ? format(appointment.checkInTime, "HH:mm")
+                  ? format(appointment.checkInTime, "HH:mm", "en")
                   : "N/A"}
               </span>
             </div>
@@ -104,7 +104,7 @@ export default function AppointmentDetailInfo({
               <span className="font-semibold">Check-out:</span>
               <span className="font-normal text-xs text-black">
                 {appointment.checkOutTime
-                  ? format(appointment.checkOutTime, "HH:mm")
+                  ? format(appointment.checkOutTime, "HH:mm", "en")
                   : "N/A"}
               </span>
             </div>

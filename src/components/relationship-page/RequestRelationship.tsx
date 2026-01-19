@@ -88,7 +88,7 @@ export default function RequestRelationship({
             backdropDismiss: true,
           });
         },
-      }
+      },
     );
   }
 
@@ -126,7 +126,7 @@ export default function RequestRelationship({
                 ref={patient2Id.field.ref}
                 className={cn(
                   "ion-bg-white! ion-b-r-[7px]! min-h-px! ion-py-[0.45rem]!",
-                  patient2Id.fieldState.error && "ion-invalid ion-touched"
+                  patient2Id.fieldState.error && "ion-invalid ion-touched",
                 )}
               />
             )}
@@ -143,7 +143,8 @@ export default function RequestRelationship({
                 ref={relationshipType.field.ref}
                 className={cn(
                   "w-full px-2 py-1",
-                  relationshipType.fieldState.error && "ion-invalid ion-touched"
+                  relationshipType.fieldState.error &&
+                    "ion-invalid ion-touched",
                 )}
               >
                 <div className="flex flex-col w-full gap-4">
@@ -196,7 +197,7 @@ export default function RequestRelationship({
                   <IonDatetime
                     id="established-date"
                     presentation="date"
-                    max={format(new Date().toISOString(), "YYYY-MM-DD")}
+                    max={format(new Date().toISOString(), "YYYY-MM-DD", "en")}
                     showAdjacentDays
                     value={establishedDate.field.value}
                     onIonChange={establishedDate.field.onChange}

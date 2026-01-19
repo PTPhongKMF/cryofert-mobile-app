@@ -7,7 +7,7 @@ interface TreatmentDetailInfoProps {
 
 function formatDate(date: string | null | undefined) {
   if (!date) return "N/A";
-  return format(date, "MMM DD, YYYY");
+  return format(date, "MMM DD, YYYY", "en");
 }
 
 export default function TreatmentDetailInfo({
@@ -418,7 +418,6 @@ export default function TreatmentDetailInfo({
           </div>
         </div>
       )} */}
-
     </div>
   );
 }

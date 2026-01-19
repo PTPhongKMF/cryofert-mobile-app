@@ -25,7 +25,7 @@ export default function TreatmentHistory() {
 
   const treatments =
     treatmentQuery.data?.pages.flatMap(
-      (page: TreatmentApiResponse) => page.data
+      (page: TreatmentApiResponse) => page.data,
     ) ?? [];
 
   useEffect(() => {
@@ -92,10 +92,10 @@ export default function TreatmentHistory() {
 
                   <div className="text-sm text-gray-700">
                     <span>
-                      {format(treatment.startDate, "MMM DD, YYYY")}
+                      {format(treatment.startDate, "MMM DD, YYYY", "en")}
                       {" - "}
                       {treatment.endDate
-                        ? format(treatment.endDate, "MMM DD, YYYY")
+                        ? format(treatment.endDate, "MMM DD, YYYY", "en")
                         : "TBD"}
                     </span>
                   </div>

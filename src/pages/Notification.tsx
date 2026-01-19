@@ -203,6 +203,7 @@ export default function Notification() {
                                 {format(
                                   notification.createdAt,
                                   "YYYY-MM-DD HH:mm",
+                                  "en",
                                 )}
                               </span>
                             </div>

@@ -6,15 +6,15 @@ export function getDateOnly(d: string) {
 
 export function safeFormat(date: string | Date, token: string) {
   try {
-    return format(date, token);
+    return format(date, token, "en");
   } catch {
-    return format(new Date(), token);
+    return format(new Date(), token, "en");
   }
 }
 
 export function getGreetingOfDay(): string {
   const hour = new Date().getHours();
-  
+
   if (hour >= 5 && hour < 12) {
     return "Good morning";
   } else if (hour >= 12 && hour < 17) {
@@ -24,6 +24,6 @@ export function getGreetingOfDay(): string {
   } else if (hour >= 22 || hour < 5) {
     return "Good night";
   }
-  
+
   return "Hello";
 }

@@ -51,7 +51,7 @@ export default function DoctorFirst({
   const doctorScheduleBusyQuery = useDoctorScheduleBusyQuery(
     watchedDoctorId,
     bookingForm.formState.defaultValues?.appointmentDate ||
-      new Date().toISOString()
+      new Date().toISOString(),
   );
 
   const doctors: DoctorResponse[] =
@@ -75,10 +75,10 @@ export default function DoctorFirst({
       return false;
     }
 
-    const fmtDate = format(date, "YYYY-MM-DD");
+    const fmtDate = format(date, "YYYY-MM-DD", "en");
 
     const match = doctorScheduleBusyQuery.data?.data.scheduleByDate.find(
-      (d) => d.workDate === fmtDate
+      (d) => d.workDate === fmtDate,
     );
 
     if (!match) {
@@ -93,10 +93,10 @@ export default function DoctorFirst({
       return false;
     }
 
-    const fmtDate = format(watchedAppointmentDate, "YYYY-MM-DD");
+    const fmtDate = format(watchedAppointmentDate, "YYYY-MM-DD", "en");
 
     const match = doctorScheduleBusyQuery.data?.data.scheduleByDate.find(
-      (d) => d.workDate === fmtDate
+      (d) => d.workDate === fmtDate,
     );
 
     if (!match) {
@@ -242,7 +242,7 @@ export default function DoctorFirst({
                   }}
                   className={cn(
                     "flex justify-between items-center w-full bg-neutral-50 py-2 rounded-md px-2",
-                    !watchedDoctorId && "opacity-50"
+                    !watchedDoctorId && "opacity-50",
                   )}
                 >
                   <label className="">Date</label>
@@ -270,7 +270,7 @@ export default function DoctorFirst({
                     <div
                       className={cn(
                         "absolute inset-0 bg-gray-200/60 rounded-md flex items-center justify-center z-10",
-                        isLoading && "bg-gray-300/70"
+                        isLoading && "bg-gray-300/70",
                       )}
                       style={{ pointerEvents: "auto" }}
                     >
@@ -335,7 +335,7 @@ export default function DoctorFirst({
                   className={cn(
                     "ion-bg-neutral-50! ion-px-[0.5rem]!",
                     slotId.fieldState.error && "ion-invalid ion-touched",
-                    !watchedDoctorId && "opacity-50"
+                    !watchedDoctorId && "opacity-50",
                   )}
                 >
                   {slotList.map((slot) => (
@@ -361,7 +361,7 @@ export default function DoctorFirst({
                     <div
                       className={cn(
                         "absolute inset-0 bg-gray-200/60 rounded-md flex items-center justify-center z-10",
-                        isLoading && "bg-gray-300/70"
+                        isLoading && "bg-gray-300/70",
                       )}
                       style={{ pointerEvents: "auto" }}
                     >

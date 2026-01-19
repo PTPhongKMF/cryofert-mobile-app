@@ -15,7 +15,7 @@ export default function UpcommingAppointments() {
   const upcomingAppointmentsQuery = useAppointmentHistoryInfiniteQuery(
     localUser?.id || "",
     4,
-    { type: null, status: null, sortType: "Upcomming" }
+    { type: null, status: null, sortType: "Upcomming" },
   );
 
   const appointments =
@@ -53,7 +53,11 @@ export default function UpcommingAppointments() {
             <div className="flex items-center justify-between w-full py-1">
               <div className="flex w-fit justify-center items-baseline gap-2 leading-tight">
                 <span className="text-sm font-medium">
-                  {format(new Date(appointment.appointmentDate), "MMM DD")}
+                  {format(
+                    new Date(appointment.appointmentDate),
+                    "MMM DD",
+                    "en",
+                  )}
                 </span>
                 <span className="text-xs text-gray-600">
                   {reduceTime(appointment.slot?.startTime)} -{" "}

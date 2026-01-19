@@ -46,7 +46,7 @@ export default function TransactionHistory() {
 
   const transactionQuery = useTransactionHistoryInfiniteQuery(
     localUser?.id || "",
-    filterOptions
+    filterOptions,
   );
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function TransactionHistory() {
 
   const transactions =
     transactionQuery.data?.pages.flatMap(
-      (page: TransactionHistoryApiResponse) => page.data
+      (page: TransactionHistoryApiResponse) => page.data,
     ) ?? [];
 
   async function handleLoadMore(e: CustomEvent<void>) {
@@ -94,7 +94,7 @@ export default function TransactionHistory() {
               "overflow-hidden transition-all duration-300 ease-in-out",
               isFilterVisible
                 ? "max-h-96 opacity-100 animate-fade-in animate-slide-down"
-                : "max-h-0 opacity-0"
+                : "max-h-0 opacity-0",
             )}
           >
             <div className={cn(!isFilterVisible && "invisible")}>
@@ -170,7 +170,8 @@ export default function TransactionHistory() {
                               <span>
                                 {format(
                                   transaction.transactionDate,
-                                  "YYYY-MM-DD HH:mm"
+                                  "YYYY-MM-DD HH:mm",
+                                  "en",
                                 )}
                               </span>
                             </div>

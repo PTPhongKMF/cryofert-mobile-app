@@ -13,7 +13,7 @@ import * as v from "valibot";
 import { getDateOnly } from "@src/utils/date";
 
 export async function createBookingAppointmentMutationFn(
-  req: BookAppointmentRequest
+  req: BookAppointmentRequest,
 ) {
   const res = await httpClient
     .post("api/appointment", {

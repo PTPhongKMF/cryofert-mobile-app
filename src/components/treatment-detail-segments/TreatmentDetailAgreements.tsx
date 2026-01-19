@@ -96,7 +96,7 @@ export default function TreatmentDetailAgreements({
                   <span className="font-normal text-xs text-black">
                     {!agreement.startDate
                       ? "N/A"
-                      : format(agreement.startDate, "MMM DD, YYYY")}
+                      : format(agreement.startDate, "MMM DD, YYYY", "en")}
                   </span>
                 </div>
 
@@ -105,7 +105,7 @@ export default function TreatmentDetailAgreements({
                   <span className="font-normal text-xs text-black">
                     {!agreement.endDate
                       ? "N/A"
-                      : format(agreement.endDate, "MMM DD, YYYY")}
+                      : format(agreement.endDate, "MMM DD, YYYY", "en")}
                   </span>
                 </div>
 
@@ -131,7 +131,7 @@ export default function TreatmentDetailAgreements({
                     <span className="font-normal text-xs text-black">
                       {!agreement.signedDate
                         ? "N/A"
-                        : format(agreement.signedDate, "MMM DD, YYYY")}
+                        : format(agreement.signedDate, "MMM DD, YYYY", "en")}
                     </span>
                   </div>
                 )}

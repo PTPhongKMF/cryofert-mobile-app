@@ -19,10 +19,10 @@ import { ROUTES } from "@src/routes/routes";
 import { useEffect } from "react";
 
 function getPrioritizedPaymentTransaction(
-  transactions: TransactionResponse[]
+  transactions: TransactionResponse[],
 ): TransactionResponse | null {
   const paymentTransactions = transactions.filter(
-    (t) => t.transactionType === "Payment"
+    (t) => t.transactionType === "Payment",
   );
 
   if (paymentTransactions.length === 0) return null;
@@ -37,7 +37,7 @@ function getPrioritizedPaymentTransaction(
   return paymentTransactions.sort(
     (a, b) =>
       (statusPriority[a.status] ?? Infinity) -
-      (statusPriority[b.status] ?? Infinity)
+      (statusPriority[b.status] ?? Infinity),
   )[0];
 }
 
@@ -81,18 +81,18 @@ export default function AppointmentHistory() {
   const router = useIonRouter();
   const localUser = useLocalUserStore((s) => s.localUser);
   const filterOptions = useAppointmentHistoryFilterStore(
-    useShallow((s) => s.filterOptions)
+    useShallow((s) => s.filterOptions),
   );
 
   const bookingHistoryQuery = useAppointmentHistoryInfiniteQuery(
     localUser?.id || "",
     20,
-    filterOptions
+    filterOptions,
   );
 
   const appointments =
     bookingHistoryQuery.data?.pages.flatMap(
-      (page: AppointmentHistoryApiResponse) => page.data
+      (page: AppointmentHistoryApiResponse) => page.data,
     ) ?? [];
 
   async function handleLoadMore(e: CustomEvent<void>) {
@@ -132,7 +132,7 @@ export default function AppointmentHistory() {
           <>
             {appointments.map((appointment) => {
               const paymentTransaction = getPrioritizedPaymentTransaction(
-                appointment.transactions
+                appointment.transactions,
               );
 
               return (
@@ -143,25 +143,30 @@ export default function AppointmentHistory() {
                   onClick={() =>
                     router.push(
                       `${ROUTES.APPOINTMENT}/${appointment.id}`,
-                      "forward"
+                      "forward",
                     )
                   }
                   className="ion-bg-transparent"
                 >
                   <div className="grid grid-cols-[1fr_auto] grid-rows-[1fr_1fr_min-content] gap-1 items-center w-full py-2">
                     <p className="font-semibold text-gray-900 justify-self-start mb-2">
-                      {format(new Date(appointment.appointmentDate), "dddd,")}{" "}
+                      {format(
+                        new Date(appointment.appointmentDate),
+                        "dddd,",
+                        "en",
+                      )}{" "}
                       <span className="text-sm">
                         {format(
                           new Date(appointment.appointmentDate),
-                          "MMM DD, YYYY"
+                          "MMM DD, YYYY",
+                          "en",
                         )}
                       </span>
                     </p>
 
                     <div
                       className={`text-xs font-medium px-2.5 py-0.5 rounded-full border justify-self-end ${getAppointmentStatusBadgeClass(
-                        appointment.status
+                        appointment.status,
                       )}`}
                     >
                       {appointment.statusName}
@@ -181,7 +186,7 @@ export default function AppointmentHistory() {
                       {paymentTransaction ? (
                         <span
                           className={getStatusColorClass(
-                            paymentTransaction.status
+                            paymentTransaction.status,
                           )}
                         >
                           {paymentTransaction.status}

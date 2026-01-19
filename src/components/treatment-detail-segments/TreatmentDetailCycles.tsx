@@ -88,7 +88,7 @@ export default function TreatmentDetailCycles({
                 "w-full relative grid grid-cols-[3.5rem_1fr]  justify-items-center gap-x-2",
                 isLast
                   ? "grid-rows-[3.5rem_auto]"
-                  : "grid-rows-[3.5rem_auto_2.5rem]"
+                  : "grid-rows-[3.5rem_auto_2.5rem]",
               )}
             >
               <div
@@ -103,7 +103,7 @@ export default function TreatmentDetailCycles({
                 ) : (
                   <div
                     className={`w-2 col-start-1 row-span-2 h-[110%] self-center ${getStatusLineColor(
-                      cycles[index + 1].status
+                      cycles[index + 1].status,
                     )}`}
                   />
                 )
@@ -115,7 +115,7 @@ export default function TreatmentDetailCycles({
                 onClick={() =>
                   router.push(
                     `${ROUTES.TREATMENT_CYCLE}/${cycle.id}`,
-                    "forward"
+                    "forward",
                   )
                 }
                 className="row-span-2 col-start-2 row-start-1 w-full ion-b-r-[8px] ion-inner-py-[1rem] shadow-lg"
@@ -146,7 +146,7 @@ export default function TreatmentDetailCycles({
                     <div className="w-full flex justify-between items-center text-sm">
                       <span>Start Date:</span>
                       <span className="font-normal text-xs text-black">
-                        {format(cycle.startDate, "MMM DD, YYYY")}
+                        {format(cycle.startDate, "MMM DD, YYYY", "en")}
                       </span>
                     </div>
 
@@ -154,7 +154,7 @@ export default function TreatmentDetailCycles({
                       <span>End Date:</span>
                       <span className="font-normal text-xs text-black">
                         {cycle.endDate
-                          ? format(cycle.endDate, "MMM DD, YYYY")
+                          ? format(cycle.endDate, "MMM DD, YYYY", "en")
                           : "TBD"}
                       </span>
                     </div>
