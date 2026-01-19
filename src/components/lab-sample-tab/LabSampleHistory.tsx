@@ -14,21 +14,22 @@ import { useLabSampleFilterStore } from "@src/stores/lab-sample";
 import { titleCase } from "text-case";
 import { safeFormat } from "@src/utils/date";
 import { useShallow } from "zustand/react/shallow";
+import { useEffect } from "react";
 
 export default function LabSampleHistory() {
   const localUser = useLocalUserStore((s) => s.localUser);
   const filterOptions = useLabSampleFilterStore(
-    useShallow((s) => s.filterOptions)
+    useShallow((s) => s.filterOptions),
   );
   const labSamplesQuery = useLabSampleInfiniteQuery(
     localUser?.id || "",
     20,
-    filterOptions
+    filterOptions,
   );
 
   const labSamples =
     labSamplesQuery.data?.pages.flatMap(
-      (page: LabSampleListApiResponse) => page.data
+      (page: LabSampleListApiResponse) => page.data,
     ) ?? [];
 
   async function handleLoadMore(e: CustomEvent<void>) {
@@ -43,6 +44,10 @@ export default function LabSampleHistory() {
 
   const isInitialLoading =
     labSamplesQuery.isPending && !labSamplesQuery.isFetchingNextPage;
+
+  useEffect(() => {
+    if (labSamplesQuery.isError) console.log(labSamplesQuery.error);
+  }, [labSamplesQuery.isError, labSamplesQuery.error]);
 
   return (
     <div className="size-full">
@@ -72,8 +77,6 @@ export default function LabSampleHistory() {
                   <IonItem
                     key={sample.id}
                     className="ion-bg-transparent"
-                    button
-                    detail
                     onClick={() => console.log("Lab sample clicked", sample)}
                   >
                     <div className="w-full py-3 grid grid-cols-[1fr_auto] items-stretch gap-2 border-b border-blue-50">
@@ -94,14 +97,14 @@ export default function LabSampleHistory() {
 
                         <div className="flex flex-col gap-0.5 text-sm text-gray-700">
                           <div className="flex items-baseline gap-1.5">
-                            <span className="text-[11px] uppercase tracking-wide text-gray-400">
+                            <span className="text-[11px] uppercase tracking-wide text-gray-400 shrink-0">
                               Collected
                             </span>
-                            <span>
+                            <span className="truncate min-w-0">
                               {sample.collectionDate
                                 ? safeFormat(
                                     new Date(sample.collectionDate),
-                                    "MMM DD, YYYY"
+                                    "MMM DD, YYYY",
                                   )
                                 : "Pending"}
                             </span>
@@ -118,7 +121,7 @@ export default function LabSampleHistory() {
                               {sample.expiryDate
                                 ? safeFormat(
                                     new Date(sample.expiryDate),
-                                    "MMM DD, YYYY"
+                                    "MMM DD, YYYY",
                                   )
                                 : "TBD"}
                             </span>
@@ -129,7 +132,7 @@ export default function LabSampleHistory() {
                       <div className="flex flex-col justify-between items-end gap-1 min-w-fit">
                         <span
                           className={`text-[11px] font-semibold px-3 py-1 rounded-full border ${getStatusBadgeClass(
-                            sample.status
+                            sample.status,
                           )}`}
                         >
                           {titleCase(sample.status)}

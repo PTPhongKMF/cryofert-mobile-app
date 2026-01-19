@@ -13,7 +13,7 @@ import type { CryoContractListApiResponse } from "@src/schemas/cryo-contract";
 import { useCryoContractFilterStore } from "@src/stores/cryo-contract";
 import { useLocalUserStore } from "@src/stores/user";
 import { safeFormat } from "@src/utils/date";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { ROUTES } from "@src/routes/routes";
 
@@ -21,18 +21,22 @@ export default function ContractHistory() {
   const router = useIonRouter();
   const localUser = useLocalUserStore((s) => s.localUser);
   const filterOptions = useCryoContractFilterStore(
-    useShallow((s) => s.filterOptions)
+    useShallow((s) => s.filterOptions),
   );
   const contractQuery = useCryoContractInfiniteQuery(
     localUser?.id || "",
     20,
-    filterOptions
+    filterOptions,
   );
 
   const contracts =
     contractQuery.data?.pages.flatMap(
-      (page: CryoContractListApiResponse) => page.data
+      (page: CryoContractListApiResponse) => page.data,
     ) ?? [];
+
+  useEffect(() => {
+    if (contractQuery.isError) console.log(contractQuery.error);
+  }, [contractQuery.isError, contractQuery.error]);
 
   const currencyFormatter = useMemo(
     () =>
@@ -41,7 +45,7 @@ export default function ContractHistory() {
         currency: "VND",
         maximumFractionDigits: 0,
       }),
-    []
+    [],
   );
 
   async function handleLoadMore(e: CustomEvent<void>) {
@@ -69,7 +73,7 @@ export default function ContractHistory() {
             <IonSpinner name="crescent" />
           </div>
         ) : contractQuery.isError ? (
-          <div className="text-center text-sm text-red-600 py-12 px-6 bg-white/60 rounded-2xl border border-red-100">
+          <div className="text-center text-sm text-red-600 py-12 px-6">
             Unable to load contracts. Please pull to refresh or try again later.
           </div>
         ) : (
@@ -89,7 +93,7 @@ export default function ContractHistory() {
                     onClick={() =>
                       router.push(
                         `${ROUTES.CRYO_CONTRACT}/${contract.id}`,
-                        "forward"
+                        "forward",
                       )
                     }
                   >
@@ -113,7 +117,7 @@ export default function ContractHistory() {
                               {contract.startDate
                                 ? safeFormat(
                                     new Date(contract.startDate),
-                                    "MMM DD, YYYY"
+                                    "MMM DD, YYYY",
                                   )
                                 : "TBD"}
                             </span>
@@ -126,7 +130,7 @@ export default function ContractHistory() {
                               {contract.endDate
                                 ? safeFormat(
                                     new Date(contract.endDate),
-                                    "MMM DD, YYYY"
+                                    "MMM DD, YYYY",
                                   )
                                 : "TBD"}
                             </span>
@@ -139,7 +143,7 @@ export default function ContractHistory() {
                               {contract.signedDate
                                 ? safeFormat(
                                     new Date(contract.signedDate),
-                                    "MMM DD, YYYY"
+                                    "MMM DD, YYYY",
                                   )
                                 : "TBD"}
                             </span>
@@ -150,7 +154,7 @@ export default function ContractHistory() {
                       <div className="flex flex-col justify-between items-end gap-2 min-w-fit">
                         <span
                           className={`text-[11px] font-semibold px-3 py-1 rounded-full border ${getStatusBadgeClass(
-                            contract.status
+                            contract.status,
                           )}`}
                         >
                           {contract.status}

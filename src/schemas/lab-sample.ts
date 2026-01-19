@@ -14,6 +14,7 @@ export const LabSampleStatuses = [
   "Frozen",
   "Disposed",
   "Thawed",
+  "Reserved",
 ] as const;
 const LabSampleStatusSchema = v.picklist(LabSampleStatuses);
 

@@ -9,6 +9,7 @@ export const NotificationTypes = [
   "Treatment",
   "Relationship",
   "Reminder",
+  "CryoStorageContract",
 ] as const;
 const NotificationTypeSchema = v.picklist(NotificationTypes);
 
@@ -60,6 +61,3 @@ export type NotificationHistoryApiResponse = v.InferOutput<
 
 export type NotificationType = v.InferOutput<typeof NotificationTypeSchema>;
 export type NotificationStatus = v.InferOutput<typeof NotificationStatusSchema>;
-
-
-

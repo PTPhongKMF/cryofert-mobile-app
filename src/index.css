@@ -98,6 +98,10 @@
 }
 
 @layer base {
+  :root {
+    color-scheme: light;
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
@@ -110,41 +114,41 @@
   --width: fit-content;
 }
 @utility ion-w-* {
-  --width: --value([ *]);
+  --width: --value([*]);
 }
 
 @utility ion-min-w-auto {
   --min-width: auto;
 }
 @utility ion-min-w-* {
-  --min-width: --value([ *]);
+  --min-width: --value([*]);
 }
 @utility ion-max-w-auto {
   --max-width: auto;
 }
 @utility ion-max-w-* {
-  --max-width: --value([ *]);
+  --max-width: --value([*]);
 }
 
 @utility ion-h-fit {
   --height: fit-content;
 }
 @utility ion-h-* {
-  --height: --value([ *]);
+  --height: --value([*]);
 }
 
 @utility ion-min-h-auto {
   --min-height: auto;
 }
 @utility ion-min-h-* {
-  --min-height: --value([ *]);
+  --min-height: --value([*]);
 }
 
 @utility ion-max-h-auto {
   --max-height: auto;
 }
 @utility ion-max-h-* {
-  --max-height: --value([ *]);
+  --max-height: --value([*]);
 }
 
 @utility ion-size-auto {
@@ -152,8 +156,8 @@
   --width: auto;
 }
 @utility ion-size-* {
-  --height: --value([ *]);
-  --width: --value([ *]);
+  --height: --value([*]);
+  --width: --value([*]);
 }
 
 @utility ion-min-size-auto {
@@ -161,8 +165,8 @@
   --min-width: auto;
 }
 @utility ion-min-size-* {
-  --min-height: --value([ *]);
-  --min-width: --value([ *]);
+  --min-height: --value([*]);
+  --min-width: --value([*]);
 }
 
 @utility ion-b-r-1 {
@@ -173,10 +177,10 @@
 }
 
 @utility ion-b-c-* {
-  --border-color: --value(--color- *);
+  --border-color: --value(--color-*);
 }
 @utility ion-b-s-* {
-  --border-style: --value([ *]);
+  --border-style: --value([*]);
 }
 
 @utility ion-b-w-1 {
@@ -189,8 +193,8 @@
 }
 
 @utility ion-bg-* {
-  --background: --value(--color- *);
-  --background: --value([ *]);
+  --background: --value(--color-*);
+  --background: --value([*]);
 }
 @utility ion-bg-transparent {
   --background: transparent;
@@ -200,7 +204,7 @@
   --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
 }
 @utility ion-box-shadow-* {
-  --box-shadow: --value([ *]);
+  --box-shadow: --value([*]);
 }
 
 @utility ion-ps {
@@ -322,14 +326,14 @@
 }
 
 @utility ion-spinner-c-* {
-  --spinner-color: --value(--color- *);
+  --spinner-color: --value(--color-*);
 }
 
 @utility ion-wheel-fade-bg-rgb-white {
   --wheel-fade-background-rgb: 255, 255, 255;
 }
 @utility ion-wheel-fade-bg-rgb-* {
-  --wheel-fade-background-rgb: --value([ *]);
+  --wheel-fade-background-rgb: --value([*]);
 }
 
 .ion-content-scroll-host::before,

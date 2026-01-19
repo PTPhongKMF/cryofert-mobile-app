@@ -4,7 +4,7 @@ import * as v from "valibot";
 export const TransactionTypes = ["Payment", "Refund", "Adjustment"] as const;
 const transactionType = v.picklist(TransactionTypes);
 
-export const PaymentGateway = ["VNPay", "PayOS"] as const;
+export const PaymentGateway = ["VNPay", "PayOS", "Cash Payment"] as const;
 const paymentGatewaySchema = v.picklist(PaymentGateway);
 
 export const CreateTransPaymentGateway = ["VnPay", "PayOS"] as const;

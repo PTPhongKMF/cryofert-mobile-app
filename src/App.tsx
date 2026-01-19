@@ -27,7 +27,8 @@ import "@ionic/react/css/display.css";
 
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
-import "@ionic/react/css/palettes/dark.system.css";
+// import "@ionic/react/css/palettes/dark.system.css"; // remove dark mode, force always white
+
 import AppLoading from "@src/components/AppLoading";
 import OtpDialog from "@src/components/dialogs/OtpDialog";
 import GenericDialog from "@src/components/dialogs/GenericDialog";

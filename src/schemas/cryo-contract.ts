@@ -9,6 +9,7 @@ export const CryoContractStatuses = [
   "Renewed",
   "Draft",
   "Pending",
+  "Cancel",
 ] as const;
 export const CryoContractStatusSchema = v.picklist(CryoContractStatuses);
 
@@ -44,21 +45,21 @@ export const CryoContractDetailResponseSchema = v.object({
       storageDate: v.nullable(v.string()),
       storageLocation: v.nullable(v.string()),
       isActive: v.boolean(),
-    })
+    }),
   ),
 });
 
 ///////////////////////////////////////////////////////////////////////
 
 export const CryoContractApiResponseSchema = createApiResponseSchema(
-  CryoContractResponseSchema
+  CryoContractResponseSchema,
 );
 export const CryoContractListApiResponseSchema = createApiResponseSchema(
-  v.array(CryoContractResponseSchema)
+  v.array(CryoContractResponseSchema),
 );
 
 export const CryoContractDetailApiResponseSchema = createApiResponseSchema(
-  CryoContractDetailResponseSchema
+  CryoContractDetailResponseSchema,
 );
 
 ///////////////////////////////////////////////////////////////////////
@@ -74,9 +75,9 @@ export const StartContractFormSchema = v.pipe(
         v.object({
           labSampleId: v.pipe(v.string(), v.nonEmpty("Required")),
           sampleType: LabSampleTypeSchema,
-        })
+        }),
       ),
-      v.nonEmpty("Require at least one")
+      v.nonEmpty("Require at least one"),
     ),
   }),
   v.forward(
@@ -85,11 +86,11 @@ export const StartContractFormSchema = v.pipe(
       (input) =>
         Array.isArray(input.samples) &&
         input.samples.every(
-          (sample) => sample.sampleType === input.formSampleType
+          (sample) => sample.sampleType === input.formSampleType,
         ),
-      "All samples must match the form sample type"
+      "All samples must match the form sample type",
     ),
-    ["samples"]
+    ["samples"],
   ),
   v.forward(
     v.partialCheck(
@@ -98,10 +99,10 @@ export const StartContractFormSchema = v.pipe(
         typeof input.cryoPackageMaxSamples === "number" &&
         Array.isArray(input.samples) &&
         input.samples.length <= input.cryoPackageMaxSamples,
-      "Selected samples exceed the package limit"
+      "Selected samples exceed the package limit",
     ),
-    ["samples"]
-  )
+    ["samples"],
+  ),
 );
 
 ///////////////////////////////////////////////////////////////////////

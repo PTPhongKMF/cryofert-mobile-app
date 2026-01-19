@@ -44,7 +44,7 @@ export default function Notification() {
 
   const notificationQuery = useNotificationHistoryInfiniteQuery(
     localUser?.id || "",
-    filterOptions
+    filterOptions,
   );
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function Notification() {
 
   const notifications =
     notificationQuery.data?.pages.flatMap(
-      (page: NotificationHistoryApiResponse) => page.data
+      (page: NotificationHistoryApiResponse) => page.data,
     ) ?? [];
 
   async function handleLoadMore(e: CustomEvent<void>) {
@@ -68,32 +68,29 @@ export default function Notification() {
 
   function getNotificationItemClasses(
     isImportant: boolean,
-    readTime: string | null
+    readTime: string | null,
   ): string {
     const isRead = readTime !== null;
-    const baseClasses =
-      "ion-bg-transparent bg-white/90 rounded-xl mb-2 transition-all";
+    const baseClasses = "ion-bg-transparent rounded-xl mb-2 transition-all";
 
-    if (isImportant) {
-      // Important items: orange border, brighter if unread, dimmer if read
-      if (isRead) {
-        return cn(baseClasses, "border-2 border-orange-300 opacity-60");
-      } else {
-        return cn(baseClasses, "border-2 border-orange-500 opacity-100");
-      }
+    if (isImportant && !isRead) {
+      // Important unread items: colored background
+      return cn(baseClasses, "bg-orange-50/90 opacity-100");
     } else {
-      // Normal items: gray border, dimmer if read, brighter if unread
-      if (isRead) {
-        return cn(baseClasses, "border border-gray-200 opacity-60");
+      // Normal items or read items: transparent background
+      if (isImportant && isRead) {
+        // Important but read: transparent
+        return cn(baseClasses, "opacity-60");
       } else {
-        return cn(baseClasses, "border border-gray-200 opacity-100");
+        // Normal items: transparent
+        return cn(baseClasses, "opacity-100");
       }
     }
   }
 
   function getTitleClasses(
     isImportant: boolean,
-    readTime: string | null
+    readTime: string | null,
   ): string {
     const baseClasses = "text-gray-900";
     const importantClasses = isImportant ? "font-bold" : "font-semibold";
@@ -127,7 +124,7 @@ export default function Notification() {
               "overflow-hidden transition-all duration-300 ease-in-out",
               isFilterVisible
                 ? "max-h-96 opacity-100 animate-fade-in animate-slide-down"
-                : "max-h-0 opacity-0"
+                : "max-h-0 opacity-0",
             )}
           >
             <div className={cn(!isFilterVisible && "invisible")}>
@@ -166,13 +163,11 @@ export default function Notification() {
                     <>
                       {notifications.map((notification) => (
                         <IonItem
-                          button
-                          detail
                           key={notification.id}
                           lines="none"
                           className={getNotificationItemClasses(
                             notification.isImportant,
-                            notification.readTime
+                            notification.readTime,
                           )}
                         >
                           <div className="flex flex-col gap-2 w-full py-2">
@@ -180,12 +175,12 @@ export default function Notification() {
                               <div
                                 className={getTitleClasses(
                                   notification.isImportant,
-                                  notification.readTime
+                                  notification.readTime,
                                 )}
                               >
                                 {notification.title}
                               </div>
-                              <div className="text-xs text-gray-500 px-2 py-1 rounded bg-gray-100">
+                              <div className="text-xs text-gray-500 px-2 py-1 rounded">
                                 {notification.status}
                               </div>
                             </div>
@@ -207,7 +202,7 @@ export default function Notification() {
                               <span>
                                 {format(
                                   notification.createdAt,
-                                  "YYYY-MM-DD HH:mm"
+                                  "YYYY-MM-DD HH:mm",
                                 )}
                               </span>
                             </div>
