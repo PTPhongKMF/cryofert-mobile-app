@@ -7,8 +7,11 @@ const transactionType = v.picklist(TransactionTypes);
 export const PaymentGateway = ["VNPay", "PayOS", "Cash Payment"] as const;
 const paymentGatewaySchema = v.picklist(PaymentGateway);
 
-export const CreateTransPaymentGateway = ["VnPay", "PayOS"] as const;
-const createTransPaymentGatewaySchema = v.picklist(CreateTransPaymentGateway);
+export const CreateTransPaymentGateways = ["VnPay", "PayOS"] as const;
+const createTransPaymentGatewaySchema = v.picklist(CreateTransPaymentGateways);
+export type CreateTransPaymentGateway = v.InferInput<
+  typeof createTransPaymentGatewaySchema
+>;
 
 export const TransactionStatuses = [
   "Pending",
@@ -56,11 +59,11 @@ export const TransactionResponseSchema = v.object({
 ///////////////////////////////////////////////////////////////////////
 
 export const TransactionHistoryApiResponseSchema = createApiResponseSchema(
-  v.array(TransactionResponseSchema)
+  v.array(TransactionResponseSchema),
 );
 
 export const TransactionApiResponseSchema = createApiResponseSchema(
-  TransactionResponseSchema
+  TransactionResponseSchema,
 );
 
 ///////////////////////////////////////////////////////////////////////

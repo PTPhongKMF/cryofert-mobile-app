@@ -1,10 +1,8 @@
 import {
   IonBackButton,
-  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
   IonPage,
   IonSpinner,
   IonTitle,
@@ -13,14 +11,15 @@ import {
 } from "@ionic/react";
 import { useLocation } from "react-router";
 import VNPayLogo from "@assets/images/logos/vnpay.webp";
-import { useVnPayPayment } from "@src/hooks/vnpay-hook";
+import PayOSLogo from "@assets/images/logos/payos.png";
+import { useCreatePayment } from "@src/hooks/payment-hook";
 import { useGenericDialogStore } from "@src/stores/dialog";
 import { useShallow } from "zustand/react/shallow";
 import { alertCircleOutline, checkmarkCircleOutline } from "ionicons/icons";
 import { ROUTES } from "@src/routes/routes";
 import { useEffect } from "react";
-import { useLocalUserStore } from "@src/stores/user";
 import * as v from "valibot";
+import type { CreateTransPaymentGateway } from "@src/schemas/transaction";
 import { CreateTransactionRequestSchema } from "@src/schemas/transaction";
 
 export default function PaymentPortal() {
@@ -33,10 +32,10 @@ export default function PaymentPortal() {
   const paymentFor = searchParams.get("paymentFor");
 
   const openGenericDialog = useGenericDialogStore(
-    useShallow((s) => s.openGenericDialog)
+    useShallow((s) => s.openGenericDialog),
   );
 
-  const VnPayPayment = useVnPayPayment({
+  const createPayment = useCreatePayment({
     onSuccess: (transactionCode) => {
       openGenericDialog({
         title: "Payment Successful",
@@ -78,9 +77,9 @@ export default function PaymentPortal() {
     }
   }, [location.pathname, router, relatedEntityType, relatedEntityId]);
 
-  async function handleVnPay() {
+  async function handlePayment(paymentGateway: CreateTransPaymentGateway) {
     const res = v.safeParse(CreateTransactionRequestSchema, {
-      paymentGateway: "VnPay",
+      paymentGateway: paymentGateway,
       relatedEntityId: relatedEntityId,
       relatedEntityType: relatedEntityType,
     });
@@ -101,7 +100,7 @@ export default function PaymentPortal() {
         },
       });
     } else {
-      await VnPayPayment.initiatePayment(res.output);
+      await createPayment.initiatePayment(res.output);
     }
   }
 
@@ -119,9 +118,9 @@ export default function PaymentPortal() {
       <IonContent>
         <div
           className="relative size-full flex flex-col justify-start items-center gap-10 pt-8
-        bg-gradient-to-br from-sky-50 from-10% via-cyan-50 to-blue-50 to-90%"
+        bg-linear-to-br from-sky-50 from-10% via-cyan-50 to-blue-50 to-90%"
         >
-          {VnPayPayment.isPaymentInProgress && (
+          {createPayment.isPaymentInProgress && (
             <div className="absolute inset-0 z-20 bg-black/60 pointer-events-auto flex items-center justify-center">
               <IonSpinner name="crescent" />
             </div>
@@ -144,12 +143,20 @@ export default function PaymentPortal() {
 
           <div className="size-full flex flex-col justify-start items-center gap-10 pt-8 px-8">
             <button
-              onClick={handleVnPay}
+              onClick={() => handlePayment("VnPay")}
               className="w-full bg-white px-2! py-2! h-20 flex justify-start items-center
             rounded-xl! shadow-lg transition-all duration-200"
             >
               <img src={VNPayLogo} className="h-fit w-20" alt="VNPay" />
               <p className="text-xl grow">VNPay</p>
+            </button>
+            <button
+              onClick={() => handlePayment("PayOS")}
+              className="w-full bg-white px-2! py-2! h-20 flex justify-start items-center
+            rounded-xl! shadow-lg transition-all duration-200"
+            >
+              <img src={PayOSLogo} className="h-fit w-20" alt="PayOS" />
+              <p className="text-xl grow">PayOS</p>
             </button>
           </div>
         </div>

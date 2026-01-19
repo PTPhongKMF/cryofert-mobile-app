@@ -5,18 +5,19 @@ import type { CreateTransactionRequest } from "@src/schemas/transaction";
 import { useCreateTransactionMutation } from "@src/hooks/transaction-hook";
 import { getSecuredToken } from "@src/services/token-service";
 import { useLocalUserStore } from "@src/stores/user";
+import { baseApiUrl } from "@src/services/api-services/http-service";
 
-export interface UseVnPayPaymentOptions {
+export interface UseCreatePaymentOptions {
   onSuccess?: (transactionCode: string, status: string) => void;
   onError?: (error: Error) => void;
 }
 
-export function useVnPayPayment(options: UseVnPayPaymentOptions) {
+export function useCreatePayment(options: UseCreatePaymentOptions) {
   const { onSuccess, onError } = options;
   const [isPaymentInProgress, setIsPaymentInProgress] = useState(false);
   const localUser = useLocalUserStore((s) => s.localUser);
 
-  const createVnPayMutation = useCreateTransactionMutation();
+  const createPaymentMutation = useCreateTransactionMutation();
 
   const closeBrowser = useCallback(async () => {
     InAppBrowser.removeAllListeners();
@@ -31,7 +32,7 @@ export function useVnPayPayment(options: UseVnPayPaymentOptions) {
     }
 
     const connection = new HubConnectionBuilder()
-      .withUrl("https://cryofert.runasp.net/transactionHub", {
+      .withUrl(`${baseApiUrl}transactionHub`, {
         accessTokenFactory: async () => {
           const token = await getSecuredToken("access-token");
           return token || "";
@@ -66,7 +67,7 @@ export function useVnPayPayment(options: UseVnPayPaymentOptions) {
           setIsPaymentInProgress(false);
           closeBrowser();
         }
-      }
+      },
     );
 
     return () => {
@@ -74,7 +75,7 @@ export function useVnPayPayment(options: UseVnPayPaymentOptions) {
         .stop()
         .then(() => console.log("Disconnected from TransactionHub"))
         .catch((err) =>
-          console.log("Error disconnecting from TransactionHub:", err)
+          console.log("Error disconnecting from TransactionHub:", err),
         );
     };
   }, [localUser?.id, onSuccess, onError, closeBrowser]);
@@ -94,7 +95,7 @@ export function useVnPayPayment(options: UseVnPayPaymentOptions) {
   async function initiatePayment(request: CreateTransactionRequest) {
     setIsPaymentInProgress(true);
 
-    const response = await createVnPayMutation.mutateAsync(request);
+    const response = await createPaymentMutation.mutateAsync(request);
 
     await InAppBrowser.openInWebView({
       url: response.data.paymentUrl,
@@ -105,6 +106,5 @@ export function useVnPayPayment(options: UseVnPayPaymentOptions) {
   return {
     initiatePayment,
     isPaymentInProgress,
-    createVnPayMutation,
   };
 }

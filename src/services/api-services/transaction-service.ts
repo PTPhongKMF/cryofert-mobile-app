@@ -36,11 +36,12 @@ export async function transactionHistoryQueryFn(params: {
 }
 
 export async function createTransactionMutationFn(
-  req: CreateTransactionRequest
+  req: CreateTransactionRequest,
 ) {
   const res = await httpClient
     .post("api/transaction", {
       searchParams: {
+        paymentGateway: req.paymentGateway,
         relatedEntityType: req.relatedEntityType,
         relatedEntityId: req.relatedEntityId,
       },

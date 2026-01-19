@@ -11,6 +11,8 @@ import { alertCircleOutline } from "ionicons/icons";
 const CLOUD =
   "https://cryofert-bfbqgkgzf8b3e9ap.southeastasia-01.azurewebsites.net/";
 
+export const baseApiUrl = CLOUD;
+
 interface RefreshResponse {
   data?: { token?: string; refreshToken?: string };
 }
