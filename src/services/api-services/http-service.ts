@@ -7,9 +7,9 @@ import { useGenericDialogStore } from "@src/stores/dialog";
 import { alertCircleOutline } from "ionicons/icons";
 
 // const LOCAL = "";
-const CLOUD = "https://cryoferts.runasp.net/";
-// const CLOUD =
-//   "https://cryofert-bfbqgkgzf8b3e9ap.southeastasia-01.azurewebsites.net/";
+// const CLOUD = "https://cryoferts.runasp.net/";
+const CLOUD =
+  "https://cryofert-bfbqgkgzf8b3e9ap.southeastasia-01.azurewebsites.net/";
 
 interface RefreshResponse {
   data?: { token?: string; refreshToken?: string };
@@ -58,13 +58,13 @@ export const httpClient = ky.extend({
 
                 await setSecuredToken(
                   "access-token",
-                  refreshResponse.data.token
+                  refreshResponse.data.token,
                 );
 
                 if (refreshResponse.data.refreshToken) {
                   await setSecuredToken(
                     "refresh-token",
-                    refreshResponse.data.refreshToken
+                    refreshResponse.data.refreshToken,
                   );
                 }
               })().finally(() => {
