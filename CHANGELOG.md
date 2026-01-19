@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.10.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.9.0...v0.10.0) (2026-01-19)
+
+
+### Features
+
+* add sign and renew contract, add relationship ([#26](https://github.com/PTPhongKMF/cryofert-mobile-app/issues/26)) ([3d30a66](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/3d30a66dcbfea486c7035ed29aa3b27e9f8054ca))
+* change to debug apk build ([#28](https://github.com/PTPhongKMF/cryofert-mobile-app/issues/28)) ([f5b0d9e](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/f5b0d9e43dfeab3925d715c6a279006ecdf2b857))
+
 ## [0.9.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.8.0...v0.9.0) (2025-12-23)
 
 
