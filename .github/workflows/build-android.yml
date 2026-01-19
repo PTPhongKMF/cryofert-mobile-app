@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   build-apk:
-    name: Build APK
+    name: Build APK (debug)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -41,12 +41,12 @@ jobs:
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleRelease
+          ./gradlew assembleDebug
 
-      - name: Rename APK to cryofert-android.apk
+      - name: Rename APK to cryofert-android-debug.apk
         run: |
           set -euo pipefail
-          out_dir="android/app/build/outputs/apk/release"
+          out_dir="android/app/build/outputs/apk/debug"
           echo "Looking for APKs in $out_dir"
           apk="$(ls -t $out_dir/*.apk 2>/dev/null | head -n1 || true)"
           if [ -z "$apk" ]; then
@@ -54,10 +54,10 @@ jobs:
             exit 1
           fi
           echo "Found APK: $apk"
-          mv -- "$apk" "$out_dir/cryofert-android.apk"
-          echo "Renamed to $out_dir/cryofert-android.apk"
+          mv -- "$apk" "$out_dir/cryofert-android-debug.apk"
+          echo "Renamed to $out_dir/cryofert-android-debug.apk"
 
       - name: Upload APK to Release
         uses: softprops/action-gh-release@v2
         with:
-          files: android/app/build/outputs/apk/release/cryofert-android.apk
+          files: android/app/build/outputs/apk/debug/cryofert-android-debug.apk

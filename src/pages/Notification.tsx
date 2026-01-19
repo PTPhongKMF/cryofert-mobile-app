@@ -44,7 +44,7 @@ export default function Notification() {
 
   const notificationQuery = useNotificationHistoryInfiniteQuery(
     localUser?.id || "",
-    filterOptions
+    filterOptions,
   );
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function Notification() {
 
   const notifications =
     notificationQuery.data?.pages.flatMap(
-      (page: NotificationHistoryApiResponse) => page.data
+      (page: NotificationHistoryApiResponse) => page.data,
     ) ?? [];
 
   async function handleLoadMore(e: CustomEvent<void>) {
@@ -68,7 +68,7 @@ export default function Notification() {
 
   function getNotificationItemClasses(
     isImportant: boolean,
-    readTime: string | null
+    readTime: string | null,
   ): string {
     const isRead = readTime !== null;
     const baseClasses = "ion-bg-transparent rounded-xl mb-2 transition-all";
@@ -90,7 +90,7 @@ export default function Notification() {
 
   function getTitleClasses(
     isImportant: boolean,
-    readTime: string | null
+    readTime: string | null,
   ): string {
     const baseClasses = "text-gray-900";
     const importantClasses = isImportant ? "font-bold" : "font-semibold";
@@ -124,7 +124,7 @@ export default function Notification() {
               "overflow-hidden transition-all duration-300 ease-in-out",
               isFilterVisible
                 ? "max-h-96 opacity-100 animate-fade-in animate-slide-down"
-                : "max-h-0 opacity-0"
+                : "max-h-0 opacity-0",
             )}
           >
             <div className={cn(!isFilterVisible && "invisible")}>
@@ -163,13 +163,11 @@ export default function Notification() {
                     <>
                       {notifications.map((notification) => (
                         <IonItem
-                          button
-                          detail
                           key={notification.id}
                           lines="none"
                           className={getNotificationItemClasses(
                             notification.isImportant,
-                            notification.readTime
+                            notification.readTime,
                           )}
                         >
                           <div className="flex flex-col gap-2 w-full py-2">
@@ -177,7 +175,7 @@ export default function Notification() {
                               <div
                                 className={getTitleClasses(
                                   notification.isImportant,
-                                  notification.readTime
+                                  notification.readTime,
                                 )}
                               >
                                 {notification.title}
@@ -204,7 +202,7 @@ export default function Notification() {
                               <span>
                                 {format(
                                   notification.createdAt,
-                                  "YYYY-MM-DD HH:mm"
+                                  "YYYY-MM-DD HH:mm",
                                 )}
                               </span>
                             </div>
