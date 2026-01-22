@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import type { HTTPError } from "ky";
 import {
   confirmOtpMutationFn,
+  forgotPasswordMutationFn,
   loginMutationFn,
   registerMutationFn,
   resendOtpMutationFn,
@@ -32,5 +33,11 @@ export function useConfirmOtpMutation() {
 export function useResendOtpMutation() {
   return useMutation<void, HTTPError, string>({
     mutationFn: resendOtpMutationFn,
+  });
+}
+
+export function useForgotPasswordMutation() {
+  return useMutation<void, HTTPError, string>({
+    mutationFn: forgotPasswordMutationFn,
   });
 }

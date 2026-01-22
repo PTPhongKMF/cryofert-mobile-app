@@ -1,6 +1,7 @@
 const BASE = {
   ROOT: "/",
   LANDING: "/landing",
+  L_AUTH_FORGOT_PASS: "/forgot-password",
   TABS: "/tabs",
 
   NOTIFICATION: `/notifications`,

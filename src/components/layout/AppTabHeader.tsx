@@ -3,6 +3,7 @@ import { ROUTES } from "@src/routes/routes";
 import { notificationsOutline } from "ionicons/icons";
 import { Dna, HeartPulse, List, Snowflake, UserRoundCog } from "lucide-react";
 import { useLayoutEffect, useRef } from "react";
+import CryoFertLogo from "@assets/images/logos/cryofert-logo.png";
 
 export default function AppTabHeader() {
   const headerRef = useRef<HTMLIonHeaderElement>(null);
@@ -17,7 +18,7 @@ export default function AppTabHeader() {
         const height = headerRef.current.offsetHeight;
         document.documentElement.style.setProperty(
           "--app-fixed-header-height",
-          `${height}px`
+          `${height}px`,
         );
       }
     }
@@ -35,7 +36,7 @@ export default function AppTabHeader() {
       case ROUTES.T_HOME:
         return (
           <>
-            <HeartPulse className="h-7 w-7 text-blue-600" />
+            <img src={CryoFertLogo} className="h-10 w-10 text-blue-600" />
             CryoFert
           </>
         );
@@ -63,7 +64,7 @@ export default function AppTabHeader() {
       default:
         return (
           <>
-            <HeartPulse className="h-7 w-7 text-blue-600" />
+            <img src={CryoFertLogo} className="h-10 w-10 text-blue-600" />
             CryoFert
           </>
         );

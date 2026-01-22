@@ -35,7 +35,7 @@ export default function LandingTabRoutes() {
           />
           <IonLabel className="text-xs">Home</IonLabel>
         </IonTabButton>
-        <IonTabButton tab="auth" href={ROUTES.L_AUTH}>
+        <IonTabButton tab="auth" href={ROUTES.L_AUTH_LOGIN}>
           <IonIcon
             icon={matchCurrentTab(ROUTES.L_AUTH) ? logIn : logInOutline}
             className="size-6"

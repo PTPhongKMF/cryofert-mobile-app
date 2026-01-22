@@ -22,6 +22,7 @@ import CryoContractDetail from "@src/pages/lab-samples-tab/CryoContractDetail";
 import RenewCryoContractPaper from "@src/pages/lab-samples-tab/RenewCryoContractPaper";
 import { useLocalUserStore } from "@src/stores/user";
 import Notification from "@src/pages/Notification";
+import LandingForgotPass from "@src/pages/LandingForgotPass";
 
 export default function RootRoutes() {
   const router = useIonRouter();
@@ -32,7 +33,7 @@ export default function RootRoutes() {
   useEffect(() =>
     setGlobalPush((path, direction) => {
       router.push(path, direction);
-    })
+    }),
   );
 
   useEffect(() => {
@@ -49,6 +50,7 @@ export default function RootRoutes() {
     <IonRouterOutlet>
       <Route exact path={ROUTES.ROOT} component={SplashScreen} />
       <Route path={ROUTES.LANDING} component={LandingTabRoutes} />
+      <Route path={ROUTES.L_AUTH_FORGOT_PASS} component={LandingForgotPass} />
       <Route path={ROUTES.TABS} component={AppTabRoutes} />
 
       <Route path={ROUTES.NOTIFICATION} component={Notification} />

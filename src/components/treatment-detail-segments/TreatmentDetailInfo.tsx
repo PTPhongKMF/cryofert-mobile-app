@@ -358,7 +358,7 @@ export default function TreatmentDetailInfo({
         </div>
       </div>
 
-      {(treatment.diagnosis || treatment.goals || treatment.notes) && (
+      {(treatment.diagnosis || treatment.goals) && (
         <div className="bg-gray-50 w-full p-4 rounded-xl shadow-lg border border-blue-200 flex flex-col gap-3">
           <h2 className="text-lg font-semibold text-blue-500 my-2!">
             Medical Information
@@ -379,15 +379,6 @@ export default function TreatmentDetailInfo({
                 <span className="font-semibold">Goals:</span>
                 <span className="font-normal text-xs text-black">
                   {treatment.goals}
-                </span>
-              </div>
-            )}
-
-            {treatment.notes && (
-              <div className="flex flex-col gap-1 text-sm">
-                <span className="font-semibold">Notes:</span>
-                <span className="font-normal text-xs text-black whitespace-pre-wrap">
-                  {treatment.notes}
                 </span>
               </div>
             )}

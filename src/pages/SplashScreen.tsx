@@ -4,6 +4,7 @@ import { ROUTES } from "@src/routes/routes";
 import { useLocalUserStore } from "@src/stores/user";
 import { useEffect } from "react";
 import { useLocation } from "react-router";
+import CryoFertLogo from "@assets/images/logos/cryofert-logo.png";
 
 export default function SplashScreen() {
   const router = useIonRouter();
@@ -79,7 +80,7 @@ export default function SplashScreen() {
 
           <div className="relative h-full z-10 flex flex-col items-center justify-center gap-12">
             <img
-              src="/favicon.png"
+              src={CryoFertLogo}
               className="size-28 object-contain drop-shadow-lg"
             />
             <IonSpinner name="crescent" color="primary" />

@@ -34,6 +34,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@src/routes/routes";
+import CryoFertLogo from "@assets/images/logos/cryofert-logo.png";
 
 export default function LandingHome() {
   return (
@@ -42,8 +43,8 @@ export default function LandingHome() {
         <div className="flex flex-col gap-8 bg-gradient-to-b from-sky-50 via-blue-50 to-white px-4 py-6">
           {/* Header (compact for mobile) */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <HeartPulse className="h-7 w-7 text-blue-600" />
+            <div className="flex items-center gap-2 text-blue-600">
+              <img src={CryoFertLogo} className="h-10 w-10" />
               <span className="font-bold text-lg">CryoFert</span>
             </div>
           </div>

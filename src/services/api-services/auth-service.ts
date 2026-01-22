@@ -79,3 +79,15 @@ export async function resendOtpMutationFn(email: string): Promise<void> {
     })
     .json();
 }
+
+export async function forgotPasswordMutationFn(
+  email: string
+): Promise<void> {
+  await httpClient
+    .post("api/auth/forgot-password", {
+      json: {
+        email: email,
+      },
+    })
+    .json();
+}

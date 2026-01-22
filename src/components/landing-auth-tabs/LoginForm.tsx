@@ -29,7 +29,7 @@ export default function LoginForm() {
     useShallow((s) => ({
       startLoading: s.startLoading,
       stopLoading: s.stopLoading,
-    }))
+    })),
   );
   const setLocalUser = useLocalUserStore((s) => s.setLocalUser);
   const openGenericDialog = useGenericDialogStore((s) => s.openGenericDialog);
@@ -112,7 +112,7 @@ export default function LoginForm() {
               ref={email.field.ref}
               className={cn(
                 "ion-bg-white! ion-b-r-[7px]!  min-h-[1px]! ion-py-[0.45rem]!",
-                email.fieldState.error && "ion-invalid ion-touched"
+                email.fieldState.error && "ion-invalid ion-touched",
               )}
             >
               <IonIcon
@@ -141,7 +141,7 @@ export default function LoginForm() {
               ref={password.field.ref}
               className={cn(
                 "ion-bg-white! ion-b-r-[7px]!  min-h-[1px]! ion-py-[0.45rem]!",
-                password.fieldState.error && "ion-invalid ion-touched"
+                password.fieldState.error && "ion-invalid ion-touched",
               )}
             >
               <IonIcon
@@ -160,6 +160,15 @@ export default function LoginForm() {
         />
 
         <IonButton
+          fill="clear"
+          size="small"
+          onClick={() => router.push(ROUTES.L_AUTH_FORGOT_PASS)}
+          className="text-base text-sky-600 normal-case ion-py-[0.75rem] mb-4 justify-self-end self-end pe-2"
+        >
+          Forgot password?
+        </IonButton>
+
+        <IonButton
           type="submit"
           size="small"
           className="text-base font-semibold ion-py-[0.75rem] self-end ion-bg-blue-600"
@@ -173,7 +182,13 @@ export default function LoginForm() {
         fill="clear"
         color="warning"
         onClick={() =>
-          router.push(ROUTES.L_AUTH_REGISTER, "forward", "replace", undefined, slideDirectionRouter)
+          router.push(
+            ROUTES.L_AUTH_REGISTER,
+            "forward",
+            "replace",
+            undefined,
+            slideDirectionRouter,
+          )
         }
         className="text-base font-semibold ion-py-[0.1rem] self-center ion-b-w-[1px] text-amber-900!"
       >

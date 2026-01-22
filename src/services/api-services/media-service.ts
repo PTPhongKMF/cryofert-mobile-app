@@ -12,7 +12,7 @@ export type MediaQueryParams = {
 };
 
 export async function mediaQueryFn(
-  params?: MediaQueryParams
+  params?: MediaQueryParams,
 ): Promise<MediaListApiResponse> {
   const res = await httpClient
     .get("api/media", {
@@ -34,6 +34,7 @@ export async function pdfPaperQueryFn(params: {
 }): Promise<Blob> {
   return await httpClient
     .post("api/media/generate-pdf", {
+      prefixUrl: "https://cryoferts.runasp.net/",
       searchParams: {
         relatedEntityType: params.relatedEntityType,
         relatedEntityId: params.relatedEntityId,
