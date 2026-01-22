@@ -37,3 +37,19 @@ export async function requestRelationshipMutationFn(
     },
   });
 }
+
+export interface CancelRelationship {
+  relationshipId: string;
+  cancellationReason: string;
+}
+
+export async function cancelRelationshipMutationFn(
+  req: CancelRelationship
+): Promise<void> {
+  await httpClient.post("api/relationship/cancel", {
+    json: {
+      relationshipId: req.relationshipId,
+      cancellationReason: req.cancellationReason,
+    },
+  });
+}

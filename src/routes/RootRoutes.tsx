@@ -23,6 +23,7 @@ import RenewCryoContractPaper from "@src/pages/lab-samples-tab/RenewCryoContract
 import { useLocalUserStore } from "@src/stores/user";
 import Notification from "@src/pages/Notification";
 import LandingForgotPass from "@src/pages/LandingForgotPass";
+import ChangePassword from "@src/pages/account-center-tab/ChangePassword";
 
 export default function RootRoutes() {
   const router = useIonRouter();
@@ -89,6 +90,7 @@ export default function RootRoutes() {
       />
 
       <Route path={ROUTES.UPDATE_ACCOUNT} component={UpdateAccount} />
+      <Route path={ROUTES.CHANGE_PASSWORD} component={ChangePassword} />
       <Route path={ROUTES.RELATIONSHIP} component={Relationship} />
       <Route path={ROUTES.TRANSACTION_HISTORY} component={TransactionHistory} />
 

@@ -4,6 +4,9 @@ import * as v from "valibot";
 const RelationshipTypeSchema = v.picklist(["Married", "Unmarried"]);
 export type relationshipType = v.InferOutput<typeof RelationshipTypeSchema>;
 
+const RelationshipStatusSchema = v.picklist(["Pending", "Approved", "Rejected", "Expired", "Cancelled"]);
+export type relationshipStatus = v.InferOutput<typeof RelationshipStatusSchema>;
+
 const PatientInfoSchema = v.object({
   id: v.string(),
   patientCode: v.string(),
@@ -20,6 +23,7 @@ export const RelationshipResponseSchema = v.object({
   patient2Id: v.string(),
   relationshipType: RelationshipTypeSchema,
   relationshipTypeName: v.string(),
+  status: RelationshipStatusSchema,
   establishedDate: v.nullable(v.string()),
   notes: v.nullable(v.string()),
   isActive: v.boolean(),

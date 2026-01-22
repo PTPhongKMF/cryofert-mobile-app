@@ -102,6 +102,8 @@ export default function OtpDialog() {
               svgIconColor: "danger",
             }),
           onSuccess: () => {
+            setOtp("");
+            setOtpError(false);
             openGenericDialog({
               title: "Verified Successfully",
               svgIcon: checkmarkCircleOutline,

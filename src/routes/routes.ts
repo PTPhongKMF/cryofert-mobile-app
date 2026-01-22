@@ -19,6 +19,7 @@ const BASE = {
   CRYO_CONTRACT: `/cryo-contract`,
 
   UPDATE_ACCOUNT: `/update-account`,
+  CHANGE_PASSWORD: `/change-password`,
   RELATIONSHIP: `/relationship`,
   TRANSACTION_HISTORY: `/transaction-history`,
 } as const;

@@ -27,23 +27,29 @@ export default function CurrentRelationship({
       <div className="w-full bg-white rounded-lg p-4 mt-10">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
-            <IonIcon icon={person} className="text-blue-600" />
             <span className="font-semibold">Relationship Type:</span>
             <span>{relationshipData.relationshipTypeName}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <IonIcon icon={person} className="text-blue-600" />
-            <span className="font-semibold">Partner:</span>
-            <span>{partnerInfo?.fullName ?? "N/A"}</span>
+          <div className="flex items-start gap-2">
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <span className="font-semibold">Partner:</span>
+                <span>{partnerInfo?.fullName ?? "N/A"}</span>
+              </div>
+              {partnerInfo?.patientCode && (
+                <span className="text-sm text-gray-600 ml-0">
+                  {partnerInfo.patientCode}
+                </span>
+              )}
+            </div>
           </div>
           {relationshipData.establishedDate && (
             <div className="flex items-center gap-2">
-              <IonIcon icon={person} className="text-blue-600" />
               <span className="font-semibold">Established:</span>
               <span>
                 {new Date(
                   relationshipData.establishedDate
-                ).toLocaleDateString()}
+                ).toLocaleDateString("en")}
               </span>
             </div>
           )}

@@ -1,8 +1,12 @@
 import type { RelationshipApiResponse } from "@src/schemas/relationship";
-import type { RequestRelationship } from "@src/services/api-services/relationship-service";
+import type {
+  RequestRelationship,
+  CancelRelationship,
+} from "@src/services/api-services/relationship-service";
 import {
   requestRelationshipMutationFn,
   relationshipQueryFn,
+  cancelRelationshipMutationFn,
 } from "@src/services/api-services/relationship-service";
 import { useLocalUserStore } from "@src/stores/user";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -23,5 +27,11 @@ export function useRequestRelationshipMutation() {
     mutationFn: requestRelationshipMutationFn,
     onSuccess: () => console.log("Relationship request sent successfully"),
     onError: (e) => console.log("Error sending relationship request:", e),
+  });
+}
+
+export function useCancelRelationshipMutation() {
+  return useMutation<void, HTTPError, CancelRelationship>({
+    mutationFn: cancelRelationshipMutationFn,
   });
 }

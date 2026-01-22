@@ -91,3 +91,23 @@ export async function forgotPasswordMutationFn(
     })
     .json();
 }
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export async function changePasswordMutationFn(
+  req: ChangePasswordRequest
+): Promise<void> {
+  await httpClient
+    .post("api/auth/change-password", {
+      json: {
+        currentPassword: req.currentPassword,
+        newPassword: req.newPassword,
+        confirmPassword: req.confirmPassword,
+      },
+    })
+    .json();
+}

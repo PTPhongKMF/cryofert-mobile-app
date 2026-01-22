@@ -27,6 +27,7 @@ import AppTabHeader from "@src/components/layout/AppTabHeader";
 
 export default function Account() {
   const [isOpenToastCopy, setIsOpenToastCopy] = useState(false);
+  const [isOpenToastCopyPatientCode, setIsOpenToastCopyPatientCode] = useState(false);
 
   const router = useIonRouter();
   const localUser = useLocalUserStore((s) => s.localUser);
@@ -57,6 +58,27 @@ export default function Account() {
                 onClick={async () => {
                   await Clipboard.write({ string: localUser?.id });
                   setIsOpenToastCopy(true);
+                }}
+                className="text-xs!"
+              >
+                copy
+              </IonButton>
+            </div>
+
+            <div className="flex justify-between items-center w-full">
+              <p className="text-sm font-semibold text-blue-500">
+                Patient Code:{" "}
+                <span className="font-normal text-xs text-black">
+                  {localUser?.patientCode}
+                </span>
+              </p>
+
+              <IonButton
+                size="small"
+                disabled={isOpenToastCopyPatientCode}
+                onClick={async () => {
+                  await Clipboard.write({ string: localUser?.patientCode });
+                  setIsOpenToastCopyPatientCode(true);
                 }}
                 className="text-xs!"
               >
@@ -139,11 +161,15 @@ export default function Account() {
                 <p className="ps-3">Update Account Information</p>
               </IonItem>
 
-              {/* TODO: wait for backend to complete */}
-              {/* <IonItem detail button className="ion-bg-transparent text-sm">
+              <IonItem
+                detail
+                button
+                onClick={() => router.push(ROUTES.CHANGE_PASSWORD, "forward")}
+                className="ion-bg-transparent text-sm"
+              >
                 <IonIcon aria-hidden="true" icon={keyOutline} slot="start" />
                 <p className="ps-3">Change Password</p>
-              </IonItem> */}
+              </IonItem>
 
               <IonItem
                 detail
@@ -177,6 +203,15 @@ export default function Account() {
         isOpen={isOpenToastCopy}
         onDidDismiss={() => setIsOpenToastCopy(false)}
         message="ID copied"
+        position="bottom"
+        positionAnchor="app-tab-bar"
+        duration={1000}
+      />
+
+      <IonToast
+        isOpen={isOpenToastCopyPatientCode}
+        onDidDismiss={() => setIsOpenToastCopyPatientCode(false)}
+        message="Patient Code copied"
         position="bottom"
         positionAnchor="app-tab-bar"
         duration={1000}

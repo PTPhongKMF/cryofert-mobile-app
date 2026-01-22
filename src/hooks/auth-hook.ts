@@ -5,6 +5,8 @@ import type { LoginRequest, RegisterRequest } from "@src/schemas/auth";
 import { useMutation } from "@tanstack/react-query";
 import type { HTTPError } from "ky";
 import {
+  changePasswordMutationFn,
+  type ChangePasswordRequest,
   confirmOtpMutationFn,
   forgotPasswordMutationFn,
   loginMutationFn,
@@ -39,5 +41,11 @@ export function useResendOtpMutation() {
 export function useForgotPasswordMutation() {
   return useMutation<void, HTTPError, string>({
     mutationFn: forgotPasswordMutationFn,
+  });
+}
+
+export function useChangePasswordMutation() {
+  return useMutation<void, HTTPError, ChangePasswordRequest>({
+    mutationFn: changePasswordMutationFn,
   });
 }

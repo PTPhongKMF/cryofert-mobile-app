@@ -185,6 +185,24 @@ export default function CryoContractDetail() {
     );
   }
 
+  function handleProceedToPaymentClick() {
+    if (!contract || contractQuery.isPending || isManualRefetching) return;
+
+    if (!contract.id) {
+      openGenericDialog({
+        svgIcon: alertCircleOutline,
+        svgIconColor: "warning",
+        content: "Missing contract id.",
+      });
+      return;
+    }
+
+    router.push(
+      `${ROUTES.PAYMENT_PORTAL}?relatedEntityType=CryoStorageContract&relatedEntityId=${contract.id}`,
+      "forward"
+    );
+  }
+
   function handlePackageConfirm() {
     if (!contract || !viewingPackage) return;
 
@@ -350,7 +368,7 @@ export default function CryoContractDetail() {
               disabled={
                 contractQuery.isPending || isManualRefetching || isRenewing
               }
-              // onClick={}
+              onClick={handleProceedToPaymentClick}
             >
               Proceed to payment
             </IonButton>

@@ -13,6 +13,7 @@ interface LocalUser {
   roleId: string;
   roleName: string;
   gender: boolean | null;
+  patientCode: string;
 }
 
 const capPrefStorage: StateStorage = {

@@ -79,6 +79,7 @@ export default function LoginForm() {
             lastName: data.data.user.lastName,
             gender: data.data.user.gender,
             email: data.data.user.email,
+            patientCode: data.data.user.patient.patientCode,
           });
           setSecuredToken("access-token", data.data.token ?? "");
           setSecuredToken("refresh-token", data.data.refreshToken ?? "");

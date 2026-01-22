@@ -69,6 +69,7 @@ const LoginResponseSchema = v.object({
     roleName: v.string(),
     createdAt: v.string(),
     updatedAt: v.nullable(v.string()),
+    patient: v.object({patientCode: v.string()}),
   }),
   emailVerified: v.boolean(),
 });
