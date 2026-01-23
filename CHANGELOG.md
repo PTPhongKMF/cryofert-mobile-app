@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.12.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.11.0...v0.12.0) (2026-01-23)
+
+
+### Features
+
+* add reset password ([5e824bb](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/5e824bb23a1df34f0c66e4f7e6eb2465fc24150c))
+* handle cancel and proper display relationship status ([0800113](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/08001133ea3129b180147a43c7d2b02bba72717c))
+
+
+### Bug Fixes
+
+* update request relationship hook ([9d7632b](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/9d7632b20dc7933f63ac62c94749a86e675ef727))
+
 ## [0.11.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.10.0...v0.11.0) (2026-01-19)
 
 
