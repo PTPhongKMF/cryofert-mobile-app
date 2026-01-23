@@ -45,7 +45,7 @@ export default function RequestRelationship({
 
   const requestForm = useForm<RequestRelationshipForm>({
     defaultValues: {
-      patient2Id: "",
+      patient2Code: "",
       relationshipType: "Married",
       establishedDate: new Date().toISOString(),
       isActive: true,
@@ -62,8 +62,7 @@ export default function RequestRelationship({
     if (requestMutation.isPending) return;
     requestMutation.mutate(
       {
-        patient1Id: localUser.id,
-        patient2Id: data.patient2Id,
+        patient2Code: data.patient2Code,
         relationshipType: data.relationshipType,
         establishedDate: data.establishedDate,
         isActive: true,
@@ -111,22 +110,22 @@ export default function RequestRelationship({
           className="w-full flex flex-col gap-8 mt-10!"
         >
           <Controller
-            name="patient2Id"
+            name="patient2Code"
             control={requestForm.control}
-            render={(patient2Id) => (
+            render={(patient2Code) => (
               <IonInput
-                placeholder="Your partner id"
+                placeholder="Your partner patient code"
                 mode="md"
                 fill="outline"
-                errorText={patient2Id.fieldState.error?.message}
+                errorText={patient2Code.fieldState.error?.message}
                 clearInput={true}
-                value={patient2Id.field.value}
-                onIonInput={patient2Id.field.onChange}
-                onIonBlur={patient2Id.field.onBlur}
-                ref={patient2Id.field.ref}
+                value={patient2Code.field.value}
+                onIonInput={patient2Code.field.onChange}
+                onIonBlur={patient2Code.field.onBlur}
+                ref={patient2Code.field.ref}
                 className={cn(
                   "ion-bg-white! ion-b-r-[7px]! min-h-px! ion-py-[0.45rem]!",
-                  patient2Id.fieldState.error && "ion-invalid ion-touched",
+                  patient2Code.fieldState.error && "ion-invalid ion-touched",
                 )}
               />
             )}

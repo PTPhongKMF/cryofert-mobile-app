@@ -4,7 +4,13 @@ import * as v from "valibot";
 const RelationshipTypeSchema = v.picklist(["Married", "Unmarried"]);
 export type relationshipType = v.InferOutput<typeof RelationshipTypeSchema>;
 
-const RelationshipStatusSchema = v.picklist(["Pending", "Approved", "Rejected", "Expired", "Cancelled"]);
+const RelationshipStatusSchema = v.picklist([
+  "Pending",
+  "Approved",
+  "Rejected",
+  "Expired",
+  "Cancelled",
+]);
 export type relationshipStatus = v.InferOutput<typeof RelationshipStatusSchema>;
 
 const PatientInfoSchema = v.object({
@@ -36,13 +42,13 @@ export const RelationshipResponseSchema = v.object({
 ///////////////////////////////////////////////////////////////////////
 
 export const RelationshipApiResponseSchema = createApiResponseSchema(
-  v.array(RelationshipResponseSchema)
+  v.array(RelationshipResponseSchema),
 );
 
 ///////////////////////////////////////////////////////////////////////
 
 export const RequestRelationshipFormSchema = v.object({
-  patient2Id: v.pipe(v.string(), v.nonEmpty("Require")),
+  patient2Code: v.pipe(v.string(), v.nonEmpty("Require")),
   relationshipType: RelationshipTypeSchema,
   establishedDate: v.pipe(
     v.string(),
@@ -54,7 +60,7 @@ export const RequestRelationshipFormSchema = v.object({
       endOfToday.setHours(23, 59, 59, 999);
 
       return ms <= endOfToday.getTime();
-    }, "Established date cannot be in the future")
+    }, "Established date cannot be in the future"),
   ),
   isActive: v.boolean(),
 });

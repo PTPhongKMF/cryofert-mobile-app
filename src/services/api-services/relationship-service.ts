@@ -7,7 +7,7 @@ import { httpClient } from "@src/services/api-services/http-service";
 import * as v from "valibot";
 
 export async function relationshipQueryFn(
-  patientId: string
+  patientId: string,
 ): Promise<RelationshipApiResponse> {
   const res = await httpClient
     .get(`api/relationship/patient/${patientId}`)
@@ -17,20 +17,18 @@ export async function relationshipQueryFn(
 }
 
 export interface RequestRelationship {
-  patient1Id: string;
-  patient2Id: string;
+  patient2Code: string;
   relationshipType: relationshipType;
   establishedDate: string;
   isActive: boolean;
 }
 
 export async function requestRelationshipMutationFn(
-  req: RequestRelationship
+  req: RequestRelationship,
 ): Promise<void> {
   await httpClient.post("api/relationship", {
     json: {
-      patient1Id: req.patient1Id,
-      patient2Id: req.patient2Id,
+      patient2Code: req.patient2Code,
       relationshipType: req.relationshipType,
       establishedDate: req.establishedDate,
       isActive: req.isActive,
@@ -44,7 +42,7 @@ export interface CancelRelationship {
 }
 
 export async function cancelRelationshipMutationFn(
-  req: CancelRelationship
+  req: CancelRelationship,
 ): Promise<void> {
   await httpClient.post("api/relationship/cancel", {
     json: {
