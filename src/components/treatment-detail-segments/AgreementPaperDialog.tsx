@@ -55,7 +55,7 @@ export default function AgreementPaperDialog(props: AgreementDialogProps) {
 
   const viewAgreementMediaQuery = useMediaQuery(
     { relatedEntityId: agreementId, relatedEntityType: "Agreement" },
-    props.isOpen && !!agreementId && isViewMode
+    props.isOpen && !!agreementId && isViewMode,
   );
 
   useEffect(() => {
@@ -100,7 +100,8 @@ export default function AgreementPaperDialog(props: AgreementDialogProps) {
 
   const isLoading = isViewMode
     ? viewAgreementMediaQuery.isLoading
-    : agreementPreviewPdfQuery.isLoading || requestSignAgreementMutation.isPending;
+    : agreementPreviewPdfQuery.isLoading ||
+      requestSignAgreementMutation.isPending;
 
   const shouldShowError =
     !agreementId ||
@@ -187,7 +188,7 @@ export default function AgreementPaperDialog(props: AgreementDialogProps) {
                 disabled={isLoading}
                 checked={isAgree}
                 onIonChange={(ev) => setIsAgree(ev.detail.checked)}
-                className="mb-2"
+                className="mb-2 text-xs!"
               >
                 I certify my information and accept the agreement.
               </IonCheckbox>

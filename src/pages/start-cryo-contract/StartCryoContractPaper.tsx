@@ -146,7 +146,7 @@ export default function StartCryoContractPaper() {
             disabled={isLoading}
             checked={isAgree}
             onIonChange={(ev) => setIsAgree(ev.detail.checked)}
-            className="mb-2"
+            className="mb-2 text-xs!"
           >
             I certify my information and accept the contract.
           </IonCheckbox>
