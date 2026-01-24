@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.12.0...v0.13.0) (2026-01-24)
+
+
+### Features
+
+* remove unused wrapper page in cycle detail ([d494efa](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/d494efaf22fa063a8bcb25575b2913f3676a238f))
+
 ## [0.12.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.11.0...v0.12.0) (2026-01-23)
 
 
