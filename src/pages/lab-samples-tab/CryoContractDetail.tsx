@@ -60,7 +60,7 @@ export default function CryoContractDetail() {
     useShallow((s) => ({
       startLoading: s.startLoading,
       stopLoading: s.stopLoading,
-    }))
+    })),
   );
 
   const contractQuery = useCryoContractDetailQuery(contractId ?? "");
@@ -80,8 +80,9 @@ export default function CryoContractDetail() {
       relatedEntityType: "CryoStorageContract",
       relatedEntityId: renewTargetContractId,
     },
-    contract?.status === "Active" || contract?.status === "Renewed"
+    contract?.status === "Active" || contract?.status === "Renewed",
   );
+
   const latestContractMedia = useMemo(() => {
     const items = mediaQuery.data?.data ?? [];
     if (items.length <= 1) return items[0];
@@ -102,7 +103,7 @@ export default function CryoContractDetail() {
   const cryoPackageQuery = useCryoPackageInfiniteQuery(
     (contractSampleType ?? "Oocyte") as LabSampleType,
     20,
-    isRenewSheetOpen && !!contractSampleType
+    isRenewSheetOpen && !!contractSampleType,
   );
   const packages =
     cryoPackageQuery.data?.pages.flatMap((page) => page.data) ?? [];
@@ -112,7 +113,7 @@ export default function CryoContractDetail() {
   }, [contractQuery.error, contractQuery.isError]);
 
   async function handleLoadMorePackage(
-    ev: InfiniteScrollCustomEvent
+    ev: InfiniteScrollCustomEvent,
   ): Promise<void> {
     if (!cryoPackageQuery.hasNextPage) {
       ev.target.complete();
@@ -181,7 +182,7 @@ export default function CryoContractDetail() {
 
     router.push(
       `${ROUTES.RENEW_CONTRACT_PAPER}?contractId=${renewTargetContractId}`,
-      "forward"
+      "forward",
     );
   }
 
@@ -199,7 +200,7 @@ export default function CryoContractDetail() {
 
     router.push(
       `${ROUTES.PAYMENT_PORTAL}?relatedEntityType=CryoStorageContract&relatedEntityId=${contract.id}`,
-      "forward"
+      "forward",
     );
   }
 
@@ -229,13 +230,13 @@ export default function CryoContractDetail() {
           router.push(
             `${ROUTES.RENEW_CONTRACT_PAPER}?contractId=${data.data.id}`,
             "forward",
-            "replace"
+            "replace",
           );
         },
         onSettled: () => {
           stopLoading(LOADER_KEY);
         },
-      }
+      },
     );
   }
 

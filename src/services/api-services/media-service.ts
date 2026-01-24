@@ -16,6 +16,9 @@ export async function mediaQueryFn(
 ): Promise<MediaListApiResponse> {
   const res = await httpClient
     .get("api/media", {
+      ...(params?.relatedEntityType === "CryoStorageContract" && {
+        prefixUrl: "https://cryoferts.runasp.net/",
+      }),
       searchParams: {
         relatedEntityId: params?.relatedEntityId,
         relatedEntityType: params?.relatedEntityType,

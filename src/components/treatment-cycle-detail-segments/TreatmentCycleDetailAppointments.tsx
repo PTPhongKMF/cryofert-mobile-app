@@ -1,11 +1,8 @@
 import { format } from "@formkit/tempo";
 import { IonItem, IonLabel, IonButton } from "@ionic/react";
 import { useIonRouter } from "@ionic/react";
-import { useState } from "react";
 import type { TreatmentCycleDetailResponse } from "@src/schemas/treatment-cycle";
 import { ROUTES } from "@src/routes/routes";
-import ServiceRequestWrapperDialog from "./ServiceRequestWrapperDialog";
-import MedicalRecordWrapperDialog from "./MedicalRecordWrapperDialog";
 
 interface TreatmentCycleDetailAppointmentsProps {
   appointments: TreatmentCycleDetailResponse["appointments"];
@@ -15,12 +12,6 @@ export default function TreatmentCycleDetailAppointments({
   appointments,
 }: TreatmentCycleDetailAppointmentsProps) {
   const router = useIonRouter();
-  const [serviceRequestDialogOpen, setServiceRequestDialogOpen] =
-    useState(false);
-  const [medicalRecordDialogOpen, setMedicalRecordDialogOpen] = useState(false);
-  const [selectedAppointmentId, setSelectedAppointmentId] = useState<
-    string | null
-  >(null);
 
   if (appointments.length === 0) {
     return (
@@ -31,16 +22,6 @@ export default function TreatmentCycleDetailAppointments({
       </div>
     );
   }
-
-  const handleViewServiceRequest = (appointmentId: string) => {
-    setSelectedAppointmentId(appointmentId);
-    setServiceRequestDialogOpen(true);
-  };
-
-  const handleViewMedicalRecord = (appointmentId: string) => {
-    setSelectedAppointmentId(appointmentId);
-    setMedicalRecordDialogOpen(true);
-  };
 
   const handleViewDetails = (appointmentId: string) => {
     router.push(`${ROUTES.APPOINTMENT}/${appointmentId}`, "forward");
@@ -81,24 +62,6 @@ export default function TreatmentCycleDetailAppointments({
             </IonItem>
 
             <div className="px-4 pb-4 flex flex-col gap-2">
-              <div className="flex gap-2">
-                <IonButton
-                  fill="outline"
-                  size="small"
-                  className="flex-1"
-                  onClick={() => handleViewServiceRequest(appointment.id)}
-                >
-                  View Service Request
-                </IonButton>
-                <IonButton
-                  fill="outline"
-                  size="small"
-                  className="flex-1"
-                  onClick={() => handleViewMedicalRecord(appointment.id)}
-                >
-                  View Medical Record
-                </IonButton>
-              </div>
               <IonButton
                 fill="solid"
                 size="small"
@@ -111,27 +74,6 @@ export default function TreatmentCycleDetailAppointments({
           </div>
         ))}
       </div>
-
-      {selectedAppointmentId && (
-        <>
-          <ServiceRequestWrapperDialog
-            isOpen={serviceRequestDialogOpen}
-            onClose={() => {
-              setServiceRequestDialogOpen(false);
-              setSelectedAppointmentId(null);
-            }}
-            appointmentId={selectedAppointmentId}
-          />
-          <MedicalRecordWrapperDialog
-            isOpen={medicalRecordDialogOpen}
-            onClose={() => {
-              setMedicalRecordDialogOpen(false);
-              setSelectedAppointmentId(null);
-            }}
-            appointmentId={selectedAppointmentId}
-          />
-        </>
-      )}
     </>
   );
 }
