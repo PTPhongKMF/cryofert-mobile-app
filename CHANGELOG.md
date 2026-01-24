@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.13.0...v0.14.0) (2026-01-24)
+
+
+### Features
+
+* smaller agree text ([1f572b4](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/1f572b436637819d5e33fcb08d192e9cf8cecc1a))
+
 ## [0.13.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.12.0...v0.13.0) (2026-01-24)
 
 
