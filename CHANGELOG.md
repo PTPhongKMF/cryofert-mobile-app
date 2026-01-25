@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.14.0...v0.15.0) (2026-01-25)
+
+
+### Features
+
+* add app logo ([08a6e2c](https://github.com/PTPhongKMF/cryofert-mobile-app/commit/08a6e2c24197a2e925729ce0c19a4ce321264ece))
+
 ## [0.14.0](https://github.com/PTPhongKMF/cryofert-mobile-app/compare/v0.13.0...v0.14.0) (2026-01-24)
 
 
