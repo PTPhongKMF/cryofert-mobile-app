@@ -22,7 +22,7 @@ export default function LandingTabRoutes() {
     <IonTabs>
       <IonRouterOutlet>
         <Route exact path={ROUTES.L_HOME} component={LandingHome} />
-        <Redirect exact path={ROUTES.L_AUTH} to={ROUTES.L_AUTH_LOGIN} />
+        <Redirect exact from={ROUTES.L_AUTH} to={ROUTES.L_AUTH_LOGIN} />
         <Route exact path={ROUTES.L_AUTH_LOGIN} component={LandingAuth} />
         <Route exact path={ROUTES.L_AUTH_REGISTER} component={LandingAuth} />
       </IonRouterOutlet>

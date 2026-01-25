@@ -17,8 +17,8 @@ export const RegisterRequestSchema = v.pipe(
         v.custom(
           (input) =>
             typeof input === "string" && diffYears(new Date(), input) >= 20,
-          "You must be 20 or older."
-        )
+          "You must be 20 or older.",
+        ),
       ),
       repeatPassword: v.pipe(v.string(), v.nonEmpty("Required")),
     }),
@@ -30,8 +30,8 @@ export const RegisterRequestSchema = v.pipe(
         v.custom(
           (input) =>
             typeof input === "string" && diffYears(new Date(), input) >= 18,
-          "You must be 18 or older."
-        )
+          "You must be 18 or older.",
+        ),
       ),
       repeatPassword: v.pipe(v.string(), v.nonEmpty("Required")),
     }),
@@ -40,10 +40,10 @@ export const RegisterRequestSchema = v.pipe(
     v.partialCheck(
       [["password"], ["repeatPassword"]],
       (input) => input.password === input.repeatPassword,
-      "Passwords do not match"
+      "Passwords do not match",
     ),
-    ["repeatPassword"]
-  )
+    ["repeatPassword"],
+  ),
 );
 
 /////////////////////////////////////////////////////////////////
@@ -69,7 +69,7 @@ const LoginResponseSchema = v.object({
     roleName: v.string(),
     createdAt: v.string(),
     updatedAt: v.nullable(v.string()),
-    patient: v.object({patientCode: v.string()}),
+    patient: v.nullable(v.object({ patientCode: v.string() })),
   }),
   emailVerified: v.boolean(),
 });
